@@ -32,7 +32,6 @@ steps:
     projectKey: '2102-feb08-net_team1-p2-server'
     projectName: 'team1-p2-server'
     extraProperties: 'sonar.cs.opencover.reportsPaths=$(Agent.TempDirectory)/*/coverage.opencover.xml'
-
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
