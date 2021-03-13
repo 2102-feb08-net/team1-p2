@@ -1,0 +1,53 @@
+/api/users
+    GET: all users
+    POST: add a new user
+    PUT: log in a user
+
+    /api/users/{userId}
+        GET: get a specific user
+        DELETE: delete a user
+
+        /api/users/{userId}/books
+            GET: get all books the user owns
+            POST: add book(s) that the user owns
+
+            /api/users/{userId}/books/{bookId}
+                PATCH: update book details
+
+        /api/users/{userId}/wishlist
+            GET: get the user's wishlist
+            POST: add books to the user's wishlist
+            DELETE: delete the user's wishlist
+
+            /api/users/{userId}/wishlist/{bookId}
+                DELETE: delete the specific book from the user's wishlist
+
+        /api/users/{userId}/loans
+            GET: list of loans where the user borrowed books
+
+        /api/users/{userId}/requests
+            GET: list of loan requests for books that the user owns
+
+        /api/users/{userId}/recommendations
+            GET: list of recommended books for the user
+
+/api/loans
+    GET: all loans
+    POST: submit a loan request
+
+    /api/loans/{loanId}
+        GET: get a specific loan
+        PATCH: update status of a loan
+
+/api/books
+    GET: all books
+
+    /api/books/{bookId}
+        GET: get a specific book
+        PUT: update this book
+
+    /api/books?genre=g&author=a&title=t
+        GET: get books by query parameters
+
+
+
