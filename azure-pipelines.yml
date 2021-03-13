@@ -57,8 +57,12 @@ steps:
     zipAfterPublish: true
 - task: AzureWebApp@1
   inputs:
-    azureSubscription: 'Free Trial(7b0f809c-844b-477f-b985-811ff1bab8fe)'
+    azureSubscription: 'Free Trial(1)(7b0f809c-844b-477f-b985-811ff1bab8fe)'
     appType: 'webApp'
     appName: 'looseleafcommunity'
-    package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
+    deployToSlotOrASE: true
+    resourceGroupName: 'revature'
+    slotName: 'production'
+    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
     deploymentMethod: 'auto'
+
