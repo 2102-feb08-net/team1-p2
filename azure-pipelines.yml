@@ -61,4 +61,4 @@ steps:
     appType: 'webApp'
     appName: 'looseleafcommunity'
     package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
-    appSettings: 
+    deploymentMethod: 'auto'
