@@ -1,7 +1,6 @@
 
 CREATE TABLE Addresses(
 	id INT NOT NULL PRIMARY KEY IDENTITY,
-	addressid NVARCHAR(1000) NOT NULL,
 	address1 NVARCHAR(1000) NOT NULL,
 	address2 NVARCHAR(1000),
 	city NVARCHAR(1000) NOT NULL,
@@ -36,7 +35,7 @@ CREATE TABLE Books(
 
 CREATE TABLE Status_Codes(
 	id INT PRIMARY KEY IDENTITY NOT NULL,
-	statuscode NVARCHAR NOT NULL UNIQUE ,
+	statuscode int NOT NULL FOREIGN KEY REFERENCES Status_Codes(id),
 
 )
 
@@ -55,7 +54,7 @@ CREATE TABLE Loans(
 	userid INT NOT NULL FOREIGN KEY REFERENCES Users(id),
 	owned_bookid INT NOT NULL FOREIGN KEY REFERENCES Owned_Books(id),
 	message  NTEXT NOT NULL,
-	acceptance_status int NOT NULL FOREIGN KEY REFERENCES Status_Codes(id),
+	acceptance_status NVARCHAR(255) NOT NULL,
 	ispublic BIT NOT NULL,
 	dropoffdate DATETIME NOT NULL, 
 	returneddate DATETIME NOT NULL, 
