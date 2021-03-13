@@ -1,4 +1,3 @@
-
 CREATE TABLE Addresses(
 	id INT NOT NULL PRIMARY KEY IDENTITY,
 	address1 NVARCHAR(1000) NOT NULL,
@@ -16,7 +15,6 @@ CREATE TABLE Users(
 	email NVARCHAR(255) NOT NULL,
 )
 
-
 CREATE TABLE Genre(
 	id INT NOT NULL PRIMARY KEY IDENTITY,
 	genre NVARCHAR(255) NOT NULL, 
@@ -30,13 +28,14 @@ CREATE TABLE Books(
 	genre int NOT NULL FOREIGN KEY REFERENCES Genre(id),
 ) 
 
-
-
-
-CREATE TABLE Status_Codes(
+CREATE TABLE Loan_Status(
 	id INT PRIMARY KEY IDENTITY NOT NULL,
-	statuscode int NOT NULL FOREIGN KEY REFERENCES Status_Codes(id),
+	loanStatus NVARCHAR(255) NOT NULL,
+)
 
+CREATE TABLE Availability_Status(
+	id INT PRIMARY KEY IDENTITY NOT NULL,
+	availabilityStatus NVARCHAR(255) NOT NULL,
 )
 
 CREATE TABLE Owned_Books(
@@ -44,17 +43,15 @@ CREATE TABLE Owned_Books(
 	userid INT NOT NULL FOREIGN KEY REFERENCES Users(id),
 	bookid INT NOT NULL FOREIGN KEY REFERENCES Books(id),
 	condition NVARCHAR(255) NOT NULL, 
-	availability int NOT NULL FOREIGN KEY REFERENCES Status_Codes(id),
+	availabilityStatusId int NOT NULL FOREIGN KEY REFERENCES Availability_Status(id),
 )
-
-
 
 CREATE TABLE Loans(
 	id INT PRIMARY KEY IDENTITY NOT NULL,
 	userid INT NOT NULL FOREIGN KEY REFERENCES Users(id),
 	owned_bookid INT NOT NULL FOREIGN KEY REFERENCES Owned_Books(id),
 	message  NTEXT NOT NULL,
-	acceptance_status NVARCHAR(255) NOT NULL,
+	loanStatusId NVARCHAR(255) NOT NULL FOREIGN KEY REFERENCES Loan_Status(id),
 	ispublic BIT NOT NULL,
 	dropoffdate DATETIME NOT NULL, 
 	returneddate DATETIME NOT NULL, 
@@ -65,5 +62,3 @@ CREATE TABLE Loaned_Books(
 	owned_bookid INT NOT NULL FOREIGN KEY REFERENCES Owned_Books(id),
 	loanid INT NOT NULL FOREIGN KEY REFERENCES Loans(id),
 )
-
-
