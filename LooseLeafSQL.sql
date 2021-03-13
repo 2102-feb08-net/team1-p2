@@ -51,7 +51,7 @@ CREATE TABLE Loans(
 	userid INT NOT NULL FOREIGN KEY REFERENCES Users(id),
 	owned_bookid INT NOT NULL FOREIGN KEY REFERENCES Owned_Books(id),
 	message  NTEXT NOT NULL,
-	loanStatusId NVARCHAR(255) NOT NULL FOREIGN KEY REFERENCES Loan_Status(id),
+	loanStatusId INT NOT NULL FOREIGN KEY REFERENCES Loan_Status(id),
 	ispublic BIT NOT NULL,
 	dropoffdate DATETIME NOT NULL, 
 	returneddate DATETIME NOT NULL, 
