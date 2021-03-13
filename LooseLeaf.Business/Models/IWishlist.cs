@@ -6,14 +6,8 @@ using System.Threading.Tasks;
 
 namespace LooseLeaf.Business.Models
 {
-    public interface IUser
+    public interface IWishlist
     {
-        string UserName { get; }
-
-        string Email { get; }
-
-        IAddress Address { get; }
-
-        IWishlist Wishlist { get; }
+        List<IBook> Books { get; }
     }
 }
