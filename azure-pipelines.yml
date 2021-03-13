@@ -48,10 +48,17 @@ steps:
   inputs:
     codeCoverageTool: 'Cobertura'
     summaryFileLocation: '$(Agent.TempDirectory)/*/coverage.cobertura.xml'
-#- task: DotNetCoreCLI@2
- # displayName: Publish
-  #inputs:
-   # command: publish
-    #publishWebProjects: true
-    #arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(Build.BuildId)'
-    #zipAfterPublish: true
+- task: DotNetCoreCLI@2
+  displayName: Publish
+  inputs:
+    command: publish
+    publishWebProjects: true
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(Build.BuildId)'
+    zipAfterPublish: true
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'Free Trial(7b0f809c-844b-477f-b985-811ff1bab8fe)'
+    appType: 'webApp'
+    appName: 'looseleafcommunity'
+    package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
+    appSettings: 
