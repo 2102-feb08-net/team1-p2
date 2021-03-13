@@ -36,7 +36,7 @@ CREATE TABLE Books(
 
 CREATE TABLE Status_Codes(
 	id INT PRIMARY KEY IDENTITY NOT NULL,
-	statuscode int NOT NULL FOREIGN KEY REFERENCES Status_Codes(id),
+	statuscode NVARCHAR NOT NULL UNIQUE ,
 
 )
 
@@ -55,7 +55,7 @@ CREATE TABLE Loans(
 	userid INT NOT NULL FOREIGN KEY REFERENCES Users(id),
 	owned_bookid INT NOT NULL FOREIGN KEY REFERENCES Owned_Books(id),
 	message  NTEXT NOT NULL,
-	acceptance_status NVARCHAR(255) NOT NULL,
+	acceptance_status int NOT NULL FOREIGN KEY REFERENCES Status_Codes(id),
 	ispublic BIT NOT NULL,
 	dropoffdate DATETIME NOT NULL, 
 	returneddate DATETIME NOT NULL, 
