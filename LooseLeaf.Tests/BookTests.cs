@@ -89,60 +89,32 @@ namespace LooseLeaf.Tests
             Assert.Throws<ArgumentNullException>(constructBook);
         }
 
-        [Fact]
-        public void Book_NonNumericISBN_Exception()
+        [Theory]
+        [InlineData("Hello 9781234567890")]
+        [InlineData("97812345678901")]
+        [InlineData("978123456789")]
+        [InlineData("2345678901")]
+        public void Book_InvalidISBN_Exception(string isbn)
         {
             // arrange
             const string title = "My Book";
             const string author = "Test Author";
-            const string isbn = "Hello 9781234567890";
 
             // act
-            static IBook constructBook() => new Book(title, author, isbn, new DateTime(2000, 12, 31));
+            Func<IBook> constructBook = () => new Book(title, author, isbn, new DateTime(2000, 12, 31));
 
             // assert
             Assert.Throws<ArgumentException>(constructBook);
         }
 
-        [Fact]
-        public void Book_WrongNumberOfDigitsISBN_Exception()
+        [Theory]
+        [InlineData("1-23-456789-0", 1234567890)]
+        [InlineData("978-1-23-456789-0", 9781234567890)]
+        public void Book_FormatISBN_Pass(string isbn, ulong expectedIsbn)
         {
             // arrange
             const string title = "My Book";
             const string author = "Test Author";
-            const string isbn = "97812345678901";
-
-            // act
-            static IBook constructBook() => new Book(title, author, isbn, new DateTime(2000, 12, 31));
-
-            // assert
-            Assert.Throws<ArgumentException>(constructBook);
-        }
-
-        [Fact]
-        public void Book_FormatISBN13_Pass()
-        {
-            // arrange
-            const string title = "My Book";
-            const string author = "Test Author";
-            const string isbn = "978-1-23-456789-0";
-            const ulong expectedIsbn = 9781234567890;
-
-            // act
-            IBook book = new Book(title, author, isbn, new DateTime(2000, 12, 31));
-
-            // assert
-            Assert.Equal(expectedIsbn, book.ISBN);
-        }
-
-        [Fact]
-        public void Book_FormatISBN10_Pass()
-        {
-            // arrange
-            const string title = "My Book";
-            const string author = "Test Author";
-            const string isbn = "1-23-456789-0";
-            const ulong expectedIsbn = 1234567890;
 
             // act
             IBook book = new Book(title, author, isbn, new DateTime(2000, 12, 31));
