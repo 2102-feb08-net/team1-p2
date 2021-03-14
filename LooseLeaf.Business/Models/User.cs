@@ -31,6 +31,8 @@ namespace LooseLeaf.Business.Models
 
             Email = new MailAddress(email).Address;
 
+            Address = address;
+
             Wishlist = wishlist;
         }
     }

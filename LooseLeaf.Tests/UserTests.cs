@@ -106,5 +106,69 @@ namespace LooseLeaf.Tests
             // assert
             Assert.Throws<ArgumentNullException>(buildUser);
         }
+
+        [Fact]
+        public void User_GetUserName()
+        {
+            // arrange
+            const string userName = "firstUser";
+            const string email = "somebody@website.com";
+            IAddress fakeAddress = new Mock<IAddress>().Object;
+            IWishlist fakeWishlist = new Mock<IWishlist>().Object;
+
+            // act
+            IUser user = new User(userName, email, fakeAddress, fakeWishlist);
+
+            // assert
+            Assert.Equal(userName, user.UserName);
+        }
+
+        [Fact]
+        public void User_GetEmail()
+        {
+            // arrange
+            const string userName = "firstUser";
+            const string email = "somebody@website.com";
+            IAddress fakeAddress = new Mock<IAddress>().Object;
+            IWishlist fakeWishlist = new Mock<IWishlist>().Object;
+
+            // act
+            IUser user = new User(userName, email, fakeAddress, fakeWishlist);
+
+            // assert
+            Assert.Equal(email, user.Email);
+        }
+
+        [Fact]
+        public void User_GetAddress()
+        {
+            // arrange
+            const string userName = "firstUser";
+            const string email = "somebody@website.com";
+            IAddress fakeAddress = new Mock<IAddress>().Object;
+            IWishlist fakeWishlist = new Mock<IWishlist>().Object;
+
+            // act
+            IUser user = new User(userName, email, fakeAddress, fakeWishlist);
+
+            // assert
+            Assert.Equal(fakeAddress, user.Address);
+        }
+
+        [Fact]
+        public void User_GetWishlist()
+        {
+            // arrange
+            const string userName = "firstUser";
+            const string email = "somebody@website.com";
+            IAddress fakeAddress = new Mock<IAddress>().Object;
+            IWishlist fakeWishlist = new Mock<IWishlist>().Object;
+
+            // act
+            IUser user = new User(userName, email, fakeAddress, fakeWishlist);
+
+            // assert
+            Assert.Equal(fakeWishlist, user.Wishlist);
+        }
     }
 }
