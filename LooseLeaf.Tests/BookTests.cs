@@ -90,7 +90,7 @@ namespace LooseLeaf.Tests
         }
 
         [Fact]
-        public void Book_InvalidISBN_Exception()
+        public void Book_NonNumericISBN_Exception()
         {
             // arrange
             const string title = "My Book";
@@ -105,13 +105,44 @@ namespace LooseLeaf.Tests
         }
 
         [Fact]
-        public void Book_FormatISBN_Pass()
+        public void Book_WrongNumberOfDigitsISBN_Exception()
+        {
+            // arrange
+            const string title = "My Book";
+            const string author = "Test Author";
+            const string isbn = "97812345678901";
+
+            // act
+            static IBook constructBook() => new Book(title, author, isbn, new DateTime(2000, 12, 31));
+
+            // assert
+            Assert.Throws<ArgumentException>(constructBook);
+        }
+
+        [Fact]
+        public void Book_FormatISBN13_Pass()
         {
             // arrange
             const string title = "My Book";
             const string author = "Test Author";
             const string isbn = "978-1-23-456789-0";
             const ulong expectedIsbn = 9781234567890;
+
+            // act
+            IBook book = new Book(title, author, isbn, new DateTime(2000, 12, 31));
+
+            // assert
+            Assert.Equal(expectedIsbn, book.ISBN);
+        }
+
+        [Fact]
+        public void Book_FormatISBN10_Pass()
+        {
+            // arrange
+            const string title = "My Book";
+            const string author = "Test Author";
+            const string isbn = "1-23-456789-0";
+            const ulong expectedIsbn = 1234567890;
 
             // act
             IBook book = new Book(title, author, isbn, new DateTime(2000, 12, 31));

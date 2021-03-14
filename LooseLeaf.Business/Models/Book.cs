@@ -39,7 +39,7 @@ namespace LooseLeaf.Business.Models
             PublishedDate = publishedDate;
         }
 
-        private ulong FormatISBN(string isbn)
+        private static ulong FormatISBN(string isbn)
         {
             const int ISBN_LENGTH_OLD = 10;
             const int ISBN_LENGTH_NEW = 13;
