@@ -12,7 +12,7 @@ namespace LooseLeaf.Business.Models
 
         string Author { get; }
 
-        string ISBN { get; }
+        ulong ISBN { get; }
 
         DateTime PublishedDate { get; }
     }
