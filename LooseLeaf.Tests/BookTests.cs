@@ -93,7 +93,7 @@ namespace LooseLeaf.Tests
         [InlineData("Hello 9781234567890")]
         [InlineData("97812345678901")]
         [InlineData("978123456789")]
-        [InlineData("2345678901")]
+        [InlineData("234567890")]
         public void Book_InvalidISBN_Exception(string isbn)
         {
             // arrange
