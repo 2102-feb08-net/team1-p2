@@ -24,10 +24,6 @@ namespace LooseLeaf.Tests
 
             // assert
             Assert.NotNull(book);
-            Assert.Equal(title, book.Title);
-            Assert.Equal(author, book.Author);
-            Assert.Equal(isbn, book.ISBN.ToString());
-            Assert.Equal(datePublished, book.PublishedDate);
         }
 
         [Fact]
