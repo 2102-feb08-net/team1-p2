@@ -11,9 +11,9 @@ namespace LooseLeaf.Business.Models
 
         public IAddress Address { get; }
 
-        public IWishlist Wishlist => throw new NotImplementedException();
+        public IWishlist Wishlist { get; }
 
-        public User(string userName, string email, IAddress address)
+        public User(string userName, string email, IAddress address, IWishlist wishlist)
         {
             if (userName is null)
                 throw new ArgumentNullException(nameof(userName));
@@ -24,9 +24,14 @@ namespace LooseLeaf.Business.Models
             if (address is null)
                 throw new ArgumentNullException(nameof(address));
 
+            if (wishlist is null)
+                throw new ArgumentNullException(nameof(address));
+
             UserName = userName;
 
             Email = new MailAddress(email).Address;
+
+            Wishlist = wishlist;
         }
     }
 }

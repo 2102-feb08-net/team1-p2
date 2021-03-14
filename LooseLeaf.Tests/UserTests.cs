@@ -17,10 +17,11 @@ namespace LooseLeaf.Tests
             // arrange
             const string userName = "firstUser";
             const string email = "somebody@website.com";
-            var fakeAddress = new Mock<IAddress>();
+            IAddress fakeAddress = new Mock<IAddress>().Object;
+            IWishlist fakeWishlist = new Mock<IWishlist>().Object;
 
             // act
-            IUser user = new User(userName, email, fakeAddress.Object);
+            IUser user = new User(userName, email, fakeAddress, fakeWishlist);
 
             // assert
             Assert.NotNull(user);
@@ -32,10 +33,11 @@ namespace LooseLeaf.Tests
             // arrange
             const string userName = null;
             const string email = "somebody@website.com";
-            var fakeAddress = new Mock<IAddress>();
+            IAddress fakeAddress = new Mock<IAddress>().Object;
+            IWishlist fakeWishlist = new Mock<IWishlist>().Object;
 
             // act
-            Func<IUser> buildUser = () => new User(userName, email, fakeAddress.Object);
+            Func<IUser> buildUser = () => new User(userName, email, fakeAddress, fakeWishlist);
 
             // assert
             Assert.Throws<ArgumentNullException>(buildUser);
@@ -47,10 +49,11 @@ namespace LooseLeaf.Tests
             // arrange
             const string userName = "firstUser";
             const string email = null;
-            var fakeAddress = new Mock<IAddress>();
+            IAddress fakeAddress = new Mock<IAddress>().Object;
+            IWishlist fakeWishlist = new Mock<IWishlist>().Object;
 
             // act
-            Func<IUser> buildUser = () => new User(userName, email, fakeAddress.Object);
+            Func<IUser> buildUser = () => new User(userName, email, fakeAddress, fakeWishlist);
 
             // assert
             Assert.Throws<ArgumentNullException>(buildUser);
@@ -62,13 +65,46 @@ namespace LooseLeaf.Tests
             // arrange
             const string userName = "firstUser";
             const string email = "somebodywebsitecom";
-            var fakeAddress = new Mock<IAddress>();
+            IAddress fakeAddress = new Mock<IAddress>().Object;
+            IWishlist fakeWishlist = new Mock<IWishlist>().Object;
 
             // act
-            Func<IUser> buildUser = () => new User(userName, email, fakeAddress.Object);
+            Func<IUser> buildUser = () => new User(userName, email, fakeAddress, fakeWishlist);
 
             // assert
             Assert.Throws<FormatException>(buildUser);
+        }
+
+        [Fact]
+        public void User_NullAddress_Fail()
+        {
+            // arrange
+            const string userName = "firstUser";
+            const string email = "somebody@website.com";
+            IAddress fakeAddress = null;
+            IWishlist fakeWishlist = new Mock<IWishlist>().Object;
+
+            // act
+            Func<IUser> buildUser = () => new User(userName, email, fakeAddress, fakeWishlist);
+
+            // assert
+            Assert.Throws<ArgumentNullException>(buildUser);
+        }
+
+        [Fact]
+        public void User_NullWishlist_Fail()
+        {
+            // arrange
+            const string userName = "firstUser";
+            const string email = "somebody@website.com";
+            IAddress fakeAddress = new Mock<IAddress>().Object;
+            IWishlist fakeWishlist = null;
+
+            // act
+            Func<IUser> buildUser = () => new User(userName, email, fakeAddress, fakeWishlist);
+
+            // assert
+            Assert.Throws<ArgumentNullException>(buildUser);
         }
     }
 }
