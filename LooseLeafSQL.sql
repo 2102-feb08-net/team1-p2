@@ -1,12 +1,12 @@
+DROP TABLE Loaned_Books;
+DROP TABLE Loans;
+DROP TABLE Owned_Books;
 DROP TABLE Availability_Status;
 DROP TABLE Loan_Status;
 DROP TABLE Books;
 DROP TABLE Genre;
-DROP TABLE Addresses;
-DROP TABLE Loaned_Books;
-DROP TABLE Loans;
-DROP TABLE Owned_Books;
 DROP TABLE Users;
+DROP TABLE Addresses;
 
 CREATE TABLE Addresses(
 	id INT NOT NULL PRIMARY KEY IDENTITY,
