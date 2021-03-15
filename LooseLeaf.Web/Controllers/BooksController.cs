@@ -11,28 +11,21 @@ namespace LooseLeaf.Web.Controllers
     public class BooksController : ControllerBase
     {
         [HttpGet("api/books")]
-        public IActionResult GetAllBooks()
+        public async Task<IActionResult> GetAllBooks(string genre, string author, string title)
         {
-            return Ok();
+            throw new NotImplementedException();
         }
 
         [HttpGet("api/books/{bookId}")]
-        public IActionResult GetBookById(int bookId)
+        public async Task<IActionResult> GetBookById(int bookId)
         {
-            return Ok();
+            throw new NotImplementedException();
         }
 
         [HttpPut("api/books/{bookId}")]
-        public IActionResult UpdateBook(int bookId, InterfaceModels.Book book)
+        public async Task<IActionResult> UpdateBook(int bookId, InterfaceModels.Book book)
         {
-            return Ok();
+            throw new NotImplementedException();
         }
-
-        //not sure how to do the query param one...
-        //[HttpGet("api/books")]
-        //public IActionResult GetBooksByQueryParams()
-        //{
-        //    return Ok();
-        //}
     }
 }

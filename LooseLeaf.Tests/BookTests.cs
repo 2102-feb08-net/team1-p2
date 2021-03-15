@@ -101,7 +101,7 @@ namespace LooseLeaf.Tests
             const string author = "Test Author";
 
             // act
-            Func<IBook> constructBook = () => new Book(title, author, isbn, new DateTime(2000, 12, 31));
+            IBook constructBook() => new Book(title, author, isbn, new DateTime(2000, 12, 31));
 
             // assert
             Assert.Throws<ArgumentException>(constructBook);

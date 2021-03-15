@@ -37,7 +37,7 @@ namespace LooseLeaf.Tests
             IWishlist fakeWishlist = new Mock<IWishlist>().Object;
 
             // act
-            Func<IUser> buildUser = () => new User(userName, email, fakeAddress, fakeWishlist);
+            IUser buildUser() => new User(userName, email, fakeAddress, fakeWishlist);
 
             // assert
             Assert.Throws<ArgumentNullException>(buildUser);
@@ -53,7 +53,7 @@ namespace LooseLeaf.Tests
             IWishlist fakeWishlist = new Mock<IWishlist>().Object;
 
             // act
-            Func<IUser> buildUser = () => new User(userName, email, fakeAddress, fakeWishlist);
+            IUser buildUser() => new User(userName, email, fakeAddress, fakeWishlist);
 
             // assert
             Assert.Throws<ArgumentNullException>(buildUser);
@@ -69,7 +69,7 @@ namespace LooseLeaf.Tests
             IWishlist fakeWishlist = new Mock<IWishlist>().Object;
 
             // act
-            Func<IUser> buildUser = () => new User(userName, email, fakeAddress, fakeWishlist);
+            IUser buildUser() => new User(userName, email, fakeAddress, fakeWishlist);
 
             // assert
             Assert.Throws<FormatException>(buildUser);
@@ -85,7 +85,7 @@ namespace LooseLeaf.Tests
             IWishlist fakeWishlist = new Mock<IWishlist>().Object;
 
             // act
-            Func<IUser> buildUser = () => new User(userName, email, fakeAddress, fakeWishlist);
+            IUser buildUser() => new User(userName, email, fakeAddress, fakeWishlist);
 
             // assert
             Assert.Throws<ArgumentNullException>(buildUser);
@@ -101,7 +101,7 @@ namespace LooseLeaf.Tests
             IWishlist fakeWishlist = null;
 
             // act
-            Func<IUser> buildUser = () => new User(userName, email, fakeAddress, fakeWishlist);
+            IUser buildUser() => new User(userName, email, fakeAddress, fakeWishlist);
 
             // assert
             Assert.Throws<ArgumentNullException>(buildUser);

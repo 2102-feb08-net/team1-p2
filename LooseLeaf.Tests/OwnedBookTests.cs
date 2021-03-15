@@ -32,7 +32,7 @@ namespace LooseLeaf.Tests
             Availability availability = Availability.Available;
 
             // act
-            Func<IOwnedBook> constructOwnedBook = () => new OwnedBook(null, user, condition, availability);
+            IOwnedBook constructOwnedBook() => new OwnedBook(null, user, condition, availability);
 
             // assert
             Assert.Throws<ArgumentNullException>(constructOwnedBook);
@@ -47,7 +47,7 @@ namespace LooseLeaf.Tests
             Availability availability = Availability.Available;
 
             // act
-            Func<IOwnedBook> constructOwnedBook = () => new OwnedBook(book, null, condition, availability);
+            IOwnedBook constructOwnedBook() => new OwnedBook(book, null, condition, availability);
 
             // assert
             Assert.Throws<ArgumentNullException>(constructOwnedBook);
@@ -64,7 +64,7 @@ namespace LooseLeaf.Tests
             Availability availability = Availability.Available;
 
             // act
-            Func<IOwnedBook> constructOwnedBook = () => new OwnedBook(book, user, (PhysicalCondition)condition, availability);
+            IOwnedBook constructOwnedBook() => new OwnedBook(book, user, (PhysicalCondition)condition, availability);
 
             // assert
             Assert.Throws<ArgumentException>(constructOwnedBook);
@@ -81,7 +81,7 @@ namespace LooseLeaf.Tests
             PhysicalCondition condition = PhysicalCondition.LikeNew;
 
             // act
-            Func<IOwnedBook> constructOwnedBook = () => new OwnedBook(book, user, condition, (Availability)availability);
+            IOwnedBook constructOwnedBook() => new OwnedBook(book, user, condition, (Availability)availability);
 
             // assert
             Assert.Throws<ArgumentException>(constructOwnedBook);

@@ -11,93 +11,93 @@ namespace LooseLeaf.Web.Controllers
     public class UsersController : ControllerBase
     {
         [HttpGet("api/users")]
-        public IActionResult GetAllUsers()
+        public async Task<IActionResult> GetAllUsers()
         {
-            return Ok();
+            throw new NotImplementedException();
         }
 
         [HttpPost("api/users")]
-        public IActionResult AddNewUser(InterfaceModels.User user)
+        public async Task<IActionResult> AddNewUser(InterfaceModels.User user)
         {
-            return Ok();
+            throw new NotImplementedException();
         }
 
         [HttpPut("api/users")]
-        public IActionResult LogUserIn(string username, string password)
+        public async Task<IActionResult> LogUserIn(string username, string password)
         {
-            return Ok();
+            throw new NotImplementedException();
         }
 
         [HttpGet("api/users/{userId}")]
-        public IActionResult GetUserById(int userId)
+        public async Task<IActionResult> GetUserById(int userId)
         {
-            return Ok();
+            throw new NotImplementedException();
         }
 
         [HttpDelete("api/users/{userId}")]
-        public IActionResult DeleteUser(int userId)
+        public async Task<IActionResult> DeleteUser(int userId)
         {
-            return Ok();
+            throw new NotImplementedException();
         }
 
         [HttpGet("api/users/{userId}/books")]
-        public IActionResult GetBooksByUser(int userId)
+        public async Task<IActionResult> GetBooksByUser(int userId)
         {
-            return Ok();
+            throw new NotImplementedException();
         }
 
         [HttpPost("api/users/{userId}/books")]
-        public IActionResult AddUserOwnedBooks(List<InterfaceModels.Book> books)
+        public async Task<IActionResult> AddUserOwnedBooks(List<InterfaceModels.Book> books)
         {
-            return Ok();
+            throw new NotImplementedException();
         }
 
         [HttpPatch("api/users/{userId}/books/{bookId}")]
-        public IActionResult UpdateBookDetails(int userId, int bookId)
+        public async Task<IActionResult> UpdateBookDetails(int userId, int bookId)
         {
-            return Ok();
+            throw new NotImplementedException();
         }
 
         [HttpGet("api/users/{userId}/wishlist")]
-        public IActionResult GetWishlistByUser(int userId)
+        public async Task<IActionResult> GetWishlistByUser(int userId)
         {
-            return Ok();
+            throw new NotImplementedException();
         }
 
         [HttpPost("api/users/{userId}/wishlist")]
-        public IActionResult AddBooksToUserWishlist(int userId, List<InterfaceModels.Book> books)
+        public async Task<IActionResult> AddBooksToUserWishlist(int userId, List<InterfaceModels.Book> books)
         {
-            return Ok();
+            throw new NotImplementedException();
         }
 
         [HttpDelete("api/users/{userId}/wishlist")]
-        public IActionResult DeleteUserWishlist(int userId)
+        public async Task<IActionResult> DeleteUserWishlist(int userId)
         {
-            return Ok();
+            throw new NotImplementedException();
         }
 
         [HttpDelete("api/users/{userId}/wishlist/{bookId}")]
-        public IActionResult DeleteBookFromUserWishlist(int userId, int bookId)
+        public async Task<IActionResult> DeleteBookFromUserWishlist(int userId, int bookId)
         {
-            return Ok();
+            throw new NotImplementedException();
         }
 
         [HttpGet("api/users/{userId}/loans")]
-        public IActionResult GetUserLoanHistory(int userId)
+        public async Task<IActionResult> GetUserLoanHistory(int userId)
         {
-            return Ok();
+            throw new NotImplementedException();
         }
 
         [HttpGet("api/users/{userId}/requests")]
-        public IActionResult GetUserRequests(int userId)
+        public async Task<IActionResult> GetUserRequests(int userId)
         {
-            return Ok();
+            throw new NotImplementedException();
         }
 
         [HttpGet("api/users/{userId}/recommendations")]
-        public IActionResult GetUserRecommendations(int userId)
+        public async Task<IActionResult> GetUserRecommendations(int userId)
         {
-            return Ok();
+            throw new NotImplementedException();
         }
     }
 }

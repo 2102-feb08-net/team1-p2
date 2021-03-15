@@ -11,27 +11,27 @@ namespace LooseLeaf.Web.Controllers
     public class LoansController : ControllerBase
     {
         [HttpGet("api/loans")]
-        public IActionResult GetAllLoans()
+        public async Task<IActionResult> GetAllLoans()
         {
-            return Ok();
+            throw new NotImplementedException();
         }
 
         [HttpPost("api/loans")]
-        public IActionResult SubmitLoanRequest(InterfaceModels.LoanRequest req)
+        public async Task<IActionResult> SubmitLoanRequest(InterfaceModels.LoanRequest req)
         {
-            return Ok();
+            throw new NotImplementedException();
         }
 
         [HttpGet("api/loans/{loanId}")]
-        public IActionResult GetLoanById(int loanId)
+        public async Task<IActionResult> GetLoanById(int loanId)
         {
-            return Ok();
+            throw new NotImplementedException();
         }
 
         [HttpPatch("api/loans/{loanId}")]
-        public IActionResult UpdateLoanRequestStatus(int loanId, InterfaceModels.LoanRequest req)
+        public async Task<IActionResult> UpdateLoanRequestStatus(int loanId, InterfaceModels.LoanRequest req)
         {
-            return Ok();
+            throw new NotImplementedException();
         }
     }
 }
