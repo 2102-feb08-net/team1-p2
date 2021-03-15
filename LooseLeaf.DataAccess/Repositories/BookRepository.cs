@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LooseLeaf.DataAccess.Repositories
 {
-    public class BookRepository : IBookRepository;
+    public class BookRepository : IBookRepository
     {
         private readonly LooseLeafContext _context;
 
