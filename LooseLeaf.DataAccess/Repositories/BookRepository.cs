@@ -24,5 +24,7 @@ namespace LooseLeaf.DataAccess.Repositories
         public Task<IBook> GetBook(int bookId) => throw new NotImplementedException();
 
         public Task UpdateBook(int bookId) => throw new NotImplementedException();
+
+        public Book Get(int Id) => throw new NotImplementedException();
     }
 }

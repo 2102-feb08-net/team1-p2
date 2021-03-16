@@ -8,16 +8,43 @@ namespace LooseLeaf.Business.Models
 {
     public class Book : IBook
     {
+        public int Id { get; }
         public string Title { get; }
 
         public string Author { get; }
 
-        public ulong ISBN { get; }
+        public ulong Isbn { get; }
 
-        public DateTime PublishedDate { get; }
+        public int Genreid { get; }
 
-        public Book(string title, string author, string isbn, DateTime publishedDate)
+        public Book(string title, string author, string isbn, int genreid)
         {
+            if (title is null)
+                throw new ArgumentNullException(nameof(title));
+
+            if (author is null)
+                throw new ArgumentNullException(nameof(author));
+
+            if (string.IsNullOrWhiteSpace(title))
+                throw new ArgumentException(message: "Book Title cannot be blank.");
+             
+            if (string.IsNullOrWhiteSpace(author))
+                throw new ArgumentException(message: "Book Author cannot be blank.");
+
+            if (isbn is null)
+                throw new ArgumentNullException(nameof(isbn));
+
+            Title = title;
+            Author = author;
+            Isbn = FormatISBN(isbn);
+            Genreid = genreid;
+        }
+
+        public Book(int id, string title, string author, string isbn, int genreid)
+        {
+            if (id < 1)
+                throw new ArgumentException(message: "Book ID cannot be less than 1.");
+
             if (title is null)
                 throw new ArgumentNullException(nameof(title));
 
@@ -33,10 +60,11 @@ namespace LooseLeaf.Business.Models
             if (isbn is null)
                 throw new ArgumentNullException(nameof(isbn));
 
+            Id = id;
             Title = title;
             Author = author;
-            ISBN = FormatISBN(isbn);
-            PublishedDate = publishedDate;
+            Isbn = FormatISBN(isbn);
+            Genreid = genreid;
         }
 
         private static ulong FormatISBN(string isbn)
