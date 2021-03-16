@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace LooseLeaf.Business.Models
 {
-    public record BookSearchParams
+    public record BookSearchParams : IBookSearchParams
     {
-        string Genre { get; set; }
-
-        string Author { get; set; }
-
-        string Title { get; set; }
+        public string Genre { get; set; }
+        public string Author { get; set; }
+        public string Title { get; set; }
     }
 }
