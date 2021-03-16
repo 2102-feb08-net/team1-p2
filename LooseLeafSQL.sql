@@ -20,7 +20,7 @@ CREATE TABLE Addresses(
 
 CREATE TABLE Users(
 	id INT NOT NULL PRIMARY KEY IDENTITY,
-	addressid INT NOT NULL FOREIGN KEY REFERENCES Addresses(id),
+	addressId INT NOT NULL FOREIGN KEY REFERENCES Addresses(id),
 	username NVARCHAR(255) NOT NULL,
 	userpassword NVARCHAR(255) NOT NULL,
 	email NVARCHAR(255) NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE Books(
 	id INT NOT NULL PRIMARY KEY IDENTITY,
 	title NVARCHAR(255) NOT NULL, 
 	author NVARCHAR(255) NOT NULL,
-	isbn NVARCHAR(255) NOT NULL,
+	isbn BigINT NOT NULL CHECK (len(isbn) = 13 or len(isbn) = 10),
 	genreId int NOT NULL FOREIGN KEY REFERENCES Genre(id),
 ) 
 
@@ -59,13 +59,14 @@ CREATE TABLE Owned_Books(
 
 CREATE TABLE Loans(
 	id INT PRIMARY KEY IDENTITY NOT NULL,
-	userid INT NOT NULL FOREIGN KEY REFERENCES Users(id),
+	lenderId INT NOT NULL FOREIGN KEY REFERENCES Users(id),
+	borrowerId INT NOT NULL FOREIGN KEY REFERENCES Users(id),
 	owned_bookid INT NOT NULL FOREIGN KEY REFERENCES Owned_Books(id),
 	message  NTEXT NOT NULL,
 	loanStatusId INT NOT NULL FOREIGN KEY REFERENCES Loan_Status(id),
-	ispublic BIT NOT NULL,
-	dropoffdate DATETIME NOT NULL, 
-	returneddate DATETIME NOT NULL, 
+	isPublic BIT NOT NULL,
+	dropoffDate DATETIME NOT NULL, 
+	returnedDate DATETIME NOT NULL, 
 	isRecommended BIT NOT NULL,
 )
 
@@ -83,7 +84,7 @@ CREATE TABLE Wishlist(
 
 
 
-INSERT INTO Genre (genre) VALUES
+INSERT INTO Genre (genreName) VALUES
 	('Action and Adventure'),
 	('Children'),
 	('Classics'),
