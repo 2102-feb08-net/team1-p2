@@ -8,12 +8,14 @@ namespace LooseLeaf.Business.Models
 {
     public interface IBook
     {
+        int Id { get; }
+
         string Title { get; }
 
         string Author { get; }
 
-        ulong ISBN { get; }
+        ulong Isbn { get; }
 
-        DateTime PublishedDate { get; }
+        int GenreId { get; }
     }
 }

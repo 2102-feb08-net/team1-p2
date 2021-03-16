@@ -15,7 +15,7 @@ namespace LooseLeaf.Business.Models
 
         public ulong Isbn { get; }
 
-        public int Genreid { get; }
+        public int GenreId { get; }
 
         public Book(string title, string author, string isbn, int genreid)
         {
@@ -27,7 +27,7 @@ namespace LooseLeaf.Business.Models
 
             if (string.IsNullOrWhiteSpace(title))
                 throw new ArgumentException(message: "Book Title cannot be blank.");
-             
+
             if (string.IsNullOrWhiteSpace(author))
                 throw new ArgumentException(message: "Book Author cannot be blank.");
 
@@ -37,7 +37,7 @@ namespace LooseLeaf.Business.Models
             Title = title;
             Author = author;
             Isbn = FormatISBN(isbn);
-            Genreid = genreid;
+            GenreId = genreid;
         }
 
         public Book(int id, string title, string author, string isbn, int genreid)
@@ -64,7 +64,7 @@ namespace LooseLeaf.Business.Models
             Title = title;
             Author = author;
             Isbn = FormatISBN(isbn);
-            Genreid = genreid;
+            GenreId = genreid;
         }
 
         private static ulong FormatISBN(string isbn)
