@@ -30,14 +30,14 @@ namespace LooseLeaf.Tests.IntegrationTests
             var repo = new BookRepository(context);
 
             // act
-            Business.Models.Book book = repo.Get(insertedBook.Id);
+            Business.Models.IBook book = await repo.GetBook(insertedBook.Id);
 
             // assert
             Assert.Equal(insertedBook.Id, book.Id);
             Assert.Equal(insertedBook.Title, book.Title);
             Assert.Equal(insertedBook.Author, book.Author);
-            Assert.Equal(insertedBook.Isbn, book.Isbn);
-            Assert.Equal(insertedBook.Genreid, book.Genreid);
+            Assert.Equal(insertedBook.Isbn, book.Isbn.ToString());
+            Assert.Equal(insertedBook.Genreid, book.GenreId);
         }
     }
 }
