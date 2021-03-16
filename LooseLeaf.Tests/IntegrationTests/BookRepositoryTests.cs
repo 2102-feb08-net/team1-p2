@@ -16,17 +16,26 @@ namespace LooseLeaf.Tests.IntegrationTests
         public async Task GetBookById_Returns_Book()
         {
             // arrange- set up DbContext and DbSet mock
-            using var contextFactory = new TestLooseLeafContextFactory();
-            using LooseLeafContext context = contextFactory.CreateContext();
+
             var insertedBook = new Book
             {
                 Title = "Gone with the Wind",
                 Author = "JoJo",
-                Isbn = "12345678925814",
-                Genreid = 15
+                Isbn = "1234567892581",
+                Genreid = 1
             };
-            context.Books.Add(insertedBook);
-            context.SaveChanges();
+
+            using var contextFactory = new TestLooseLeafContextFactory();
+            using (LooseLeafContext arrangeContext = contextFactory.CreateContext())
+            {
+                arrangeContext.Genres.Add(new Genre() { Genre1 = "Test Genre" });
+                arrangeContext.SaveChanges();
+
+                arrangeContext.Books.Add(insertedBook);
+                arrangeContext.SaveChanges();
+            }
+
+            using var context = contextFactory.CreateContext();
             var repo = new BookRepository(context);
 
             // act
