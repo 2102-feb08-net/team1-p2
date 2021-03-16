@@ -25,7 +25,7 @@ namespace LooseLeaf.DataAccess.Repositories
         public async Task<IBook> GetBook(int bookId)
         {
             var book = await _context.Books.Where(b => b.Id == bookId).SingleAsync();
-            return new Business.Models.Book(book.Id, book.Title, book.Author, book.Isbn, book.Genreid);
+            return new Business.Models.Book(book.Id, book.Title, book.Author, book.Isbn, book.GenreId);
         }
 
         public async Task UpdateBook(int bookId) => throw new NotImplementedException();

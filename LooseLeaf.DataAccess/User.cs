@@ -9,19 +9,21 @@ namespace LooseLeaf.DataAccess
     {
         public User()
         {
-            Loans = new HashSet<Loan>();
+            LoanBorrowers = new HashSet<Loan>();
+            LoanLenders = new HashSet<Loan>();
             OwnedBooks = new HashSet<OwnedBook>();
             Wishlists = new HashSet<Wishlist>();
         }
 
         public int Id { get; set; }
-        public int Addressid { get; set; }
+        public int AddressId { get; set; }
         public string Username { get; set; }
         public string Userpassword { get; set; }
         public string Email { get; set; }
 
         public virtual Address Address { get; set; }
-        public virtual ICollection<Loan> Loans { get; set; }
+        public virtual ICollection<Loan> LoanBorrowers { get; set; }
+        public virtual ICollection<Loan> LoanLenders { get; set; }
         public virtual ICollection<OwnedBook> OwnedBooks { get; set; }
         public virtual ICollection<Wishlist> Wishlists { get; set; }
     }

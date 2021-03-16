@@ -14,8 +14,8 @@ namespace LooseLeaf.DataAccess
         }
 
         public int Id { get; set; }
-        public int Userid { get; set; }
-        public int Bookid { get; set; }
+        public int UserId { get; set; }
+        public int BookId { get; set; }
         public string Condition { get; set; }
         public int AvailabilityStatusId { get; set; }
 

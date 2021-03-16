@@ -21,14 +21,14 @@ namespace LooseLeaf.Tests.IntegrationTests
             {
                 Title = "Gone with the Wind",
                 Author = "JoJo",
-                Isbn = "1234567892581",
-                Genreid = 1
+                Isbn = 1234567892581,
+                GenreId = 1
             };
 
             using var contextFactory = new TestLooseLeafContextFactory();
             using (LooseLeafContext arrangeContext = contextFactory.CreateContext())
             {
-                arrangeContext.Genres.Add(new Genre() { Genre1 = "Test Genre" });
+                arrangeContext.Genres.Add(new Genre() { GenreName = "Test Genre" });
                 arrangeContext.SaveChanges();
 
                 arrangeContext.Books.Add(insertedBook);
@@ -45,8 +45,8 @@ namespace LooseLeaf.Tests.IntegrationTests
             Assert.Equal(insertedBook.Id, book.Id);
             Assert.Equal(insertedBook.Title, book.Title);
             Assert.Equal(insertedBook.Author, book.Author);
-            Assert.Equal(insertedBook.Isbn, book.Isbn.ToString());
-            Assert.Equal(insertedBook.Genreid, book.GenreId);
+            Assert.Equal(insertedBook.Isbn, book.Isbn);
+            Assert.Equal(insertedBook.GenreId, book.GenreId);
         }
     }
 }

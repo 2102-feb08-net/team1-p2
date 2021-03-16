@@ -8,16 +8,19 @@ namespace LooseLeaf.Business.Models
 {
     public class Book : IBook
     {
+        private const int ISBN_LENGTH_10 = 10;
+        private const int ISBN_LENGTH_13 = 13;
+
         public int Id { get; }
         public string Title { get; }
 
         public string Author { get; }
 
-        public ulong Isbn { get; }
+        public long Isbn { get; }
 
         public int GenreId { get; }
 
-        public Book(string title, string author, string isbn, int genreid)
+        public Book(string title, string author, long isbn, int genreid)
         {
             if (title is null)
                 throw new ArgumentNullException(nameof(title));
@@ -31,16 +34,17 @@ namespace LooseLeaf.Business.Models
             if (string.IsNullOrWhiteSpace(author))
                 throw new ArgumentException(message: "Book Author cannot be blank.");
 
-            if (isbn is null)
-                throw new ArgumentNullException(nameof(isbn));
+            int isbnLength = isbn.ToString().Length;
+            if (isbn < 0 || (isbnLength != ISBN_LENGTH_10 && isbnLength != ISBN_LENGTH_13))
+                throw new ArgumentException("An ISBN number must be 10 or 13 digits long and be non negative.", nameof(isbn));
 
             Title = title;
             Author = author;
-            Isbn = FormatISBN(isbn);
+            Isbn = isbn;
             GenreId = genreid;
         }
 
-        public Book(int id, string title, string author, string isbn, int genreid)
+        public Book(int id, string title, string author, long isbn, int genreid)
         {
             if (id < 1)
                 throw new ArgumentException(message: "Book ID cannot be less than 1.");
@@ -57,31 +61,15 @@ namespace LooseLeaf.Business.Models
             if (string.IsNullOrWhiteSpace(author))
                 throw new ArgumentException(message: "Book Author cannot be blank.");
 
-            if (isbn is null)
-                throw new ArgumentNullException(nameof(isbn));
+            int isbnLength = isbn.ToString().Length;
+            if (isbn < 0 || (isbnLength != ISBN_LENGTH_10 && isbnLength != ISBN_LENGTH_13))
+                throw new ArgumentException("An ISBN number must be 10 or 13 digits long and be non negative.", nameof(isbn));
 
             Id = id;
             Title = title;
             Author = author;
-            Isbn = FormatISBN(isbn);
+            Isbn = isbn;
             GenreId = genreid;
-        }
-
-        private static ulong FormatISBN(string isbn)
-        {
-            const int ISBN_LENGTH_OLD = 10;
-            const int ISBN_LENGTH_NEW = 13;
-
-            var formatted = isbn.Replace("-", string.Empty);
-            if (ulong.TryParse(formatted, out ulong isbnValue))
-            {
-                if (isbnValue.ToString().Length is ISBN_LENGTH_OLD or ISBN_LENGTH_NEW)
-                    return isbnValue;
-                else
-                    throw new ArgumentException("An ISBN must be 10 or 13 digits long.");
-            }
-            else
-                throw new ArgumentException("ISBN be a 10 or 13 digit long number with the only allowed seperators being dashes (-).");
         }
     }
 }

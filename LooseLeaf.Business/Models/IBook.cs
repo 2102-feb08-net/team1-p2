@@ -14,7 +14,7 @@ namespace LooseLeaf.Business.Models
 
         string Author { get; }
 
-        ulong Isbn { get; }
+        long Isbn { get; }
 
         int GenreId { get; }
     }
