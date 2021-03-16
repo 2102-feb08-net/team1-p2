@@ -26,6 +26,7 @@ namespace LooseLeaf.DataAccess
         public virtual DbSet<LoanedBook> LoanedBooks { get; set; }
         public virtual DbSet<OwnedBook> OwnedBooks { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Wishlist> Wishlists { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -255,6 +256,29 @@ namespace LooseLeaf.DataAccess
                     .HasForeignKey(d => d.Addressid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Users__addressid__160F4887");
+            });
+
+            modelBuilder.Entity<Wishlist>(entity =>
+            {
+                entity.ToTable("Wishlist");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.BookId).HasColumnName("bookId");
+
+                entity.Property(e => e.UserId).HasColumnName("userId");
+
+                entity.HasOne(d => d.Book)
+                    .WithMany(p => p.Wishlists)
+                    .HasForeignKey(d => d.BookId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Wishlist__bookId__2FCF1A8A");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Wishlists)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Wishlist__userId__2EDAF651");
             });
 
             OnModelCreatingPartial(modelBuilder);

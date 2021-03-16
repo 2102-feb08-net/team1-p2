@@ -10,6 +10,7 @@ namespace LooseLeaf.DataAccess
         public Book()
         {
             OwnedBooks = new HashSet<OwnedBook>();
+            Wishlists = new HashSet<Wishlist>();
         }
 
         public int Id { get; set; }
@@ -20,5 +21,6 @@ namespace LooseLeaf.DataAccess
 
         public virtual Genre Genre { get; set; }
         public virtual ICollection<OwnedBook> OwnedBooks { get; set; }
+        public virtual ICollection<Wishlist> Wishlists { get; set; }
     }
 }
