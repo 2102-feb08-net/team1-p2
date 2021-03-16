@@ -17,12 +17,12 @@ namespace LooseLeaf.DataAccess.Repositories
             _context = context;
         }
 
-        public Task AddBook() => throw new NotImplementedException();
+        public async Task AddBook() => throw new NotImplementedException();
 
-        public Task<IEnumerable<IBook>> GetAllBooks(IBookSearchParams searchParams) => throw new NotImplementedException();
+        public async Task<IEnumerable<IBook>> GetAllBooks(IBookSearchParams searchParams) => throw new NotImplementedException();
 
-        public Task<IBook> GetBook(int bookId) => throw new NotImplementedException();
+        public async Task<IBook> GetBook(int bookId) => throw new NotImplementedException();
 
-        public Task UpdateBook(int bookId) => throw new NotImplementedException();
+        public async Task UpdateBook(int bookId) => throw new NotImplementedException();
     }
 }
