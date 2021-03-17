@@ -11,7 +11,7 @@ namespace LooseLeaf.Business.IRepositories
     {
         Task<IEnumerable<IBook>> GetAllBooks(IBookSearchParams searchParams);
 
-        Task AddBook();
+        Task AddBook(Book book);
 
         Task<IBook> GetBook(int bookId);
 

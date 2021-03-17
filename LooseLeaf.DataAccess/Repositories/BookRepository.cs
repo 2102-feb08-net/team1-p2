@@ -18,7 +18,7 @@ namespace LooseLeaf.DataAccess.Repositories
             _context = context;
         }
 
-        public async Task AddBook() => throw new NotImplementedException();
+        public async Task AddBook(Book book) => throw new NotImplementedException();
 
         public async Task<IEnumerable<IBook>> GetAllBooks(IBookSearchParams searchParams) => throw new NotImplementedException();
 
