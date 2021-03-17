@@ -9,8 +9,9 @@ namespace LooseLeaf.Business.Models
     public enum PhysicalCondition
     {
         LikeNew,
+        VeryGood,
         Good,
-        Fine,
+        Fair,
         Poor,
     }
 }

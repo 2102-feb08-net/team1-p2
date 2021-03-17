@@ -26,9 +26,16 @@ namespace LooseLeaf.DataAccess.Repositories
             {
                 User = user,
                 Book = book,
-                Condition = ownedBook.Condition.ToString(),
+                ConditionId = (int)ownedBook.Condition,
                 AvailabilityStatusId = (int)ownedBook.Availability
             });
+        }
+
+        public async Task UpdateOwnedBookStatus(int ownedBookId, Availability availability, PhysicalCondition condition)
+        {
+            var ownedBook = await _context.OwnedBooks.SingleAsync(b => b.Id == ownedBookId);
+            ownedBook.AvailabilityStatusId = (int)availability;
+            ownedBook.ConditionId = (int)condition;
         }
 
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();

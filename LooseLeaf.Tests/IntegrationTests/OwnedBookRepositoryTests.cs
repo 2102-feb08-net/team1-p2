@@ -65,5 +65,43 @@ namespace LooseLeaf.Tests.IntegrationTests
                 Assert.Equal(username, ownedBook.User.Username);
             }
         }
+
+        [Fact]
+        public async Task OwnedBookRepository_UpdateStatusOfOwnedBook()
+        {
+            // arrange
+            const int ownedBookId = 1;
+            const int userId = 1;
+            const int bookId = 1;
+            Availability availability = Availability.CheckedOut;
+            PhysicalCondition condition = PhysicalCondition.Fair;
+
+            using var contextFactory = new TestLooseLeafContextFactory();
+            using (LooseLeafContext arrangeContext = contextFactory.CreateContext())
+            {
+                await contextFactory.CreateOwnedBook(arrangeContext, userId, bookId);
+                await arrangeContext.SaveChangesAsync();
+            }
+
+            // act
+            using (LooseLeafContext actContext = contextFactory.CreateContext())
+            {
+                IOwnedBookRepository ownedBookRepo = new OwnedBookRepository(actContext);
+
+                await ownedBookRepo.UpdateOwnedBookStatus(ownedBookId, availability, condition);
+                await actContext.SaveChangesAsync();
+            }
+
+            // assert
+            using (LooseLeafContext assertContext = contextFactory.CreateContext())
+            {
+                var ownedBook = await assertContext.OwnedBooks.Include(x => x.User).Include(x => x.Book).SingleAsync();
+
+                Assert.Equal(userId, ownedBook.UserId);
+                Assert.Equal(bookId, ownedBook.BookId);
+                Assert.Equal((int)condition, ownedBook.ConditionId);
+                Assert.Equal((int)availability, ownedBook.AvailabilityStatusId);
+            }
+        }
     }
 }

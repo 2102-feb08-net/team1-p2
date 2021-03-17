@@ -10,5 +10,7 @@ namespace LooseLeaf.Business.IRepositories
     public interface IOwnedBookRepository : IRepository
     {
         Task AddOwnedBookAsync(IOwnedBook ownedBook);
+
+        Task UpdateOwnedBookStatus(int ownedBookId, Availability availability, PhysicalCondition condition);
     }
 }

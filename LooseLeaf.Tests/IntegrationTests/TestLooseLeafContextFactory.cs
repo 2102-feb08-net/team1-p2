@@ -15,8 +15,6 @@ namespace LooseLeaf.Tests.IntegrationTests
         private DbConnection _conn;
         private bool _disposedValue;
 
-        private int isbnsCreated = 0;
-
         private DbContextOptions<LooseLeafContext> CreateOptions()
         {
             return new DbContextOptionsBuilder<LooseLeafContext>().UseSqlite(_conn).Options;
@@ -67,9 +65,12 @@ namespace LooseLeaf.Tests.IntegrationTests
 
             foreach (string name in Enum.GetNames(typeof(Business.Models.AvailabilityStatus)))
                 context.AvailabilityStatuses.Add(new AvailabilityStatus() { StatusName = name });
+
+            foreach (string name in Enum.GetNames(typeof(Business.Models.PhysicalCondition)))
+                context.ConditionStatuses.Add(new ConditionStatus() { StatusName = name });
         }
 
-        public async Task CreateUser(LooseLeafContext context, string username)
+        public async Task CreateUser(LooseLeafContext context, string username = "username")
         {
             if (context.Addresses.Count() == 0)
             {
@@ -86,16 +87,17 @@ namespace LooseLeaf.Tests.IntegrationTests
         /// <param name="bookName">The name of the book</param>
         /// <param name="authorName">The name of the author</param>
         /// <returns>Returns the ISBN of the book.</returns>
-        public async Task<long> CreateBook(LooseLeafContext context, string bookName, string authorName)
+        public async Task<long> CreateBook(LooseLeafContext context, string bookName = "Book", string authorName = "Author", int genreId = 1)
         {
             if (context.Genres.Count() == 0)
             {
                 await CreateGenre(context);
                 await context.SaveChangesAsync();
             }
-            long newIsbn = 9784567890123 + isbnsCreated;
-            await context.Books.AddAsync(new DataAccess.Book() { Title = bookName, Author = authorName, Isbn = newIsbn, GenreId = 1 });
-            isbnsCreated++;
+            int id = context.Books.Count() + 1;
+            long newIsbn = 9784567890123 + id;
+            var book = new DataAccess.Book() { Title = bookName, Author = authorName, Isbn = newIsbn, GenreId = 1 };
+            await context.Books.AddAsync(book);
             return newIsbn;
         }
 
@@ -105,9 +107,23 @@ namespace LooseLeaf.Tests.IntegrationTests
             await context.Genres.AddAsync(new DataAccess.Genre() { GenreName = "Story " + id });
         }
 
-        public async Task CreateOwnedBook(LooseLeafContext context, int userId, int bookId)
+        public async Task<OwnedBook> CreateOwnedBook(LooseLeafContext context, int userId, int bookId)
         {
-            await context.OwnedBooks.AddAsync(new DataAccess.OwnedBook() { UserId = userId, BookId = bookId, Condition = "New", AvailabilityStatusId = 1 });
+            if (context.Books.Count() == 0)
+            {
+                await CreateBook(context);
+                await context.SaveChangesAsync();
+            }
+
+            if (context.Users.Count() == 0)
+            {
+                await CreateUser(context);
+                await context.SaveChangesAsync();
+            }
+
+            var ownedBook = new DataAccess.OwnedBook() { UserId = userId, BookId = bookId, ConditionId = 1, AvailabilityStatusId = 1 };
+            await context.OwnedBooks.AddAsync(ownedBook);
+            return ownedBook;
         }
     }
 }
