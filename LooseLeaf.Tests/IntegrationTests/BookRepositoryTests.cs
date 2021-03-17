@@ -76,7 +76,7 @@ namespace LooseLeaf.Tests.IntegrationTests
             {
                 IBookRepository bookRepo = new BookRepository(actContext);
 
-                await bookRepo.AddBook(fakeBook.Object);  // don't know what's wrong here
+                await bookRepo.AddBook(fakeBook.Object); 
                 await actContext.SaveChangesAsync();
             }
 
