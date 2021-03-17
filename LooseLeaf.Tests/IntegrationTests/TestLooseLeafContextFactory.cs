@@ -77,7 +77,6 @@ namespace LooseLeaf.Tests.IntegrationTests
                 await context.SaveChangesAsync();
             }
             await context.Users.AddAsync(new DataAccess.User() { Username = username, Userpassword = "password", Email = $"{username}@website.com", AddressId = 1 });
-            await context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -96,7 +95,6 @@ namespace LooseLeaf.Tests.IntegrationTests
             }
             long newIsbn = 9784567890123 + isbnsCreated;
             await context.Books.AddAsync(new DataAccess.Book() { Title = bookName, Author = authorName, Isbn = newIsbn, GenreId = 1 });
-            await context.SaveChangesAsync();
             isbnsCreated++;
             return newIsbn;
         }
@@ -104,7 +102,6 @@ namespace LooseLeaf.Tests.IntegrationTests
         public async Task CreateOwnedBook(LooseLeafContext context, int userId, int bookId)
         {
             await context.OwnedBooks.AddAsync(new DataAccess.OwnedBook() { UserId = userId, BookId = bookId, Condition = "New", AvailabilityStatusId = 1 });
-            await context.SaveChangesAsync();
         }
     }
 }

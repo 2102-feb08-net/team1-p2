@@ -37,7 +37,12 @@ namespace LooseLeaf.DataAccess.Repositories
             });
         }
 
-        public async Task RemoveBookFromUserWishlist(IUser user, IBook book) => throw new NotImplementedException();
+        public async Task RemoveBookFromUserWishlist(IUser user, IBook book)
+        {
+            var userData = await _context.Users.Where(u => u.Username == user.UserName).SingleAsync();
+            var bookData = await _context.Books.Include(b => b.Wishlists).Where(b => b.Isbn == book.Isbn).SingleAsync();
+            _context.Wishlists.RemoveRange(bookData.Wishlists);
+        }
 
         private IBook ConvertToIBook(Book book)
         {

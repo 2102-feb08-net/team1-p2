@@ -38,6 +38,7 @@ namespace LooseLeaf.Tests.IntegrationTests
                 await contextFactory.CreateUser(arrangeContext, BORROWER_USERNAME);
                 await contextFactory.CreateBook(arrangeContext, "Book 1", "Author 1");
                 await contextFactory.CreateOwnedBook(arrangeContext, 1, 1);
+                await arrangeContext.SaveChangesAsync();
             }
 
             Mock<IUser> lender = new Mock<IUser>();

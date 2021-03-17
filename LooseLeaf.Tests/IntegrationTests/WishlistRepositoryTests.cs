@@ -34,14 +34,11 @@ namespace LooseLeaf.Tests.IntegrationTests
             using (LooseLeafContext addContext = contextFactory.CreateContext())
             {
                 await contextFactory.CreateUser(addContext, username);
-                await addContext.Genres.AddAsync(new DataAccess.Genre() { GenreName = "Story" });
+                await contextFactory.CreateBook(addContext, "Book 1", "Author 1");
+                await contextFactory.CreateBook(addContext, "Book 2", "Author 2");
+                await contextFactory.CreateBook(addContext, "Book 3", "Author 3");
                 await addContext.SaveChangesAsync();
-                await addContext.Books.AddRangeAsync(new List<DataAccess.Book>{
-                    new DataAccess.Book() { Title = "Book 1", Author = "Author 1", Isbn = 1234567890123, GenreId = 1},
-                    new DataAccess.Book() { Title = "Book 2", Author = "Author 2", Isbn = 1235567890123, GenreId = 1},
-                    new DataAccess.Book() { Title = "Book 3", Author = "Author 3", Isbn = 1234777890123, GenreId = 1}
-                });
-                await addContext.SaveChangesAsync();
+
                 await addContext.Wishlists.AddRangeAsync(wishlists);
                 await addContext.SaveChangesAsync();
             }
@@ -57,7 +54,7 @@ namespace LooseLeaf.Tests.IntegrationTests
         }
 
         [Fact]
-        public async Task WishlistRepository_AddBookToWishlist()
+        public async Task WishlistRepository_AddBookToUserWishlist()
         {
             // arrange
             const string username = "user";
@@ -70,6 +67,7 @@ namespace LooseLeaf.Tests.IntegrationTests
             {
                 await contextFactory.CreateUser(arrangeContext, username);
                 isbn = await contextFactory.CreateBook(arrangeContext, bookName, authorName);
+                await arrangeContext.SaveChangesAsync();
             }
 
             Mock<IUser> fakeUser = new Mock<IUser>();
@@ -95,6 +93,50 @@ namespace LooseLeaf.Tests.IntegrationTests
                 Assert.Equal(username, wishlist.User.Username);
                 Assert.Equal(bookName, wishlist.Book.Title);
                 Assert.Equal(authorName, wishlist.Book.Author);
+            }
+        }
+
+        [Fact]
+        public async Task WishlistRepository_RemoveBookFromUserWishlist()
+        {
+            // arrange
+            const string username = "user";
+            const string bookName = "Test Book";
+            const string authorName = "The Author";
+            long isbn;
+            int originalWishlistCount;
+
+            using var contextFactory = new TestLooseLeafContextFactory();
+            using (LooseLeafContext arrangeContext = contextFactory.CreateContext())
+            {
+                await contextFactory.CreateUser(arrangeContext, username);
+                isbn = await contextFactory.CreateBook(arrangeContext, bookName, authorName);
+                await arrangeContext.Wishlists.AddAsync(new DataAccess.Wishlist() { UserId = 1, BookId = 1 });
+                await arrangeContext.SaveChangesAsync();
+            }
+
+            Mock<IUser> fakeUser = new Mock<IUser>();
+            fakeUser.Setup(u => u.UserName).Returns(username);
+
+            Mock<IBook> fakeBook = new Mock<IBook>();
+            fakeBook.Setup(b => b.Title).Returns(bookName);
+            fakeBook.Setup(b => b.Author).Returns(authorName);
+            fakeBook.Setup(b => b.Isbn).Returns(isbn);
+
+            // act
+            using (LooseLeafContext actContext = contextFactory.CreateContext())
+            {
+                IWishlistRepository wishlistRepository = new WishlistRepository(actContext);
+                originalWishlistCount = actContext.Wishlists.Count();
+                await wishlistRepository.RemoveBookFromUserWishlist(fakeUser.Object, fakeBook.Object);
+                await actContext.SaveChangesAsync();
+            }
+
+            // assert
+            using (LooseLeafContext assertContext = contextFactory.CreateContext())
+            {
+                Assert.Equal(0, assertContext.Wishlists.Count());
+                Assert.Equal(1, originalWishlistCount);
             }
         }
     }
