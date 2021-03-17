@@ -57,12 +57,16 @@ namespace LooseLeaf.Tests.IntegrationTests
         public async Task WishlistRepository_AddBookToUserWishlist()
         {
             // arrange
+
+            //Constants to compare user and book with test results.
             const string username = "user";
             const string bookName = "Test Book";
             const string authorName = "The Author";
             long isbn;
 
             using var contextFactory = new TestLooseLeafContextFactory();
+
+            // Add in foreign key / required database data. Wishlist requires a user and a book type to exist in the database.
             using (LooseLeafContext arrangeContext = contextFactory.CreateContext())
             {
                 await contextFactory.CreateUser(arrangeContext, username);
@@ -70,9 +74,11 @@ namespace LooseLeaf.Tests.IntegrationTests
                 await arrangeContext.SaveChangesAsync();
             }
 
+            // Create User object
             Mock<IUser> fakeUser = new Mock<IUser>();
             fakeUser.Setup(u => u.UserName).Returns(username);
 
+            // Create Book object
             Mock<IBook> fakeBook = new Mock<IBook>();
             fakeBook.Setup(b => b.Title).Returns(bookName);
             fakeBook.Setup(b => b.Author).Returns(authorName);
@@ -81,15 +87,21 @@ namespace LooseLeaf.Tests.IntegrationTests
             // act
             using (LooseLeafContext actContext = contextFactory.CreateContext())
             {
+                // Create Repository
                 IWishlistRepository wishlistRepository = new WishlistRepository(actContext);
+
+                // Test repository method
                 await wishlistRepository.AddBookToUserWishlist(fakeUser.Object, fakeBook.Object);
                 await actContext.SaveChangesAsync();
             }
 
             // assert
+            // Create a new context to ensure that data was saved to database.
             using (LooseLeafContext assertContext = contextFactory.CreateContext())
             {
                 var wishlist = await assertContext.Wishlists.Include(w => w.User).Include(w => w.Book).SingleAsync();
+
+                // assert that the book and user are the same as one added to the wishlist.
                 Assert.Equal(username, wishlist.User.Username);
                 Assert.Equal(bookName, wishlist.Book.Title);
                 Assert.Equal(authorName, wishlist.Book.Author);
