@@ -13,11 +13,15 @@ namespace LooseLeaf.Business.Models
 
         string Message { get; }
 
-        DateTimeOffset PickUpDate { get; }
+        DateTimeOffset DropoffDate { get; }
 
         DateTimeOffset ReturnDate { get; }
 
         IAddress ExchangeLocation { get; }
+
+        LoanStatus Status { get; }
+
+        bool IsPublic { get; }
 
         List<IOwnedBook> LoanedBooks { get; }
     }

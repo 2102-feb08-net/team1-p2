@@ -33,7 +33,7 @@ namespace LooseLeaf.DataAccess.Repositories
 
         private IBook ConvertToIBook(Book book)
         {
-            return new Business.Models.Book(book.Title, book.Author, book.Isbn, book.Genreid);
+            return new Business.Models.Book(book.Title, book.Author, book.Isbn, book.GenreId);
         }
     }
 }

@@ -14,13 +14,17 @@ namespace LooseLeaf.Business.Models
 
         public string Message { get; }
 
-        public DateTimeOffset PickUpDate { get; }
+        public DateTimeOffset DropoffDate { get; }
 
         public DateTimeOffset ReturnDate { get; }
 
         public IAddress ExchangeLocation { get; }
 
         public List<IOwnedBook> LoanedBooks { get; }
+
+        public LoanStatus Status { get; }
+
+        public bool IsPublic { get; }
 
         public Loan(IUser lender, IUser borrower, string message, DateTimeOffset pickUpDate, DateTimeOffset returnDate, IAddress address, List<IOwnedBook> loanedBooks)
         {
@@ -44,10 +48,12 @@ namespace LooseLeaf.Business.Models
             Lender = lender;
             Borrower = borrower;
             Message = message;
-            PickUpDate = pickUpDate;
+            DropoffDate = pickUpDate;
             ReturnDate = returnDate;
             ExchangeLocation = address;
             LoanedBooks = loanedBooks;
+            Status = LoanStatus.Requested;
+            IsPublic = true;
         }
     }
 }

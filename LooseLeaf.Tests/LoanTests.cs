@@ -181,7 +181,7 @@ namespace LooseLeaf.Tests
             ILoan loan = new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books);
 
             // assert
-            Assert.Equal(pickupTime, loan.PickUpDate);
+            Assert.Equal(pickupTime, loan.DropoffDate);
         }
 
         [Fact]

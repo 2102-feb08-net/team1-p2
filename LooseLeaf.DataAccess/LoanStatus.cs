@@ -13,7 +13,7 @@ namespace LooseLeaf.DataAccess
         }
 
         public int Id { get; set; }
-        public string LoanStatus1 { get; set; }
+        public string StatusName { get; set; }
 
         public virtual ICollection<Loan> Loans { get; set; }
     }

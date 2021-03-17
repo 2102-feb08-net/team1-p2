@@ -10,7 +10,6 @@ namespace LooseLeaf.DataAccess
         public OwnedBook()
         {
             LoanedBooks = new HashSet<LoanedBook>();
-            Loans = new HashSet<Loan>();
         }
 
         public int Id { get; set; }
@@ -23,6 +22,5 @@ namespace LooseLeaf.DataAccess
         public virtual Book Book { get; set; }
         public virtual User User { get; set; }
         public virtual ICollection<LoanedBook> LoanedBooks { get; set; }
-        public virtual ICollection<Loan> Loans { get; set; }
     }
 }

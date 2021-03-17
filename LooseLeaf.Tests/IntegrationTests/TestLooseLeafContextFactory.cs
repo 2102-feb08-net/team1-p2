@@ -15,6 +15,8 @@ namespace LooseLeaf.Tests.IntegrationTests
         private DbConnection _conn;
         private bool _disposedValue;
 
+        private int isbnsCreated = 0;
+
         private DbContextOptions<LooseLeafContext> CreateOptions()
         {
             return new DbContextOptionsBuilder<LooseLeafContext>().UseSqlite(_conn).Options;
@@ -28,11 +30,15 @@ namespace LooseLeaf.Tests.IntegrationTests
                 _conn.Open();
 
                 DbContextOptions<LooseLeafContext> options = CreateOptions();
-                using var context = new LooseLeafContext(options);
-                context.Database.EnsureCreated();
+                using var tempContext = new LooseLeafContext(options);
+                tempContext.Database.EnsureCreated();
             }
 
-            return new LooseLeafContext(CreateOptions());
+            var context = new LooseLeafContext(CreateOptions());
+
+            CreateEnumData(context);
+
+            return context;
         }
 
         protected virtual void Dispose(bool disposing)
@@ -52,6 +58,44 @@ namespace LooseLeaf.Tests.IntegrationTests
         {
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
+        }
+
+        private void CreateEnumData(LooseLeafContext context)
+        {
+            foreach (string name in Enum.GetNames(typeof(Business.Models.LoanStatus)))
+                context.LoanStatuses.Add(new LoanStatus() { StatusName = name });
+
+            foreach (string name in Enum.GetNames(typeof(Business.Models.AvailabilityStatus)))
+                context.AvailabilityStatuses.Add(new AvailabilityStatus() { StatusName = name });
+        }
+
+        public async Task CreateUser(LooseLeafContext context, string username)
+        {
+            if (context.Addresses.Count() == 0)
+            {
+                await context.Addresses.AddAsync(new DataAccess.Address() { Address1 = "Street 1", City = "City", State = "State", Zipcode = "123456" });
+                await context.SaveChangesAsync();
+            }
+            await context.Users.AddAsync(new DataAccess.User() { Username = username, Userpassword = "password", Email = $"{username}@website.com", AddressId = 1 });
+            await context.SaveChangesAsync();
+        }
+
+        public async Task CreateBook(LooseLeafContext context, string bookName, string authorName)
+        {
+            if (context.Genres.Count() == 0)
+            {
+                await context.Genres.AddAsync(new DataAccess.Genre() { GenreName = "Story" });
+                await context.SaveChangesAsync();
+            }
+            await context.Books.AddAsync(new DataAccess.Book() { Title = bookName, Author = authorName, Isbn = 1234567890123 + isbnsCreated, GenreId = 1 });
+            await context.SaveChangesAsync();
+            isbnsCreated++;
+        }
+
+        public async Task CreateOwnedBook(LooseLeafContext context, int userId, int bookId)
+        {
+            await context.OwnedBooks.AddAsync(new DataAccess.OwnedBook() { UserId = userId, BookId = bookId, Condition = "New", AvailabilityStatusId = 1 });
+            await context.SaveChangesAsync();
         }
     }
 }

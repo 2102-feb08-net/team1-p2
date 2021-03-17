@@ -7,6 +7,7 @@ using Xunit;
 using LooseLeaf.Business.Models;
 using Moq;
 using LooseLeaf.DataAccess;
+using LooseLeaf.DataAccess.Repositories;
 
 namespace LooseLeaf.Tests.IntegrationTests
 {
@@ -27,32 +28,48 @@ namespace LooseLeaf.Tests.IntegrationTests
         public async Task Loans_AddLoan()
         {
             // arrange
+            const string LENDER_USERNAME = "lender";
+            const string BORROWER_USERNAME = "borrower";
+            ILoan loan;
             using var contextFactory = new TestLooseLeafContextFactory();
-            using LooseLeafContext context = contextFactory.CreateContext();
+            using (LooseLeafContext arrangeContext = contextFactory.CreateContext())
+            {
+                await contextFactory.CreateUser(arrangeContext, LENDER_USERNAME);
+                await contextFactory.CreateUser(arrangeContext, BORROWER_USERNAME);
+                await contextFactory.CreateBook(arrangeContext, "Book 1", "Author 1");
+                await contextFactory.CreateOwnedBook(arrangeContext, 1, 1);
+            }
 
-            IUser lender = new Mock<IUser>().Object;
-            IUser borrower = new Mock<IUser>().Object;
+            Mock<IUser> lender = new Mock<IUser>();
+            lender.Setup(l => l.UserName).Returns(LENDER_USERNAME);
+
+            Mock<IUser> borrower = new Mock<IUser>();
+            borrower.Setup(b => b.UserName).Returns(BORROWER_USERNAME);
+
             IAddress fakeAddress = new Mock<IAddress>().Object;
             var fakeBook = new Mock<IOwnedBook>();
-            fakeBook.Setup(b => b.Owner).Returns(lender);
+            fakeBook.Setup(b => b.Owner).Returns(lender.Object);
+            fakeBook.Setup(b => b.Id).Returns(1);
+            fakeBook.Setup(b => b.Availability).Returns(Availability.Available);
 
             var ownedBooks = new List<IOwnedBook>()
             {
                 fakeBook.Object
             };
 
-            var loans = new List<ILoan>()
-            {
-                new Business.Models.Loan(lender,borrower, "Hello", new DateTime(2000,1,2), new DateTime(2000,1,4), fakeAddress, ownedBooks)
-            };
+            loan = new Business.Models.Loan(lender.Object, borrower.Object, "Hello", new DateTime(2000, 1, 2), new DateTime(2000, 1, 4), fakeAddress, ownedBooks);
 
             // act
-            // TODO: Add Loan Repository call
-
-            await context.SaveChangesAsync();
+            using (LooseLeafContext context = contextFactory.CreateContext())
+            {
+                LoanRepository loanRepository = new LoanRepository(context);
+                await loanRepository.AddLoanAsync(loan);
+                await context.SaveChangesAsync();
+            }
 
             //assert
-            Assert.Equal(loans.Count, context.Loans.Count());
+            using var assertContext = contextFactory.CreateContext();
+            Assert.Equal(1, assertContext.Loans.Count());
         }
 
         // get loan by id

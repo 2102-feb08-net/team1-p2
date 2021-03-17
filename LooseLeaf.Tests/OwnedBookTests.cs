@@ -7,6 +7,8 @@ namespace LooseLeaf.Tests
 {
     public class OwnedBookTests
     {
+        private int id = 1;
+
         [Fact]
         public void OwnedBook_Construct_Pass()
         {
@@ -17,7 +19,7 @@ namespace LooseLeaf.Tests
             Availability availability = Availability.Available;
 
             // act
-            IOwnedBook ownedBook = new OwnedBook(book, user, condition, availability);
+            IOwnedBook ownedBook = new OwnedBook(id, book, user, condition, availability);
 
             // assert
             Assert.NotNull(ownedBook);
@@ -32,7 +34,7 @@ namespace LooseLeaf.Tests
             Availability availability = Availability.Available;
 
             // act
-            IOwnedBook constructOwnedBook() => new OwnedBook(null, user, condition, availability);
+            IOwnedBook constructOwnedBook() => new OwnedBook(id, null, user, condition, availability);
 
             // assert
             Assert.Throws<ArgumentNullException>(constructOwnedBook);
@@ -47,7 +49,7 @@ namespace LooseLeaf.Tests
             Availability availability = Availability.Available;
 
             // act
-            IOwnedBook constructOwnedBook() => new OwnedBook(book, null, condition, availability);
+            IOwnedBook constructOwnedBook() => new OwnedBook(id, book, null, condition, availability);
 
             // assert
             Assert.Throws<ArgumentNullException>(constructOwnedBook);
@@ -64,7 +66,7 @@ namespace LooseLeaf.Tests
             Availability availability = Availability.Available;
 
             // act
-            IOwnedBook constructOwnedBook() => new OwnedBook(book, user, (PhysicalCondition)condition, availability);
+            IOwnedBook constructOwnedBook() => new OwnedBook(id, book, user, (PhysicalCondition)condition, availability);
 
             // assert
             Assert.Throws<ArgumentException>(constructOwnedBook);
@@ -81,7 +83,7 @@ namespace LooseLeaf.Tests
             PhysicalCondition condition = PhysicalCondition.LikeNew;
 
             // act
-            IOwnedBook constructOwnedBook() => new OwnedBook(book, user, condition, (Availability)availability);
+            IOwnedBook constructOwnedBook() => new OwnedBook(id, book, user, condition, (Availability)availability);
 
             // assert
             Assert.Throws<ArgumentException>(constructOwnedBook);
@@ -97,7 +99,7 @@ namespace LooseLeaf.Tests
             Availability availability = Availability.Available;
 
             // act
-            IOwnedBook ownedBook = new OwnedBook(book, user, condition, availability);
+            IOwnedBook ownedBook = new OwnedBook(id, book, user, condition, availability);
 
             // assert
             Assert.Equal(book, ownedBook.Book);
@@ -113,7 +115,7 @@ namespace LooseLeaf.Tests
             Availability availability = Availability.Available;
 
             // act
-            IOwnedBook ownedBook = new OwnedBook(book, user, condition, availability);
+            IOwnedBook ownedBook = new OwnedBook(id, book, user, condition, availability);
 
             // assert
             Assert.Equal(user, ownedBook.Owner);
@@ -129,7 +131,7 @@ namespace LooseLeaf.Tests
             Availability availability = Availability.Available;
 
             // act
-            IOwnedBook ownedBook = new OwnedBook(book, user, condition, availability);
+            IOwnedBook ownedBook = new OwnedBook(id, book, user, condition, availability);
 
             // assert
             Assert.Equal(condition, ownedBook.Condition);
@@ -145,10 +147,26 @@ namespace LooseLeaf.Tests
             Availability availability = Availability.Available;
 
             // act
-            IOwnedBook ownedBook = new OwnedBook(book, user, condition, availability);
+            IOwnedBook ownedBook = new OwnedBook(id, book, user, condition, availability);
 
             // assert
             Assert.Equal(availability, ownedBook.Availability);
+        }
+
+        [Fact]
+        public void OwnedBook_GetId()
+        {
+            // arrange
+            IBook book = new Mock<IBook>().Object;
+            IUser user = new Mock<IUser>().Object;
+            PhysicalCondition condition = PhysicalCondition.LikeNew;
+            Availability availability = Availability.Available;
+
+            // act
+            IOwnedBook ownedBook = new OwnedBook(id, book, user, condition, availability);
+
+            // assert
+            Assert.Equal(id, ownedBook.Id);
         }
     }
 }

@@ -32,9 +32,7 @@ namespace LooseLeaf.Tests.IntegrationTests
 
             using (LooseLeafContext addContext = contextFactory.CreateContext())
             {
-                await addContext.Addresses.AddAsync(new DataAccess.Address() { Address1 = "Street 1", City = "City", State = "State", Zipcode = "123456" });
-                await addContext.SaveChangesAsync();
-                await addContext.Users.AddAsync(new DataAccess.User() { Username = username, Userpassword = "password", Email = "user@website.com", AddressId = 1 });
+                await contextFactory.CreateUser(addContext, username);
                 await addContext.Genres.AddAsync(new DataAccess.Genre() { GenreName = "Story" });
                 await addContext.SaveChangesAsync();
                 await addContext.Books.AddRangeAsync(new List<DataAccess.Book>{

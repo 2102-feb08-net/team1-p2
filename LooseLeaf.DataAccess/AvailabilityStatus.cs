@@ -13,7 +13,7 @@ namespace LooseLeaf.DataAccess
         }
 
         public int Id { get; set; }
-        public string AvailabilityStatus1 { get; set; }
+        public string StatusName { get; set; }
 
         public virtual ICollection<OwnedBook> OwnedBooks { get; set; }
     }

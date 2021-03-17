@@ -16,8 +16,12 @@ namespace LooseLeaf.Business.Models
 
         public Availability Availability { get; }
 
-        public OwnedBook(IBook book, IUser owner, PhysicalCondition condition, Availability availability)
+        public int Id { get; }
+
+        public OwnedBook(int id, IBook book, IUser owner, PhysicalCondition condition, Availability availability)
         {
+            if (id <= 0)
+                throw new ArgumentException("ID must be greater than or equal to one.");
             if (book is null)
                 throw new ArgumentNullException(nameof(book));
             if (owner is null)
@@ -34,6 +38,8 @@ namespace LooseLeaf.Business.Models
             Condition = condition;
 
             Availability = availability;
+
+            Id = id;
         }
     }
 }

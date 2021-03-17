@@ -15,5 +15,7 @@ namespace LooseLeaf.Business.Models
         PhysicalCondition Condition { get; }
 
         Availability Availability { get; }
+
+        int Id { get; }
     }
 }
