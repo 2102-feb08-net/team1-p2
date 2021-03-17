@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LooseLeaf.Business.Models;
 
-namespace LooseLeaf.Business
+namespace LooseLeaf.Business.IRepositories
 {
     public interface IUserRepository
     {
