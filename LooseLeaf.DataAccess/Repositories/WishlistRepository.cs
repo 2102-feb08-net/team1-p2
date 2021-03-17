@@ -48,5 +48,7 @@ namespace LooseLeaf.DataAccess.Repositories
         {
             return new Business.Models.Book(book.Title, book.Author, book.Isbn, book.GenreId);
         }
+
+        public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
     }
 }

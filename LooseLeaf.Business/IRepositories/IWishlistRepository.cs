@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LooseLeaf.Business.IRepositories
 {
-    public interface IWishlistRepository
+    public interface IWishlistRepository : IRepository
     {
         Task<IEnumerable<IBook>> GetUserWishlist(IUser user);
 

@@ -1,4 +1,4 @@
-﻿using LooseLeaf.Business;
+﻿using LooseLeaf.Business.IRepositories;
 using LooseLeaf.Business.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -27,6 +27,8 @@ namespace LooseLeaf.DataAccess.Repositories
             var book = await _context.Books.Where(b => b.Id == bookId).SingleAsync();
             return new Business.Models.Book(book.Id, book.Title, book.Author, book.Isbn, book.GenreId);
         }
+
+        public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
 
         public async Task UpdateBook(int bookId) => throw new NotImplementedException();
     }

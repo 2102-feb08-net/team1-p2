@@ -7,7 +7,7 @@ using LooseLeaf.Business.Models;
 
 namespace LooseLeaf.Business.IRepositories
 {
-    public interface IUserRepository
+    public interface IUserRepository : IRepository
     {
         // get user by id
         Task<IUser> GetUserAsync(int userid);

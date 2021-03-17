@@ -7,7 +7,7 @@ using LooseLeaf.Business.Models;
 
 namespace LooseLeaf.Business.IRepositories
 {
-    public interface ILoanRepository
+    public interface ILoanRepository : IRepository
     {
         Task AddLoanAsync(ILoan loan);
     }

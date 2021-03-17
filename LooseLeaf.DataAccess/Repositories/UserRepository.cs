@@ -63,5 +63,7 @@ namespace LooseLeaf.DataAccess.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
     }
 }
