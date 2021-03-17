@@ -90,13 +90,19 @@ namespace LooseLeaf.Tests.IntegrationTests
         {
             if (context.Genres.Count() == 0)
             {
-                await context.Genres.AddAsync(new DataAccess.Genre() { GenreName = "Story" });
+                await CreateGenre(context);
                 await context.SaveChangesAsync();
             }
             long newIsbn = 9784567890123 + isbnsCreated;
             await context.Books.AddAsync(new DataAccess.Book() { Title = bookName, Author = authorName, Isbn = newIsbn, GenreId = 1 });
             isbnsCreated++;
             return newIsbn;
+        }
+
+        public async Task CreateGenre(LooseLeafContext context)
+        {
+            int id = context.Genres.Count() + 1;
+            await context.Genres.AddAsync(new DataAccess.Genre() { GenreName = "Story " + id });
         }
 
         public async Task CreateOwnedBook(LooseLeafContext context, int userId, int bookId)

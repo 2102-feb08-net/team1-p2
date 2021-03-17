@@ -51,32 +51,32 @@ namespace LooseLeaf.Tests.IntegrationTests
             Assert.Equal(insertedBook.GenreId, book.GenreId);
         }
 
-
         [Fact]
         public async Task AddBook()
         {
             // arrange
             const string title = "Gone with the Vend";
             const string author = "Beyonce";
-            long isbn;
+            const long isbn = 9781234567890;
 
             using var contextFactory = new TestLooseLeafContextFactory();
             using (LooseLeafContext arrangeContext = contextFactory.CreateContext())
             {
-                isbn = await contextFactory.CreateBook(arrangeContext, title, author);              
+                await contextFactory.CreateGenre(arrangeContext);
                 await arrangeContext.SaveChangesAsync();
             }
 
             Mock<IBook> fakeBook = new Mock<IBook>();
             fakeBook.Setup(x => x.Title).Returns(title);
             fakeBook.Setup(x => x.Author).Returns(author);
+            fakeBook.Setup(x => x.GenreId).Returns(1);
             fakeBook.Setup(x => x.Isbn).Returns(isbn);
 
             using (LooseLeafContext actContext = contextFactory.CreateContext())
             {
                 IBookRepository bookRepo = new BookRepository(actContext);
 
-                await bookRepo.AddBook(fakeBook.Object); 
+                await bookRepo.AddBook(fakeBook.Object);
                 await actContext.SaveChangesAsync();
             }
 
@@ -86,6 +86,7 @@ namespace LooseLeaf.Tests.IntegrationTests
 
                 Assert.Equal(title, book.Title);
                 Assert.Equal(author, book.Author);
+                Assert.Equal(isbn, book.Isbn);
             }
         }
     }
