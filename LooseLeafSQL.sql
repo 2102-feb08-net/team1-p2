@@ -21,9 +21,9 @@ CREATE TABLE Addresses(
 CREATE TABLE Users(
 	id INT NOT NULL PRIMARY KEY IDENTITY,
 	addressId INT NOT NULL FOREIGN KEY REFERENCES Addresses(id),
-	username NVARCHAR(255) NOT NULL,
+	username NVARCHAR(255) NOT NULL UNIQUE,
 	userpassword NVARCHAR(255) NOT NULL,
-	email NVARCHAR(255) NOT NULL,
+	email NVARCHAR(255) NOT NULL UNIQUE,
 )
 
 CREATE TABLE Genre(
@@ -41,12 +41,12 @@ CREATE TABLE Books(
 
 CREATE TABLE Loan_Status(
 	id INT PRIMARY KEY IDENTITY NOT NULL,
-	loanStatus NVARCHAR(255) NOT NULL,
+	statusName NVARCHAR(255) NOT NULL,
 )
 
 CREATE TABLE Availability_Status(
 	id INT PRIMARY KEY IDENTITY NOT NULL,
-	availabilityStatus NVARCHAR(255) NOT NULL,
+	statusName NVARCHAR(255) NOT NULL,
 )
 
 CREATE TABLE Owned_Books(
@@ -61,19 +61,18 @@ CREATE TABLE Loans(
 	id INT PRIMARY KEY IDENTITY NOT NULL,
 	lenderId INT NOT NULL FOREIGN KEY REFERENCES Users(id),
 	borrowerId INT NOT NULL FOREIGN KEY REFERENCES Users(id),
-	owned_bookid INT NOT NULL FOREIGN KEY REFERENCES Owned_Books(id),
 	message  NTEXT NOT NULL,
 	loanStatusId INT NOT NULL FOREIGN KEY REFERENCES Loan_Status(id),
 	isPublic BIT NOT NULL,
-	dropoffDate DATETIME NOT NULL, 
-	returnedDate DATETIME NOT NULL, 
+	dropoffDate DATETIMEOFFSET NOT NULL, 
+	returnedDate DATETIMEOFFSET NOT NULL, 
 	isRecommended BIT NOT NULL,
 )
 
 CREATE TABLE Loaned_Books(
 	id INT PRIMARY KEY IDENTITY NOT NULL,
-	owned_bookid INT NOT NULL FOREIGN KEY REFERENCES Owned_Books(id),
-	loanid INT NOT NULL FOREIGN KEY REFERENCES Loans(id),
+	ownedBookid INT NOT NULL FOREIGN KEY REFERENCES Owned_Books(id),
+	loanId INT NOT NULL FOREIGN KEY REFERENCES Loans(id),
 )
 
 CREATE TABLE Wishlist(
@@ -81,8 +80,6 @@ CREATE TABLE Wishlist(
 	userId INT NOT NULL FOREIGN KEY REFERENCES Users(id),
 	bookId INT NOT NULL FOREIGN KEY REFERENCES Books(id)
 )
-
-
 
 INSERT INTO Genre (genreName) VALUES
 	('Action and Adventure'),
@@ -140,13 +137,13 @@ INSERT INTO addresses (address1, address2, city, state, zipcode) VALUES
 	('1309 Weifang Street', null, 'Dallas', 'Texas', 11067),
 	('1944 Bamenda Way', null, 'Dallas', 'Texas', 11067);
 
-INSERT INTO Availability_Status (availabilityStatus) VALUES
+INSERT INTO Availability_Status (statusName) VALUES
 	('Available'),
 	('Checked Out'),
 	('In Process'),
 	('Unknown');
 
-INSERT INTO Loan_Status (loanStatus) VALUES
+INSERT INTO Loan_Status (statusName) VALUES
 	('Requested'),
 	('Approved'),
 	('Denied');
