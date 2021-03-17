@@ -27,7 +27,15 @@ namespace LooseLeaf.DataAccess.Repositories
             return books.Select(b => ConvertToIBook(b));
         }
 
-        public async Task AddBookToUserWishlist(IUser user, IBook book) => throw new NotImplementedException();
+        public async Task AddBookToUserWishlist(IUser user, IBook book)
+        {
+            var userData = await _context.Users.Where(u => u.Username == user.UserName).SingleAsync();
+            var bookData = await _context.Books.Include(b => b.Wishlists).Where(b => b.Isbn == book.Isbn).SingleAsync();
+            bookData.Wishlists.Add(new Wishlist()
+            {
+                UserId = userData.Id
+            });
+        }
 
         public async Task RemoveBookFromUserWishlist(IUser user, IBook book) => throw new NotImplementedException();
 

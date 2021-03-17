@@ -9,6 +9,7 @@ using LooseLeaf.DataAccess;
 using LooseLeaf.Business.IRepositories;
 using LooseLeaf.DataAccess.Repositories;
 using LooseLeaf.Business.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LooseLeaf.Tests.IntegrationTests
 {
@@ -53,6 +54,48 @@ namespace LooseLeaf.Tests.IntegrationTests
 
             // assert
             Assert.Equal(wishlists.Count, books.Count());
+        }
+
+        [Fact]
+        public async Task WishlistRepository_AddBookToWishlist()
+        {
+            // arrange
+            const string username = "user";
+            const string bookName = "Test Book";
+            const string authorName = "The Author";
+            long isbn;
+
+            using var contextFactory = new TestLooseLeafContextFactory();
+            using (LooseLeafContext arrangeContext = contextFactory.CreateContext())
+            {
+                await contextFactory.CreateUser(arrangeContext, username);
+                isbn = await contextFactory.CreateBook(arrangeContext, bookName, authorName);
+            }
+
+            Mock<IUser> fakeUser = new Mock<IUser>();
+            fakeUser.Setup(u => u.UserName).Returns(username);
+
+            Mock<IBook> fakeBook = new Mock<IBook>();
+            fakeBook.Setup(b => b.Title).Returns(bookName);
+            fakeBook.Setup(b => b.Author).Returns(authorName);
+            fakeBook.Setup(b => b.Isbn).Returns(isbn);
+
+            // act
+            using (LooseLeafContext actContext = contextFactory.CreateContext())
+            {
+                IWishlistRepository wishlistRepository = new WishlistRepository(actContext);
+                await wishlistRepository.AddBookToUserWishlist(fakeUser.Object, fakeBook.Object);
+                await actContext.SaveChangesAsync();
+            }
+
+            // assert
+            using (LooseLeafContext assertContext = contextFactory.CreateContext())
+            {
+                var wishlist = await assertContext.Wishlists.Include(w => w.User).Include(w => w.Book).SingleAsync();
+                Assert.Equal(username, wishlist.User.Username);
+                Assert.Equal(bookName, wishlist.Book.Title);
+                Assert.Equal(authorName, wishlist.Book.Author);
+            }
         }
     }
 }

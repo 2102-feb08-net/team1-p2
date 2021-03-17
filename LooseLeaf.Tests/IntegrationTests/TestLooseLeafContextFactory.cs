@@ -80,16 +80,25 @@ namespace LooseLeaf.Tests.IntegrationTests
             await context.SaveChangesAsync();
         }
 
-        public async Task CreateBook(LooseLeafContext context, string bookName, string authorName)
+        /// <summary>
+        /// Creates a new book along with a genre if one doesn't exist.
+        /// </summary>
+        /// <param name="context">The DBContext</param>
+        /// <param name="bookName">The name of the book</param>
+        /// <param name="authorName">The name of the author</param>
+        /// <returns>Returns the ISBN of the book.</returns>
+        public async Task<long> CreateBook(LooseLeafContext context, string bookName, string authorName)
         {
             if (context.Genres.Count() == 0)
             {
                 await context.Genres.AddAsync(new DataAccess.Genre() { GenreName = "Story" });
                 await context.SaveChangesAsync();
             }
-            await context.Books.AddAsync(new DataAccess.Book() { Title = bookName, Author = authorName, Isbn = 1234567890123 + isbnsCreated, GenreId = 1 });
+            long newIsbn = 9784567890123 + isbnsCreated;
+            await context.Books.AddAsync(new DataAccess.Book() { Title = bookName, Author = authorName, Isbn = newIsbn, GenreId = 1 });
             await context.SaveChangesAsync();
             isbnsCreated++;
+            return newIsbn;
         }
 
         public async Task CreateOwnedBook(LooseLeafContext context, int userId, int bookId)
