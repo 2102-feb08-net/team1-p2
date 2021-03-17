@@ -9,6 +9,6 @@ namespace LooseLeaf.Business.IRepositories
 {
     public interface IOwnedBookRepository : IRepository
     {
-        Task AddOwnedBookAsync(IUser user, IOwnedBook ownedBook);
+        Task AddOwnedBookAsync(IOwnedBook ownedBook);
     }
 }
