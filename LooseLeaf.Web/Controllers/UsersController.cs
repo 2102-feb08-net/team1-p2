@@ -25,7 +25,7 @@ namespace LooseLeaf.Web.Controllers
         }
 
         [HttpPost("api/users")]
-        public async Task<IActionResult> AddNewUser(InterfaceModels.User user)
+        public async Task<IActionResult> AddNewUser(DTOs.User user)
         {
             throw new NotImplementedException();
         }
@@ -55,7 +55,7 @@ namespace LooseLeaf.Web.Controllers
         }
 
         [HttpPost("api/users/{userId}/books")]
-        public async Task<IActionResult> AddUserOwnedBooks(List<InterfaceModels.Book> books)
+        public async Task<IActionResult> AddUserOwnedBooks(List<DTOs.Book> books)
         {
             throw new NotImplementedException();
         }
@@ -73,7 +73,7 @@ namespace LooseLeaf.Web.Controllers
         }
 
         [HttpPost("api/users/{userId}/wishlist")]
-        public async Task<IActionResult> AddBooksToUserWishlist(int userId, List<InterfaceModels.Book> books)
+        public async Task<IActionResult> AddBooksToUserWishlist(int userId, List<DTOs.Book> books)
         {
             throw new NotImplementedException();
         }
