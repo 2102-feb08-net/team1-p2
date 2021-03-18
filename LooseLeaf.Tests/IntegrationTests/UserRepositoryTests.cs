@@ -51,11 +51,7 @@ namespace LooseLeaf.Tests.IntegrationTests
             Assert.True(assertContext.Users.Single() != null);
         }
 
-
-
-
-
-               [Fact]
+        [Fact]
         public async Task UserRepository_GetUserAsync()
         {
             // arrange
@@ -65,15 +61,12 @@ namespace LooseLeaf.Tests.IntegrationTests
                 Userpassword = "password",
                 Email = "damion.silver@gmail.com",
                 AddressId = 1
-              
-
-        
             };
 
             using var contextFactory = new TestLooseLeafContextFactory();
             using (LooseLeafContext arrangeContext = contextFactory.CreateContext())
             {
-               await contextFactory.CreateAddress(arrangeContext);
+                await contextFactory.CreateAddress(arrangeContext);
                 arrangeContext.SaveChanges();
                 await arrangeContext.Users.AddAsync(insertedUser);
                 arrangeContext.SaveChanges();
@@ -88,6 +81,33 @@ namespace LooseLeaf.Tests.IntegrationTests
             // assert
             Assert.Equal(insertedUser.Username, user.UserName);
             Assert.Equal(insertedUser.Email, user.Email);
+        }
+
+        [Theory]
+        [InlineData(0)]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(10)]
+        public async Task UserRepository_GetAllUsersAsync(int numberOfUsersToCreate)
+        {
+            // arrange
+            using var contextFactory = new TestLooseLeafContextFactory();
+            using (LooseLeafContext arrangeContext = contextFactory.CreateContext())
+            {
+                for (int i = 0; i < numberOfUsersToCreate; i++)
+                    await contextFactory.CreateUser(arrangeContext, $"User {i + 1}");
+
+                arrangeContext.SaveChanges();
+            }
+
+            using var context = contextFactory.CreateContext();
+            var repo = new UserRepository(context);
+
+            // act
+            var users = await repo.GetAllUsersAsync();
+
+            // assert
+            Assert.Equal(numberOfUsersToCreate, users.Count());
         }
     }
 }

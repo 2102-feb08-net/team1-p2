@@ -51,7 +51,14 @@ namespace LooseLeaf.DataAccess.Repositories
 
         public async Task<IEnumerable<IUser>> GetAllUsersAsync()
         {
-            throw new NotImplementedException();
+            var userList = await _context.Users.Include(u => u.Address).Select(u =>
+            new Business.Models.User(
+                    u.Username,
+                    u.Email,
+                    new Business.Models.Address(u.Address.Address1, u.Address.Address2, u.Address.City, u.Address.State, u.Address.Country, u.Address.Zipcode),
+                    new Business.Models.Wishlist()
+                )).ToListAsync();
+            return userList;
         }
 
         public async Task<IEnumerable<IBook>> GetRecommendedBooksAsync(int userid)

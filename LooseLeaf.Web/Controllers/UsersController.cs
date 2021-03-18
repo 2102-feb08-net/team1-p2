@@ -25,7 +25,8 @@ namespace LooseLeaf.Web.Controllers
         [HttpGet("api/users")]
         public async Task<IActionResult> GetAllUsers()
         {
-            throw new NotImplementedException();
+            var users = await _usersRepo.GetAllUsersAsync();
+            return Ok(users);
         }
 
         [HttpPost("api/users")]
