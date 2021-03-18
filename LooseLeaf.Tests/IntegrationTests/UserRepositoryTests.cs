@@ -50,5 +50,44 @@ namespace LooseLeaf.Tests.IntegrationTests
             using var assertContext = contextFactory.CreateContext();
             Assert.True(assertContext.Users.Single() != null);
         }
+
+
+
+
+
+               [Fact]
+        public async Task UserRepository_GetUserAsync()
+        {
+            // arrange
+            var insertedUser = new DataAccess.User
+            {
+                Username = "damionsilver",
+                Userpassword = "password",
+                Email = "damion.silver@gmail.com",
+                AddressId = 1
+              
+
+        
+            };
+
+            using var contextFactory = new TestLooseLeafContextFactory();
+            using (LooseLeafContext arrangeContext = contextFactory.CreateContext())
+            {
+               await contextFactory.CreateAddress(arrangeContext);
+                arrangeContext.SaveChanges();
+                await arrangeContext.Users.AddAsync(insertedUser);
+                arrangeContext.SaveChanges();
+            }
+
+            using var context = contextFactory.CreateContext();
+            var repo = new UserRepository(context);
+
+            // act
+            IUser user = await repo.GetUserAsync(insertedUser.Id);
+
+            // assert
+            Assert.Equal(insertedUser.Username, user.UserName);
+            Assert.Equal(insertedUser.Email, user.Email);
+        }
     }
 }

@@ -61,7 +61,11 @@ namespace LooseLeaf.DataAccess.Repositories
 
         public async Task<IUser> GetUserAsync(int userid)
         {
-            throw new NotImplementedException();
+            var user = await _context.Users.Where(b => b.Id == userid).SingleAsync();
+            var useraddress = await _context.Addresses.Where(b => b.Id == user.AddressId).SingleAsync();
+            Business.Models.Address address = new Business.Models.Address(useraddress.Address1, useraddress.Address2, useraddress.City, useraddress.State);
+           
+            return new Business.Models.User(user.Username, user.Email, address,  user.Wishlists);
         }
 
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
