@@ -70,11 +70,17 @@ namespace LooseLeaf.Tests.IntegrationTests
                 context.ConditionStatuses.Add(new ConditionStatus() { StatusName = name });
         }
 
+        public async Task CreateAddress(LooseLeafContext context)
+        {
+            int id = context.Addresses.Count() + 1;
+            await context.Addresses.AddAsync(new DataAccess.Address() { Address1 = $"Street {id}", City = "City", State = "State", Zipcode = "123456" });
+        }
+
         public async Task CreateUser(LooseLeafContext context, string username = "username")
         {
             if (context.Addresses.Count() == 0)
             {
-                await context.Addresses.AddAsync(new DataAccess.Address() { Address1 = "Street 1", City = "City", State = "State", Zipcode = "123456" });
+                await CreateAddress(context);
                 await context.SaveChangesAsync();
             }
             await context.Users.AddAsync(new DataAccess.User() { Username = username, Userpassword = "password", Email = $"{username}@website.com", AddressId = 1 });
