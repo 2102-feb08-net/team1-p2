@@ -26,6 +26,11 @@ namespace LooseLeaf.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options => options.AddDefaultPolicy(config => config
+               .WithOrigins("http://localhost:4200")
+               .AllowAnyMethod()
+               .AllowAnyHeader()
+               .AllowCredentials()));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -47,6 +52,8 @@ namespace LooseLeaf.Web
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 
