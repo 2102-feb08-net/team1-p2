@@ -23,7 +23,7 @@ namespace LooseLeaf.Web.Controllers
         }
 
         [HttpPut("api/books/{bookId}")]
-        public async Task<IActionResult> UpdateBook(int bookId, InterfaceModels.Book book)
+        public async Task<IActionResult> UpdateBook(int bookId, DTOs.Book book)
         {
             throw new NotImplementedException();
         }

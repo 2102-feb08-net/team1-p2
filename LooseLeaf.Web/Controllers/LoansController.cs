@@ -17,7 +17,7 @@ namespace LooseLeaf.Web.Controllers
         }
 
         [HttpPost("api/loans")]
-        public async Task<IActionResult> SubmitLoanRequest(InterfaceModels.LoanRequest req)
+        public async Task<IActionResult> SubmitLoanRequest(DTOs.LoanRequest req)
         {
             throw new NotImplementedException();
         }
@@ -29,7 +29,7 @@ namespace LooseLeaf.Web.Controllers
         }
 
         [HttpPatch("api/loans/{loanId}")]
-        public async Task<IActionResult> UpdateLoanRequestStatus(int loanId, InterfaceModels.LoanRequest req)
+        public async Task<IActionResult> UpdateLoanRequestStatus(int loanId, DTOs.LoanRequest req)
         {
             throw new NotImplementedException();
         }
