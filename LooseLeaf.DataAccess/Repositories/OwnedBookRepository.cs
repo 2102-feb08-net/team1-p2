@@ -34,11 +34,13 @@ namespace LooseLeaf.DataAccess.Repositories
             await _context.OwnedBooks.AddAsync(ownedBookData);
         }
 
-        public async Task UpdateOwnedBookStatus(int ownedBookId, Availability availability, PhysicalCondition condition)
+        public async Task UpdateOwnedBookStatus(int ownedBookId, Availability? availability, PhysicalCondition? condition)
         {
             var ownedBook = await _context.OwnedBooks.SingleAsync(b => b.Id == ownedBookId);
-            ownedBook.AvailabilityStatusId = (int)availability;
-            ownedBook.ConditionId = (int)condition;
+            if (availability.HasValue)
+                ownedBook.AvailabilityStatusId = (int)availability;
+            if (condition.HasValue)
+                ownedBook.ConditionId = (int)condition;
         }
 
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();

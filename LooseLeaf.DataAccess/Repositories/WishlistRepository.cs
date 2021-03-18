@@ -18,29 +18,29 @@ namespace LooseLeaf.DataAccess.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<IBook>> GetUserWishlist(IUser user)
+        public async Task<IEnumerable<IBook>> GetUserWishlist(int userId)
         {
             var books = await _context.Wishlists
                 .Include(w => w.User)
                 .Include(w => w.Book)
-                .Where(w => w.User.Username == user.UserName).Select(w => w.Book).ToListAsync();
+                .Where(w => w.UserId == userId).Select(w => w.Book).ToListAsync();
             return books.Select(b => ConvertToIBook(b));
         }
 
-        public async Task AddBookToUserWishlist(IUser user, IBook book)
+        public async Task AddBookToUserWishlist(int userId, int bookId)
         {
-            var userData = await _context.Users.Where(u => u.Username == user.UserName).SingleAsync();
-            var bookData = await _context.Books.Include(b => b.Wishlists).Where(b => b.Isbn == book.Isbn).SingleAsync();
+            var userData = await _context.Users.Where(u => u.Id == userId).SingleAsync();
+            var bookData = await _context.Books.Include(b => b.Wishlists).Where(b => b.Id == bookId).SingleAsync();
             bookData.Wishlists.Add(new Wishlist()
             {
                 UserId = userData.Id
             });
         }
 
-        public async Task RemoveBookFromUserWishlist(IUser user, IBook book)
+        public async Task RemoveBookFromUserWishlist(int userId, int bookId)
         {
-            var userData = await _context.Users.Where(u => u.Username == user.UserName).SingleAsync();
-            var bookData = await _context.Books.Include(b => b.Wishlists).Where(b => b.Isbn == book.Isbn).SingleAsync();
+            var userData = await _context.Users.Where(u => u.Id == userId).SingleAsync();
+            var bookData = await _context.Books.Include(b => b.Wishlists).Where(b => b.Id == bookId).SingleAsync();
             _context.Wishlists.RemoveRange(bookData.Wishlists);
         }
 

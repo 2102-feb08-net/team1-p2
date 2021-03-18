@@ -20,15 +20,14 @@ namespace LooseLeaf.Tests.IntegrationTests
         {
             // arrange
             const string username = "user";
-            Mock<IUser> fakeUser = new Mock<IUser>();
-            fakeUser.Setup(u => u.UserName).Returns(username);
+            const int userId = 1;
             using var contextFactory = new TestLooseLeafContextFactory();
 
             List<DataAccess.Wishlist> wishlists = new List<DataAccess.Wishlist>()
             {
-                new DataAccess.Wishlist() { UserId = 1, BookId = 1 },
-                new DataAccess.Wishlist() { UserId = 1, BookId = 2 },
-                new DataAccess.Wishlist() { UserId = 1, BookId = 3 }
+                new DataAccess.Wishlist() { UserId = userId, BookId = 1 },
+                new DataAccess.Wishlist() { UserId = userId, BookId = 2 },
+                new DataAccess.Wishlist() { UserId = userId, BookId = 3 }
             };
 
             using (LooseLeafContext addContext = contextFactory.CreateContext())
@@ -47,7 +46,7 @@ namespace LooseLeaf.Tests.IntegrationTests
             IWishlistRepository wishlistRepository = new WishlistRepository(context);
 
             // act
-            var books = await wishlistRepository.GetUserWishlist(fakeUser.Object);
+            var books = await wishlistRepository.GetUserWishlist(userId);
 
             // assert
             Assert.Equal(wishlists.Count, books.Count());
@@ -63,6 +62,8 @@ namespace LooseLeaf.Tests.IntegrationTests
             const string bookName = "Test Book";
             const string authorName = "The Author";
             long isbn;
+            const int userId = 1;
+            const int bookId = 1;
 
             using var contextFactory = new TestLooseLeafContextFactory();
 
@@ -74,16 +75,6 @@ namespace LooseLeaf.Tests.IntegrationTests
                 await arrangeContext.SaveChangesAsync();
             }
 
-            // Create User object
-            Mock<IUser> fakeUser = new Mock<IUser>();
-            fakeUser.Setup(u => u.UserName).Returns(username);
-
-            // Create Book object
-            Mock<IBook> fakeBook = new Mock<IBook>();
-            fakeBook.Setup(b => b.Title).Returns(bookName);
-            fakeBook.Setup(b => b.Author).Returns(authorName);
-            fakeBook.Setup(b => b.Isbn).Returns(isbn);
-
             // act
             using (LooseLeafContext actContext = contextFactory.CreateContext())
             {
@@ -91,7 +82,7 @@ namespace LooseLeaf.Tests.IntegrationTests
                 IWishlistRepository wishlistRepository = new WishlistRepository(actContext);
 
                 // Test repository method
-                await wishlistRepository.AddBookToUserWishlist(fakeUser.Object, fakeBook.Object);
+                await wishlistRepository.AddBookToUserWishlist(userId, bookId);
                 await actContext.SaveChangesAsync();
             }
 
@@ -117,6 +108,8 @@ namespace LooseLeaf.Tests.IntegrationTests
             const string authorName = "The Author";
             long isbn;
             int originalWishlistCount;
+            const int userId = 1;
+            const int bookId = 1;
 
             using var contextFactory = new TestLooseLeafContextFactory();
             using (LooseLeafContext arrangeContext = contextFactory.CreateContext())
@@ -127,20 +120,12 @@ namespace LooseLeaf.Tests.IntegrationTests
                 await arrangeContext.SaveChangesAsync();
             }
 
-            Mock<IUser> fakeUser = new Mock<IUser>();
-            fakeUser.Setup(u => u.UserName).Returns(username);
-
-            Mock<IBook> fakeBook = new Mock<IBook>();
-            fakeBook.Setup(b => b.Title).Returns(bookName);
-            fakeBook.Setup(b => b.Author).Returns(authorName);
-            fakeBook.Setup(b => b.Isbn).Returns(isbn);
-
             // act
             using (LooseLeafContext actContext = contextFactory.CreateContext())
             {
                 IWishlistRepository wishlistRepository = new WishlistRepository(actContext);
                 originalWishlistCount = actContext.Wishlists.Count();
-                await wishlistRepository.RemoveBookFromUserWishlist(fakeUser.Object, fakeBook.Object);
+                await wishlistRepository.RemoveBookFromUserWishlist(userId, bookId);
                 await actContext.SaveChangesAsync();
             }
 

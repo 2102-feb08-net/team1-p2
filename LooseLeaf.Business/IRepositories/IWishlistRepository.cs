@@ -9,10 +9,10 @@ namespace LooseLeaf.Business.IRepositories
 {
     public interface IWishlistRepository : IRepository
     {
-        Task<IEnumerable<IBook>> GetUserWishlist(IUser user);
+        Task<IEnumerable<IBook>> GetUserWishlist(int userId);
 
-        Task AddBookToUserWishlist(IUser user, IBook book);
+        Task AddBookToUserWishlist(int userId, int bookId);
 
-        Task RemoveBookFromUserWishlist(IUser user, IBook book);
+        Task RemoveBookFromUserWishlist(int userId, int bookId);
     }
 }

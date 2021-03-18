@@ -12,10 +12,14 @@ namespace LooseLeaf.Web.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserRepository _usersRepo;
+        private readonly IWishlistRepository _wishlistRepo;
+        private readonly IOwnedBookRepository _ownedBookRepo;
 
-        public UsersController(IUserRepository usersRepo)
+        public UsersController(IUserRepository usersRepo, IWishlistRepository wishlistRepo, IOwnedBookRepository ownedBookRepo)
         {
             _usersRepo = usersRepo;
+            _wishlistRepo = wishlistRepo;
+            _ownedBookRepo = ownedBookRepo;
         }
 
         [HttpGet("api/users")]
@@ -39,7 +43,8 @@ namespace LooseLeaf.Web.Controllers
         [HttpGet("api/users/{userId}")]
         public async Task<IActionResult> GetUserById(int userId)
         {
-            throw new NotImplementedException();
+            var user = await _usersRepo.GetUserAsync(userId);
+            return Ok(user);
         }
 
         [HttpDelete("api/users/{userId}")]
@@ -61,21 +66,24 @@ namespace LooseLeaf.Web.Controllers
         }
 
         [HttpPatch("api/users/{userId}/books/{bookId}")]
-        public async Task<IActionResult> UpdateBookDetails(int userId, int bookId)
+        public async Task<IActionResult> UpdateBookDetails(int userId, InterfaceModels.OwnedBookData ownedBook)
         {
-            throw new NotImplementedException();
+            await _ownedBookRepo.UpdateOwnedBookStatus(userId, ownedBook.AvailabilityStatus, ownedBook.ConditionStatus);
+            return Ok();
         }
 
         [HttpGet("api/users/{userId}/wishlist")]
         public async Task<IActionResult> GetWishlistByUser(int userId)
         {
-            throw new NotImplementedException();
+            var wishlist = await _wishlistRepo.GetUserWishlist(userId);
+            return Ok(wishlist);
         }
 
         [HttpPost("api/users/{userId}/wishlist")]
-        public async Task<IActionResult> AddBooksToUserWishlist(int userId, List<InterfaceModels.Book> books)
+        public async Task<IActionResult> AddBookToUserWishlist(int userId, int bookId)
         {
-            throw new NotImplementedException();
+            await _wishlistRepo.AddBookToUserWishlist(userId, bookId);
+            return Ok();
         }
 
         [HttpDelete("api/users/{userId}/wishlist")]
@@ -87,7 +95,8 @@ namespace LooseLeaf.Web.Controllers
         [HttpDelete("api/users/{userId}/wishlist/{bookId}")]
         public async Task<IActionResult> DeleteBookFromUserWishlist(int userId, int bookId)
         {
-            throw new NotImplementedException();
+            await _wishlistRepo.RemoveBookFromUserWishlist(userId, bookId);
+            return Ok();
         }
 
         [HttpGet("api/users/{userId}/loans")]
