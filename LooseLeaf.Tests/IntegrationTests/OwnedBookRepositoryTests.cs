@@ -20,9 +20,9 @@ namespace LooseLeaf.Tests.IntegrationTests
         {
             // arrange
             const string username = "user";
-            const string title = "Gone with the Vend";
+            const string title = "The Martian";
             const string author = "Beyonce";
-            long isbn;
+            long isbn = 9780804139038;
 
             using var contextFactory = new TestLooseLeafContextFactory();
             using (LooseLeafContext arrangeContext = contextFactory.CreateContext())

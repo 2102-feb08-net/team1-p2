@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using LooseLeaf.Business;
 
 namespace LooseLeaf.DataAccess.Repositories
 {
@@ -21,7 +22,13 @@ namespace LooseLeaf.DataAccess.Repositories
         public async Task AddOwnedBookAsync(IOwnedBook ownedBook)
         {
             var user = await _context.Users.SingleAsync(u => u.Username == ownedBook.Owner.UserName);
-            var book = await _context.Books.SingleAsync(b => b.Isbn == ownedBook.Book.Isbn);
+            var book = await _context.Books.SingleOrDefaultAsync(b => b.Isbn == ownedBook.Book.Isbn);
+            if (book is null)
+            {
+                GoogleBooks googleBooks = new GoogleBooks();
+                IBook bookObj = await googleBooks.GetBookFromIsbn(ownedBook.Book.Isbn);
+                book = await AddBook(bookObj);
+            }
 
             var ownedBookData = new OwnedBook()
             {
@@ -41,6 +48,20 @@ namespace LooseLeaf.DataAccess.Repositories
                 ownedBook.AvailabilityStatusId = (int)availability;
             if (condition.HasValue)
                 ownedBook.ConditionId = (int)condition;
+        }
+
+        private async Task<Book> AddBook(IBook book)
+        {
+            Book newBook = new Book()
+            {
+                Title = book.Title,
+                Author = book.Author,
+                Isbn = book.Isbn,
+                GenreId = book.GenreId
+            };
+
+            await _context.Books.AddAsync(newBook);
+            return newBook;
         }
 
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
