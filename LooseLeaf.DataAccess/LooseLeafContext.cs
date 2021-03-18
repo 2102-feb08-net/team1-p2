@@ -51,15 +51,16 @@ namespace LooseLeaf.DataAccess
                     .HasMaxLength(1000)
                     .HasColumnName("city");
 
+                entity.Property(e => e.Country)
+                    .HasMaxLength(1000)
+                    .HasColumnName("country");
+
                 entity.Property(e => e.State)
                     .IsRequired()
                     .HasMaxLength(1000)
                     .HasColumnName("state");
 
-                entity.Property(e => e.Zipcode)
-                    .IsRequired()
-                    .HasMaxLength(1000)
-                    .HasColumnName("zipcode");
+                entity.Property(e => e.Zipcode).HasColumnName("zipcode");
             });
 
             modelBuilder.Entity<AvailabilityStatus>(entity =>
@@ -96,7 +97,7 @@ namespace LooseLeaf.DataAccess
                     .WithMany(p => p.Books)
                     .HasForeignKey(d => d.GenreId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Books__genreId__5E54FF49");
+                    .HasConstraintName("FK__Books__genreId__02925FBF");
             });
 
             modelBuilder.Entity<ConditionStatus>(entity =>
@@ -150,19 +151,19 @@ namespace LooseLeaf.DataAccess
                     .WithMany(p => p.LoanBorrowers)
                     .HasForeignKey(d => d.BorrowerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Loans__borrowerI__6D9742D9");
+                    .HasConstraintName("FK__Loans__borrowerI__11D4A34F");
 
                 entity.HasOne(d => d.Lender)
                     .WithMany(p => p.LoanLenders)
                     .HasForeignKey(d => d.LenderId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Loans__lenderId__6CA31EA0");
+                    .HasConstraintName("FK__Loans__lenderId__10E07F16");
 
                 entity.HasOne(d => d.LoanStatus)
                     .WithMany(p => p.Loans)
                     .HasForeignKey(d => d.LoanStatusId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Loans__loanStatu__6E8B6712");
+                    .HasConstraintName("FK__Loans__loanStatu__12C8C788");
             });
 
             modelBuilder.Entity<LoanStatus>(entity =>
@@ -191,13 +192,13 @@ namespace LooseLeaf.DataAccess
                     .WithMany(p => p.LoanedBooks)
                     .HasForeignKey(d => d.LoanId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Loaned_Bo__loanI__725BF7F6");
+                    .HasConstraintName("FK__Loaned_Bo__loanI__1699586C");
 
                 entity.HasOne(d => d.OwnedBook)
                     .WithMany(p => p.LoanedBooks)
                     .HasForeignKey(d => d.OwnedBookid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Loaned_Bo__owned__7167D3BD");
+                    .HasConstraintName("FK__Loaned_Bo__owned__15A53433");
             });
 
             modelBuilder.Entity<OwnedBook>(entity =>
@@ -218,33 +219,33 @@ namespace LooseLeaf.DataAccess
                     .WithMany(p => p.OwnedBooks)
                     .HasForeignKey(d => d.AvailabilityStatusId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Owned_Boo__avail__69C6B1F5");
+                    .HasConstraintName("FK__Owned_Boo__avail__0E04126B");
 
                 entity.HasOne(d => d.Book)
                     .WithMany(p => p.OwnedBooks)
                     .HasForeignKey(d => d.BookId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Owned_Boo__bookI__67DE6983");
+                    .HasConstraintName("FK__Owned_Boo__bookI__0C1BC9F9");
 
                 entity.HasOne(d => d.Condition)
                     .WithMany(p => p.OwnedBooks)
                     .HasForeignKey(d => d.ConditionId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Owned_Boo__condi__68D28DBC");
+                    .HasConstraintName("FK__Owned_Boo__condi__0D0FEE32");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.OwnedBooks)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Owned_Boo__userI__66EA454A");
+                    .HasConstraintName("FK__Owned_Boo__userI__0B27A5C0");
             });
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.HasIndex(e => e.Email, "UQ__Users__AB6E61643F8B03FA")
+                entity.HasIndex(e => e.Email, "UQ__Users__AB6E6164C06A6561")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Username, "UQ__Users__F3DBC572C5DC5865")
+                entity.HasIndex(e => e.Username, "UQ__Users__F3DBC5727511210F")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("id");
@@ -270,7 +271,7 @@ namespace LooseLeaf.DataAccess
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.AddressId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Users__addressId__589C25F3");
+                    .HasConstraintName("FK__Users__addressId__7CD98669");
             });
 
             modelBuilder.Entity<Wishlist>(entity =>
@@ -287,13 +288,13 @@ namespace LooseLeaf.DataAccess
                     .WithMany(p => p.Wishlists)
                     .HasForeignKey(d => d.BookId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Wishlist__bookId__762C88DA");
+                    .HasConstraintName("FK__Wishlist__bookId__1A69E950");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Wishlists)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Wishlist__userId__753864A1");
+                    .HasConstraintName("FK__Wishlist__userId__1975C517");
             });
 
             OnModelCreatingPartial(modelBuilder);

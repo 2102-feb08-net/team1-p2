@@ -17,7 +17,8 @@ namespace LooseLeaf.DataAccess
         public string Address2 { get; set; }
         public string City { get; set; }
         public string State { get; set; }
-        public string Zipcode { get; set; }
+        public string Country { get; set; }
+        public int Zipcode { get; set; }
 
         public virtual ICollection<User> Users { get; set; }
     }

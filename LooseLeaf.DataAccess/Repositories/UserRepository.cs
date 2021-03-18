@@ -27,7 +27,7 @@ namespace LooseLeaf.DataAccess.Repositories
                 a.Address2 == userAddress.Address2 &&
                 a.City == userAddress.City &&
                 a.State == userAddress.State &&
-                a.Zipcode == userAddress.ZipCode.ToString()
+                a.Zipcode == userAddress.ZipCode
             ).FirstOrDefaultAsync()
             ?? new Address()
             {
@@ -35,7 +35,7 @@ namespace LooseLeaf.DataAccess.Repositories
                 Address2 = userAddress.Address2,
                 City = userAddress.City,
                 State = userAddress.State,
-                Zipcode = userAddress.ZipCode.ToString()
+                Zipcode = userAddress.ZipCode
             };
 
             User newUser = new User()
