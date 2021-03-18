@@ -13,7 +13,5 @@ namespace LooseLeaf.Business.Models
         string Email { get; }
 
         IAddress Address { get; }
-
-        IWishlist Wishlist { get; }
     }
 }

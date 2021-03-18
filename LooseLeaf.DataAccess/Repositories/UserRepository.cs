@@ -55,8 +55,7 @@ namespace LooseLeaf.DataAccess.Repositories
             new Business.Models.User(
                     u.Username,
                     u.Email,
-                    new Business.Models.Address(u.Address.Address1, u.Address.Address2, u.Address.City, u.Address.State, u.Address.Country, u.Address.Zipcode),
-                    new Business.Models.Wishlist()
+                    new Business.Models.Address(u.Address.Address1, u.Address.Address2, u.Address.City, u.Address.State, u.Address.Country, u.Address.Zipcode)
                 )).ToListAsync();
             return userList;
         }
@@ -71,8 +70,7 @@ namespace LooseLeaf.DataAccess.Repositories
             var user = await _context.Users.Where(b => b.Id == userid).SingleAsync();
             var useraddress = await _context.Addresses.Where(b => b.Id == user.AddressId).SingleAsync();
             Business.Models.Address address = new Business.Models.Address(useraddress.Address1, useraddress.Address2, useraddress.City, useraddress.State, useraddress.Country, useraddress.Zipcode);
-            Business.Models.Wishlist userwishlist = new Business.Models.Wishlist();
-            return new Business.Models.User(user.Username, user.Email, address, userwishlist);
+            return new Business.Models.User(user.Username, user.Email, address);
         }
 
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();

@@ -18,10 +18,9 @@ namespace LooseLeaf.Tests
             const string userName = "firstUser";
             const string email = "somebody@website.com";
             IAddress fakeAddress = new Mock<IAddress>().Object;
-            IWishlist fakeWishlist = new Mock<IWishlist>().Object;
 
             // act
-            IUser user = new User(userName, email, fakeAddress, fakeWishlist);
+            IUser user = new User(userName, email, fakeAddress);
 
             // assert
             Assert.NotNull(user);
@@ -34,10 +33,9 @@ namespace LooseLeaf.Tests
             const string userName = null;
             const string email = "somebody@website.com";
             IAddress fakeAddress = new Mock<IAddress>().Object;
-            IWishlist fakeWishlist = new Mock<IWishlist>().Object;
 
             // act
-            IUser buildUser() => new User(userName, email, fakeAddress, fakeWishlist);
+            IUser buildUser() => new User(userName, email, fakeAddress);
 
             // assert
             Assert.Throws<ArgumentNullException>(buildUser);
@@ -50,10 +48,9 @@ namespace LooseLeaf.Tests
             const string userName = "firstUser";
             const string email = null;
             IAddress fakeAddress = new Mock<IAddress>().Object;
-            IWishlist fakeWishlist = new Mock<IWishlist>().Object;
 
             // act
-            IUser buildUser() => new User(userName, email, fakeAddress, fakeWishlist);
+            IUser buildUser() => new User(userName, email, fakeAddress);
 
             // assert
             Assert.Throws<ArgumentNullException>(buildUser);
@@ -66,10 +63,9 @@ namespace LooseLeaf.Tests
             const string userName = "firstUser";
             const string email = "somebodywebsitecom";
             IAddress fakeAddress = new Mock<IAddress>().Object;
-            IWishlist fakeWishlist = new Mock<IWishlist>().Object;
 
             // act
-            IUser buildUser() => new User(userName, email, fakeAddress, fakeWishlist);
+            IUser buildUser() => new User(userName, email, fakeAddress);
 
             // assert
             Assert.Throws<FormatException>(buildUser);
@@ -82,26 +78,9 @@ namespace LooseLeaf.Tests
             const string userName = "firstUser";
             const string email = "somebody@website.com";
             IAddress fakeAddress = null;
-            IWishlist fakeWishlist = new Mock<IWishlist>().Object;
 
             // act
-            IUser buildUser() => new User(userName, email, fakeAddress, fakeWishlist);
-
-            // assert
-            Assert.Throws<ArgumentNullException>(buildUser);
-        }
-
-        [Fact]
-        public void User_NullWishlist_Fail()
-        {
-            // arrange
-            const string userName = "firstUser";
-            const string email = "somebody@website.com";
-            IAddress fakeAddress = new Mock<IAddress>().Object;
-            IWishlist fakeWishlist = null;
-
-            // act
-            IUser buildUser() => new User(userName, email, fakeAddress, fakeWishlist);
+            IUser buildUser() => new User(userName, email, fakeAddress);
 
             // assert
             Assert.Throws<ArgumentNullException>(buildUser);
@@ -114,10 +93,9 @@ namespace LooseLeaf.Tests
             const string userName = "firstUser";
             const string email = "somebody@website.com";
             IAddress fakeAddress = new Mock<IAddress>().Object;
-            IWishlist fakeWishlist = new Mock<IWishlist>().Object;
 
             // act
-            IUser user = new User(userName, email, fakeAddress, fakeWishlist);
+            IUser user = new User(userName, email, fakeAddress);
 
             // assert
             Assert.Equal(userName, user.UserName);
@@ -130,10 +108,9 @@ namespace LooseLeaf.Tests
             const string userName = "firstUser";
             const string email = "somebody@website.com";
             IAddress fakeAddress = new Mock<IAddress>().Object;
-            IWishlist fakeWishlist = new Mock<IWishlist>().Object;
 
             // act
-            IUser user = new User(userName, email, fakeAddress, fakeWishlist);
+            IUser user = new User(userName, email, fakeAddress);
 
             // assert
             Assert.Equal(email, user.Email);
@@ -146,29 +123,12 @@ namespace LooseLeaf.Tests
             const string userName = "firstUser";
             const string email = "somebody@website.com";
             IAddress fakeAddress = new Mock<IAddress>().Object;
-            IWishlist fakeWishlist = new Mock<IWishlist>().Object;
 
             // act
-            IUser user = new User(userName, email, fakeAddress, fakeWishlist);
+            IUser user = new User(userName, email, fakeAddress);
 
             // assert
             Assert.Equal(fakeAddress, user.Address);
-        }
-
-        [Fact]
-        public void User_GetWishlist()
-        {
-            // arrange
-            const string userName = "firstUser";
-            const string email = "somebody@website.com";
-            IAddress fakeAddress = new Mock<IAddress>().Object;
-            IWishlist fakeWishlist = new Mock<IWishlist>().Object;
-
-            // act
-            IUser user = new User(userName, email, fakeAddress, fakeWishlist);
-
-            // assert
-            Assert.Equal(fakeWishlist, user.Wishlist);
         }
     }
 }
