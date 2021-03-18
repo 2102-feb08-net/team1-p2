@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using LooseLeaf.Business.IRepositories;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,13 @@ namespace LooseLeaf.Web.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
+        private readonly IUserRepository _usersRepo;
+
+        public UsersController(IUserRepository usersRepo)
+        {
+            _usersRepo = usersRepo;
+        }
+
         [HttpGet("api/users")]
         public async Task<IActionResult> GetAllUsers()
         {
