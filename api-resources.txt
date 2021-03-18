@@ -5,19 +5,17 @@
 
     /api/users/{userId}
         GET: get a specific user
-        DELETE: delete a user
 
         /api/users/{userId}/books
             GET: get all books the user owns
-            POST: add book(s) that the user owns
+            POST: add a book that the user owns
 
             /api/users/{userId}/books/{bookId}
                 PATCH: update book details
 
         /api/users/{userId}/wishlist
             GET: get the user's wishlist
-            POST: add books to the user's wishlist
-            DELETE: delete the user's wishlist
+            POST: add a book to the user's wishlist
 
             /api/users/{userId}/wishlist/{bookId}
                 DELETE: delete the specific book from the user's wishlist

@@ -48,12 +48,6 @@ namespace LooseLeaf.Web.Controllers
             return Ok(user);
         }
 
-        [HttpDelete("api/users/{userId}")]
-        public async Task<IActionResult> DeleteUser(int userId)
-        {
-            throw new NotImplementedException();
-        }
-
         [HttpGet("api/users/{userId}/books")]
         public async Task<IActionResult> GetBooksByUser(int userId)
         {
@@ -85,12 +79,6 @@ namespace LooseLeaf.Web.Controllers
         {
             await _wishlistRepo.AddBookToUserWishlist(userId, bookId);
             return Ok();
-        }
-
-        [HttpDelete("api/users/{userId}/wishlist")]
-        public async Task<IActionResult> DeleteUserWishlist(int userId)
-        {
-            throw new NotImplementedException();
         }
 
         [HttpDelete("api/users/{userId}/wishlist/{bookId}")]
