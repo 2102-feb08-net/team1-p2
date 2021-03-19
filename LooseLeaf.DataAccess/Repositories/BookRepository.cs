@@ -19,12 +19,22 @@ namespace LooseLeaf.DataAccess.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<IBook>> GetSpecificBooks(IBookSearchParams searchParams) 
+        public async Task<IEnumerable<IBook>> GetAllBooks(IBookSearchParams searchParams)
         {
             var newParams = searchParams.ToString().ToLower();
 
-            var results = await _context.Books.Where(x => x.Title.ToLower().Contains(newParams) || 
-                x.Author.ToLower().Contains(newParams) || x.Genre.GenreName.ToLower().Contains(newParams)).ToListAsync();
+            IQueryable<Book> books = _context.Books.Include(b => b.Genre);
+
+            if (!string.IsNullOrWhiteSpace(searchParams.Author))
+                books = books.Where(b => b.Author.ToLower().Contains(searchParams.Author.ToLower()));
+
+            if (!string.IsNullOrWhiteSpace(searchParams.Title))
+                books = books.Where(b => b.Title.ToLower().Contains(searchParams.Title.ToLower()));
+
+            if (!string.IsNullOrWhiteSpace(searchParams.Genre))
+                books = books.Where(b => b.Genre.GenreName.ToLower().Contains(searchParams.Genre.ToLower()));
+
+            var results = await books.ToListAsync();
 
             return results.Select(x => ConvertToIBook(x));
         }
