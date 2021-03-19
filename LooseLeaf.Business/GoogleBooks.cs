@@ -36,7 +36,6 @@ namespace LooseLeaf.Business
 
                 VolumeInfo info = volumeInfoJson.ToObject<VolumeInfo>();
 
-                // TODO Implement Genre
                 return new Book(info.Title, info.Authors[0], isbn, info.Categories);
             }
             else
