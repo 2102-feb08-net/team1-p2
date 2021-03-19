@@ -34,6 +34,8 @@ namespace LooseLeaf.Tests.IntegrationTests
             const int LENDER_ID = 1;
             const int BORROWER_ID = 2;
 
+            const int OWNED_BOOK_ID = 1;
+
             ILoan loan;
             using var contextFactory = new TestLooseLeafContextFactory();
             using (LooseLeafContext arrangeContext = contextFactory.CreateContext())
@@ -51,12 +53,12 @@ namespace LooseLeaf.Tests.IntegrationTests
             fakeBook.Setup(b => b.Id).Returns(1);
             fakeBook.Setup(b => b.Availability).Returns(Availability.Available);
 
-            var ownedBooks = new List<IOwnedBook>()
+            var ownedBooks = new List<int>()
             {
-                fakeBook.Object
+                OWNED_BOOK_ID
             };
 
-            loan = new Business.Models.Loan(LENDER_ID, BORROWER_ID, "Hello", new DateTime(2000, 1, 2), new DateTime(2000, 1, 4), fakeAddress, ownedBooks);
+            loan = new Business.Models.Loan(LENDER_ID, BORROWER_ID, "Hello", new DateTime(2000, 1, 2), new DateTime(2000, 1, 4), fakeAddress, ownedBooks, Business.Models.LoanStatus.Requested);
 
             // act
             using (LooseLeafContext context = contextFactory.CreateContext())

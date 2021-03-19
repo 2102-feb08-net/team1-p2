@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LooseLeaf.Business.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -14,6 +15,8 @@ namespace LooseLeaf.Web.DTOs
         [Required]
         public int BorrowId { get; }
 
+        public string Message { get; }
+
         [Required]
         public DateTimeOffset StartDate { get; }
 
@@ -21,6 +24,9 @@ namespace LooseLeaf.Web.DTOs
         public DateTimeOffset EndDate { get; }
 
         [Required]
-        public List<int> ownedBookIds { get; }
+        public Address Address { get; }
+
+        [Required]
+        public List<int> OwnedBookIds { get; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using LooseLeaf.Business.IRepositories;
+using LooseLeaf.Business.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -27,6 +28,8 @@ namespace LooseLeaf.Web.Controllers
         [HttpPost("api/loans")]
         public async Task<IActionResult> SubmitLoanRequest(DTOs.LoanRequest req)
         {
+            ILoan loan = new Loan(req.LenderId, req.BorrowId, req.Message, req.StartDate, req.EndDate, req.Address, req.OwnedBookIds, LoanStatus.Requested);
+            await _loanRepo.AddLoanAsync(loan);
             throw new NotImplementedException();
         }
 

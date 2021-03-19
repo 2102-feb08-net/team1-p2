@@ -17,44 +17,29 @@ namespace LooseLeaf.Tests
         private DateTimeOffset pickupTime = new DateTimeOffset(new DateTime(2000, 1, 2));
         private DateTimeOffset returnTime = new DateTimeOffset(new DateTime(2000, 1, 3));
         private IAddress fakeAddress = new Mock<IAddress>().Object;
-        private Mock<IOwnedBook> fakeOwnedBook = new Mock<IOwnedBook>();
+        private List<int> books = new List<int>() { 1, 2, 10 };
+        private const LoanStatus status = LoanStatus.Requested;
 
         [Fact]
         public void Loan_Construct_Pass()
         {
             // arrange
-            fakeOwnedBook.Setup(b => b.OwnerId).Returns(fakeLender);
-            List<IOwnedBook> books = new List<IOwnedBook>() { fakeOwnedBook.Object };
 
             // act
-            ILoan loan = new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books);
+            ILoan loan = new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
 
             // assert
             Assert.NotNull(loan);
         }
 
         [Fact]
-        public void Loan_NotOwnedBookByLender_Fail()
-        {
-            // arrange
-            fakeOwnedBook.Setup(b => b.OwnerId).Returns(fakeBorrower);
-            List<IOwnedBook> books = new List<IOwnedBook>() { fakeOwnedBook.Object };
-
-            // act
-            ILoan loan() => new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books);
-
-            // assert
-            Assert.Throws<ArgumentException>(loan);
-        }
-
-        [Fact]
         public void Loan_EmptyBook_Fail()
         {
             // arrange
-            List<IOwnedBook> books = new List<IOwnedBook>();
+            List<int> books = new List<int>();
 
             // act
-            ILoan loan() => new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books);
+            ILoan loan() => new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
 
             // assert
             Assert.Throws<ArgumentException>(loan);
@@ -66,7 +51,7 @@ namespace LooseLeaf.Tests
             // arrange
 
             // act
-            ILoan loan() => new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, null);
+            ILoan loan() => new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, null, status);
 
             // assert
             Assert.Throws<ArgumentNullException>(loan);
@@ -76,11 +61,9 @@ namespace LooseLeaf.Tests
         public void Loan_DefaultLender_Fail()
         {
             // arrange
-            fakeOwnedBook.Setup(b => b.OwnerId).Returns(() => default);
-            List<IOwnedBook> books = new List<IOwnedBook>() { fakeOwnedBook.Object };
 
             // act
-            ILoan loan() => new Loan(default, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books);
+            ILoan loan() => new Loan(default, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
 
             // assert
             Assert.Throws<ArgumentException>(loan);
@@ -90,11 +73,9 @@ namespace LooseLeaf.Tests
         public void Loan_DefaultBorrower_Fail()
         {
             // arrange
-            fakeOwnedBook.Setup(b => b.OwnerId).Returns(fakeBorrower);
-            List<IOwnedBook> books = new List<IOwnedBook>() { fakeOwnedBook.Object };
 
             // act
-            ILoan loan() => new Loan(fakeLender, default, message, pickupTime, returnTime, fakeAddress, books);
+            ILoan loan() => new Loan(fakeLender, default, message, pickupTime, returnTime, fakeAddress, books, status);
 
             // assert
             Assert.Throws<ArgumentException>(loan);
@@ -104,11 +85,9 @@ namespace LooseLeaf.Tests
         public void Loan_ReturnBeforePickup_Fail()
         {
             // arrange
-            fakeOwnedBook.Setup(b => b.OwnerId).Returns(fakeBorrower);
-            List<IOwnedBook> books = new List<IOwnedBook>() { fakeOwnedBook.Object };
 
             // act
-            ILoan loan() => new Loan(fakeLender, fakeBorrower, message, returnTime, pickupTime, fakeAddress, books);
+            ILoan loan() => new Loan(fakeLender, fakeBorrower, message, returnTime, pickupTime, fakeAddress, books, status);
 
             // assert
             Assert.Throws<ArgumentException>(loan);
@@ -118,25 +97,36 @@ namespace LooseLeaf.Tests
         public void Loan_NullAddress_Fail()
         {
             // arrange
-            fakeOwnedBook.Setup(b => b.OwnerId).Returns(fakeBorrower);
-            List<IOwnedBook> books = new List<IOwnedBook>() { fakeOwnedBook.Object };
 
             // act
-            ILoan loan() => new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, null, books);
+            ILoan loan() => new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, null, books, status);
 
             // assert
             Assert.Throws<ArgumentNullException>(loan);
+        }
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(0)]
+        [InlineData(1000)]
+        public void Loan_InvalidStatus_Fail(int invalidStatus)
+        {
+            // arrange
+
+            // act
+            ILoan loan() => new Loan(fakeLender, fakeBorrower, message, returnTime, pickupTime, fakeAddress, books, (LoanStatus)invalidStatus);
+
+            // assert
+            Assert.Throws<ArgumentException>(loan);
         }
 
         [Fact]
         public void Loan_GetUser()
         {
             // arrange
-            fakeOwnedBook.Setup(b => b.OwnerId).Returns(fakeLender);
-            List<IOwnedBook> books = new List<IOwnedBook>() { fakeOwnedBook.Object };
 
             // act
-            ILoan loan = new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books);
+            ILoan loan = new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
 
             // assert
             Assert.Equal(fakeLender, loan.Lender);
@@ -146,11 +136,9 @@ namespace LooseLeaf.Tests
         public void Loan_GetBorrower()
         {
             // arrange
-            fakeOwnedBook.Setup(b => b.OwnerId).Returns(fakeLender);
-            List<IOwnedBook> books = new List<IOwnedBook>() { fakeOwnedBook.Object };
 
             // act
-            ILoan loan = new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books);
+            ILoan loan = new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
 
             // assert
             Assert.Equal(fakeBorrower, loan.Borrower);
@@ -160,11 +148,9 @@ namespace LooseLeaf.Tests
         public void Loan_GetMessage()
         {
             // arrange
-            fakeOwnedBook.Setup(b => b.OwnerId).Returns(fakeLender);
-            List<IOwnedBook> books = new List<IOwnedBook>() { fakeOwnedBook.Object };
 
             // act
-            ILoan loan = new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books);
+            ILoan loan = new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
 
             // assert
             Assert.Equal(message, loan.Message);
@@ -174,11 +160,9 @@ namespace LooseLeaf.Tests
         public void Loan_GetPickupDate()
         {
             // arrange
-            fakeOwnedBook.Setup(b => b.OwnerId).Returns(fakeLender);
-            List<IOwnedBook> books = new List<IOwnedBook>() { fakeOwnedBook.Object };
 
             // act
-            ILoan loan = new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books);
+            ILoan loan = new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
 
             // assert
             Assert.Equal(pickupTime, loan.DropoffDate);
@@ -188,11 +172,9 @@ namespace LooseLeaf.Tests
         public void Loan_GetReturnDate()
         {
             // arrange
-            fakeOwnedBook.Setup(b => b.OwnerId).Returns(fakeLender);
-            List<IOwnedBook> books = new List<IOwnedBook>() { fakeOwnedBook.Object };
 
             // act
-            ILoan loan = new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books);
+            ILoan loan = new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
 
             // assert
             Assert.Equal(returnTime, loan.ReturnDate);
@@ -202,11 +184,9 @@ namespace LooseLeaf.Tests
         public void Loan_GetAddress()
         {
             // arrange
-            fakeOwnedBook.Setup(b => b.OwnerId).Returns(fakeLender);
-            List<IOwnedBook> books = new List<IOwnedBook>() { fakeOwnedBook.Object };
 
             // act
-            ILoan loan = new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books);
+            ILoan loan = new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
 
             // assert
             Assert.Equal(fakeAddress, loan.ExchangeLocation);
@@ -216,14 +196,24 @@ namespace LooseLeaf.Tests
         public void Loan_GetBooks()
         {
             // arrange
-            fakeOwnedBook.Setup(b => b.OwnerId).Returns(fakeLender);
-            List<IOwnedBook> books = new List<IOwnedBook>() { fakeOwnedBook.Object };
 
             // act
-            ILoan loan = new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books);
+            ILoan loan = new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
 
             // assert
-            Assert.Equal(books, loan.LoanedBooks);
+            Assert.Equal(books, loan.LoanedBookIds);
+        }
+
+        [Fact]
+        public void Loan_GetStatus()
+        {
+            // arrange
+
+            // act
+            ILoan loan = new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
+
+            // assert
+            Assert.Equal(status, loan.Status);
         }
     }
 }

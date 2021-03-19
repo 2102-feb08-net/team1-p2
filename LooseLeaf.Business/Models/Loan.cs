@@ -20,13 +20,13 @@ namespace LooseLeaf.Business.Models
 
         public IAddress ExchangeLocation { get; }
 
-        public List<IOwnedBook> LoanedBooks { get; }
+        public List<int> LoanedBookIds { get; }
 
         public LoanStatus Status { get; }
 
         public bool IsPublic { get; }
 
-        public Loan(int lenderId, int borrowerId, string message, DateTimeOffset pickUpDate, DateTimeOffset returnDate, IAddress address, List<IOwnedBook> loanedBooks)
+        public Loan(int lenderId, int borrowerId, string message, DateTimeOffset pickUpDate, DateTimeOffset returnDate, IAddress address, List<int> loanedBooks, LoanStatus status)
         {
             if (lenderId <= 0)
                 throw new ArgumentException("The lenderId must be greater than 0.", nameof(lenderId));
@@ -42,8 +42,8 @@ namespace LooseLeaf.Business.Models
             if (loanedBooks.Count == 0)
                 throw new ArgumentException("The number of loan books must be at least 1.");
 
-            if (loanedBooks.Find(b => b.OwnerId != lenderId) is not null)
-                throw new ArgumentException("Every book loaned, must be owned by the lender.");
+            if (!Enum.IsDefined(status))
+                throw new ArgumentException("The loan status must be a valid value.");
 
             Lender = lenderId;
             Borrower = borrowerId;
@@ -51,8 +51,8 @@ namespace LooseLeaf.Business.Models
             DropoffDate = pickUpDate;
             ReturnDate = returnDate;
             ExchangeLocation = address;
-            LoanedBooks = loanedBooks;
-            Status = LoanStatus.Requested;
+            LoanedBookIds = loanedBooks;
+            Status = status;
             IsPublic = true;
         }
     }

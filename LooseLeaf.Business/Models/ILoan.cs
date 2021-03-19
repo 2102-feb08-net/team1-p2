@@ -23,6 +23,6 @@ namespace LooseLeaf.Business.Models
 
         bool IsPublic { get; }
 
-        List<IOwnedBook> LoanedBooks { get; }
+        List<int> LoanedBookIds { get; }
     }
 }

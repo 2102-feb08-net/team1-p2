@@ -20,6 +20,11 @@ namespace LooseLeaf.DataAccess.Repositories
 
         public async Task AddLoanAsync(ILoan loan)
         {
+            var ownedBooks = await _context.OwnedBooks.Where(b => loan.LoanedBookIds.Contains(b.Id)).ToListAsync();
+
+            if (!ownedBooks.TrueForAll(book => book.UserId == loan.Lender))
+                throw new ArgumentException("Loan must have the UserId for every OwnedBook match that of the lenderId");
+
             Loan dataLoan = new Loan()
             {
                 LenderId = loan.Lender,
@@ -33,9 +38,9 @@ namespace LooseLeaf.DataAccess.Repositories
 
             await _context.Loans.AddAsync(dataLoan);
 
-            List<LoanedBook> loanedBooks = loan.LoanedBooks.Select(b => new LoanedBook()
+            List<LoanedBook> loanedBooks = loan.LoanedBookIds.Select(id => new LoanedBook()
             {
-                OwnedBookid = b.Id,
+                OwnedBookid = id,
                 Loan = dataLoan,
             }).ToList();
 
