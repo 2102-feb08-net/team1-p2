@@ -38,7 +38,7 @@ namespace LooseLeaf.Tests.IntegrationTests
             Mock<IBook> fakeBook = new Mock<IBook>();
             fakeBook.Setup(x => x.Title).Returns(title);
             fakeBook.Setup(x => x.Author).Returns(author);
-            fakeBook.Setup(x => x.GenreId).Returns(1);
+            fakeBook.Setup(x => x.Genres).Returns(new List<string>() { "Test" });
             fakeBook.Setup(x => x.Isbn).Returns(isbn);
 
             Mock<IOwnedBook> fakeOwnedBook = new Mock<IOwnedBook>();

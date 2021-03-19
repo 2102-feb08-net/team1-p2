@@ -19,20 +19,19 @@ namespace LooseLeaf.Tests.IntegrationTests
         public async Task GetBookById_Returns_Book()
         {
             // arrange
+            const int genreCount = 1;
+
             var insertedBook = new DataAccess.Book
             {
                 Title = "Gone with the Wind",
                 Author = "JoJo",
                 Isbn = 1234567892581,
-                GenreId = 1
             };
 
             using var contextFactory = new TestLooseLeafContextFactory();
             using (LooseLeafContext arrangeContext = contextFactory.CreateContext())
             {
-                arrangeContext.Genres.Add(new Genre() { GenreName = "Test Genre" });
-                arrangeContext.SaveChanges();
-
+                arrangeContext.Genres.Add(new Genre() { GenreName = "Test Genre", Book = insertedBook });
                 arrangeContext.Books.Add(insertedBook);
                 arrangeContext.SaveChanges();
             }
@@ -48,11 +47,11 @@ namespace LooseLeaf.Tests.IntegrationTests
             Assert.Equal(insertedBook.Title, book.Title);
             Assert.Equal(insertedBook.Author, book.Author);
             Assert.Equal(insertedBook.Isbn, book.Isbn);
-            Assert.Equal(insertedBook.GenreId, book.GenreId);
+            Assert.Single(book.Genres);
         }
 
         [Fact]
-        public async Task GetSpecificBooks_ReturnList()
+        public async Task GetAllBooks_ReturnList()
         {
             // arrange
             const string title1 = "Brave Little Toaster";
@@ -65,24 +64,20 @@ namespace LooseLeaf.Tests.IntegrationTests
             using var contextFactory = new TestLooseLeafContextFactory();
             using (LooseLeafContext arrangeContext = contextFactory.CreateContext())
             {
-                await contextFactory.CreateGenre(arrangeContext);
-                await arrangeContext.SaveChangesAsync();
-
                 List<DataAccess.Book> books = new List<DataAccess.Book>()
-                    {
-                        new DataAccess.Book() { Title = title1, Author = author1, Isbn = isbn1, GenreId = 1 },
-                        new DataAccess.Book() { Title = title2, Author = author2, Isbn = isbn2, GenreId = 1 }
-                    };
+                {
+                    new DataAccess.Book() { Title = title1, Author = author1, Isbn = isbn1},
+                    new DataAccess.Book() { Title = title2, Author = author2, Isbn = isbn2}
+                };
 
+                await contextFactory.CreateGenre(arrangeContext, books[0]);
+                await contextFactory.CreateGenre(arrangeContext, books[1]);
                 await arrangeContext.AddRangeAsync(books);
                 await arrangeContext.SaveChangesAsync();
             }
 
             using (LooseLeafContext actContext = contextFactory.CreateContext())
             {
-                await contextFactory.CreateGenre(actContext);
-                await actContext.SaveChangesAsync();
-
                 IBookRepository bookRepo = new BookRepository(actContext);
                 await bookRepo.GetAllBooks(new BookSearchParams());
                 await actContext.SaveChangesAsync();
@@ -91,7 +86,7 @@ namespace LooseLeaf.Tests.IntegrationTests
             // assert
             using (LooseLeafContext assertContext = contextFactory.CreateContext())
             {
-                var book = await assertContext.Books.Include(x => x.Genre).ToListAsync();
+                var book = await assertContext.Books.ToListAsync();
                 Assert.Equal(2, book.Count);
             }
         }

@@ -16,6 +16,6 @@ namespace LooseLeaf.Business.Models
 
         long Isbn { get; }
 
-        int GenreId { get; }
+        IEnumerable<string> Genres { get; }
     }
 }

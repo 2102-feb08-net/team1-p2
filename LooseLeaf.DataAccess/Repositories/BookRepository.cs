@@ -23,7 +23,7 @@ namespace LooseLeaf.DataAccess.Repositories
         {
             var newParams = searchParams.ToString().ToLower();
 
-            IQueryable<Book> books = _context.Books.Include(b => b.Genre);
+            IQueryable<Book> books = _context.Books.Include(b => b.Genres);
 
             if (!string.IsNullOrWhiteSpace(searchParams.Author))
                 books = books.Where(b => b.Author.ToLower().Contains(searchParams.Author.ToLower()));
@@ -32,7 +32,9 @@ namespace LooseLeaf.DataAccess.Repositories
                 books = books.Where(b => b.Title.ToLower().Contains(searchParams.Title.ToLower()));
 
             if (!string.IsNullOrWhiteSpace(searchParams.Genre))
-                books = books.Where(b => b.Genre.GenreName.ToLower().Contains(searchParams.Genre.ToLower()));
+                books = books.Where(b =>
+                    b.Genres.Any(g => g.GenreName.ToLower() == searchParams.Genre.ToLower())
+                    );
 
             var results = await books.ToListAsync();
 
@@ -42,7 +44,10 @@ namespace LooseLeaf.DataAccess.Repositories
         public async Task<IBook> GetBook(int bookId)
         {
             var book = await _context.Books.Where(b => b.Id == bookId).SingleAsync();
-            return new Business.Models.Book(book.Id, book.Title, book.Author, book.Isbn, book.GenreId);
+
+            var genres = await _context.Genres.Where(g => g.BookId == bookId).Select(g => g.GenreName).ToListAsync();
+
+            return new Business.Models.Book(book.Id, book.Title, book.Author, book.Isbn, genres);
         }
 
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
@@ -51,7 +56,7 @@ namespace LooseLeaf.DataAccess.Repositories
 
         private IBook ConvertToIBook(Book book)
         {
-            return new Business.Models.Book(book.Title, book.Author, book.Isbn, book.GenreId);
+            return new Business.Models.Book(book.Title, book.Author, book.Isbn, book.Genres.Select(g => g.GenreName).ToList());
         }
     }
 }

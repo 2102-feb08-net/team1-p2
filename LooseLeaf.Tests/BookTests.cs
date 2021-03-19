@@ -10,10 +10,11 @@ namespace LooseLeaf.Tests
 {
     public class BookTests
     {
-        private int genreId = 2;
+        private List<string> genres = new List<string>() { "Novel", "Test" };
 
         [Fact]
         public void Book_Constructor_Pass()
+
         {
             // arrange
             string title = "My Book";
@@ -21,7 +22,7 @@ namespace LooseLeaf.Tests
             long isbn = 9781234567890;
 
             // act
-            IBook book = new Book(title, author, isbn, genreId);
+            IBook book = new Book(title, author, isbn, genres);
 
             // assert
             Assert.NotNull(book);
@@ -36,7 +37,7 @@ namespace LooseLeaf.Tests
             long isbn = 9781234567890;
 
             // act
-            IBook book = new Book(title, author, isbn, genreId);
+            IBook book = new Book(title, author, isbn, genres);
 
             // assert
             Assert.Equal(title, book.Title);
@@ -51,7 +52,7 @@ namespace LooseLeaf.Tests
             long isbn = 9781234567890;
 
             // act
-            IBook book = new Book(title, author, isbn, genreId);
+            IBook book = new Book(title, author, isbn, genres);
 
             // assert
             Assert.Equal(author, book.Author);
@@ -66,10 +67,10 @@ namespace LooseLeaf.Tests
             long isbn = 9781234567890;
 
             // act
-            IBook book = new Book(title, author, isbn, genreId);
+            IBook book = new Book(title, author, isbn, genres);
 
             // assert
-            Assert.Equal(genreId, book.GenreId);
+            Assert.Equal(genres.Count(), book.Genres.Count());
         }
 
         [Theory]
@@ -85,7 +86,7 @@ namespace LooseLeaf.Tests
             const string author = "Test Author";
 
             // act
-            IBook constructBook() => new Book(title, author, isbn, genreId);
+            IBook constructBook() => new Book(title, author, isbn, genres);
 
             // assert
             Assert.Throws<ArgumentException>(constructBook);
@@ -100,7 +101,7 @@ namespace LooseLeaf.Tests
             const long isbn = 9781234567890;
 
             // act
-            IBook constructBook() => new Book(title, author, isbn, genreId);
+            IBook constructBook() => new Book(title, author, isbn, genres);
 
             // assert
             Assert.Throws<ArgumentNullException>(constructBook);
@@ -115,7 +116,7 @@ namespace LooseLeaf.Tests
             const long isbn = 9781234567890;
 
             // act
-            IBook constructBook() => new Book(title, author, isbn, genreId);
+            IBook constructBook() => new Book(title, author, isbn, genres);
 
             // assert
             Assert.Throws<ArgumentException>(constructBook);
@@ -130,7 +131,7 @@ namespace LooseLeaf.Tests
             const long isbn = 9781234567890;
 
             // act
-            IBook constructBook() => new Book(title, author, isbn, genreId);
+            IBook constructBook() => new Book(title, author, isbn, genres);
 
             // assert
             Assert.Throws<ArgumentNullException>(constructBook);
@@ -145,7 +146,7 @@ namespace LooseLeaf.Tests
             const long isbn = 9781234567890;
 
             // act
-            IBook constructBook() => new Book(title, author, isbn, genreId);
+            IBook constructBook() => new Book(title, author, isbn, genres);
 
             // assert
             Assert.Throws<ArgumentException>(constructBook);

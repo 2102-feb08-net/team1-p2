@@ -7,14 +7,10 @@ namespace LooseLeaf.DataAccess
 {
     public partial class Genre
     {
-        public Genre()
-        {
-            Books = new HashSet<Book>();
-        }
-
         public int Id { get; set; }
+        public int BookId { get; set; }
         public string GenreName { get; set; }
 
-        public virtual ICollection<Book> Books { get; set; }
+        public virtual Book Book { get; set; }
     }
 }

@@ -95,22 +95,18 @@ namespace LooseLeaf.Tests.IntegrationTests
         /// <returns>Returns the ISBN of the book.</returns>
         public async Task<long> CreateBook(LooseLeafContext context, string bookName = "Book", string authorName = "Author", int genreId = 1)
         {
-            if (context.Genres.Count() == 0)
-            {
-                await CreateGenre(context);
-                await context.SaveChangesAsync();
-            }
             int id = context.Books.Count() + 1;
             long newIsbn = 9784567890123 + id;
-            var book = new DataAccess.Book() { Title = bookName, Author = authorName, Isbn = newIsbn, GenreId = 1 };
+            var book = new DataAccess.Book() { Title = bookName, Author = authorName, Isbn = newIsbn };
+
+            await CreateGenre(context, book);
             await context.Books.AddAsync(book);
             return newIsbn;
         }
 
-        public async Task CreateGenre(LooseLeafContext context)
+        public async Task CreateGenre(LooseLeafContext context, Book book, string genre = "Test")
         {
-            int id = context.Genres.Count() + 1;
-            await context.Genres.AddAsync(new DataAccess.Genre() { GenreName = "Story " + id });
+            await context.Genres.AddAsync(new DataAccess.Genre() { GenreName = genre, Book = book });
         }
 
         public async Task<OwnedBook> CreateOwnedBook(LooseLeafContext context, int userId, int bookId)

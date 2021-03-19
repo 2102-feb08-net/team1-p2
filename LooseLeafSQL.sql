@@ -30,6 +30,7 @@ CREATE TABLE Users(
 
 CREATE TABLE Genre(
 	id INT NOT NULL PRIMARY KEY IDENTITY,
+	bookId int NOT NULL FOREIGN KEY REFERENCES Books(id),
 	genreName NVARCHAR(255) NOT NULL, 
 )
 
@@ -38,7 +39,6 @@ CREATE TABLE Books(
 	title NVARCHAR(255) NOT NULL, 
 	author NVARCHAR(255) NOT NULL,
 	isbn BigINT NOT NULL CHECK (len(isbn) = 13 or len(isbn) = 10),
-	genreId int NOT NULL FOREIGN KEY REFERENCES Genre(id),
 ) 
 
 CREATE TABLE Loan_Status(

@@ -57,9 +57,15 @@ namespace LooseLeaf.DataAccess.Repositories
                 Title = book.Title,
                 Author = book.Author,
                 Isbn = book.Isbn,
-                GenreId = book.GenreId
             };
 
+            var genres = book.Genres.Select(g => new Genre()
+            {
+                GenreName = g,
+                Book = newBook,
+            });
+
+            await _context.Genres.AddRangeAsync(genres);
             await _context.Books.AddAsync(newBook);
             return newBook;
         }
