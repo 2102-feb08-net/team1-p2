@@ -52,48 +52,6 @@ namespace LooseLeaf.Tests.IntegrationTests
         }
 
         [Fact]
-        public async Task AddBook()
-        {
-            // arrange
-            const string title = "Gone Vith the Vend";
-            const string author = "Vladimir";
-            const long isbn = 9781234567890;
-
-            using var contextFactory = new TestLooseLeafContextFactory();
-            using (LooseLeafContext arrangeContext = contextFactory.CreateContext())
-            {
-                await contextFactory.CreateGenre(arrangeContext);
-                await arrangeContext.SaveChangesAsync();
-            }
-
-            Mock<IBook> fakeBook = new Mock<IBook>();
-            fakeBook.Setup(x => x.Title).Returns(title);
-            fakeBook.Setup(x => x.Author).Returns(author);
-            fakeBook.Setup(x => x.GenreId).Returns(1);
-            fakeBook.Setup(x => x.Isbn).Returns(isbn);
-
-            // act
-            using (LooseLeafContext actContext = contextFactory.CreateContext())
-            {
-                IBookRepository bookRepo = new BookRepository(actContext);
-
-                await bookRepo.AddBook(fakeBook.Object);
-                await actContext.SaveChangesAsync();
-            }
-
-            // assert
-            using (LooseLeafContext assertContext = contextFactory.CreateContext())
-            {
-                var book = await assertContext.Books.Include(x => x.Genre).SingleAsync();
-
-                Assert.Equal(title, book.Title);
-                Assert.Equal(author, book.Author);
-                Assert.Equal(isbn, book.Isbn);
-            }
-        }
-
-
-        [Fact]
         public async Task GetSpecificBooks_ReturnList()
         {
             // arrange
@@ -118,7 +76,6 @@ namespace LooseLeaf.Tests.IntegrationTests
 
                 await arrangeContext.AddRangeAsync(books);
                 await arrangeContext.SaveChangesAsync();
-
             }
 
             using (LooseLeafContext actContext = contextFactory.CreateContext())
@@ -127,7 +84,7 @@ namespace LooseLeaf.Tests.IntegrationTests
                 await actContext.SaveChangesAsync();
 
                 IBookRepository bookRepo = new BookRepository(actContext);
-                await bookRepo.GetSpecificBooks(new BookSearchParams());
+                await bookRepo.GetAllBooks(new BookSearchParams());
                 await actContext.SaveChangesAsync();
             };
 
