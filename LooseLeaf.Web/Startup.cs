@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,6 +33,12 @@ namespace LooseLeaf.Web
                .AllowAnyHeader()
                .AllowCredentials()));
 
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = "https://dev-85327145.okta.com/oauth2/default";
+                });
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -55,6 +62,7 @@ namespace LooseLeaf.Web
 
             app.UseCors();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
