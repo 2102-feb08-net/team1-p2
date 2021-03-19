@@ -25,7 +25,7 @@ namespace LooseLeaf.DataAccess.Repositories
                 .Include(w => w.Book)
                 .ThenInclude(b => b.Genres)
                 .Where(w => w.UserId == userId).Select(w => w.Book).ToListAsync();
-            return books.Select(b => ConvertToIBook(b));
+            return books.Select(b => b.ConvertToIBook());
         }
 
         public async Task AddBookToUserWishlist(int userId, int bookId)
@@ -43,11 +43,6 @@ namespace LooseLeaf.DataAccess.Repositories
             var userData = await _context.Users.Where(u => u.Id == userId).SingleAsync();
             var bookData = await _context.Books.Include(b => b.Wishlists).Where(b => b.Id == bookId).SingleAsync();
             _context.Wishlists.RemoveRange(bookData.Wishlists);
-        }
-
-        private IBook ConvertToIBook(Book book)
-        {
-            return new Business.Models.Book(book.Title, book.Author, book.Isbn, book.Genres.Select(g => g.GenreName).ToList());
         }
 
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();

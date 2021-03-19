@@ -103,5 +103,36 @@ namespace LooseLeaf.Tests.IntegrationTests
                 Assert.Equal((int)availability, ownedBook.AvailabilityStatusId);
             }
         }
+
+        [Fact]
+        public async Task OwnedBookRepository_GetOwnedBooks()
+        {
+            // arrange
+            const int userId = 1;
+            const int bookId = 1;
+            const int bookId2 = 2;
+
+            using var contextFactory = new TestLooseLeafContextFactory();
+            using (LooseLeafContext arrangeContext = contextFactory.CreateContext())
+            {
+                await contextFactory.CreateBook(arrangeContext);
+                await contextFactory.CreateBook(arrangeContext);
+                await contextFactory.CreateOwnedBook(arrangeContext, userId, bookId);
+                await contextFactory.CreateOwnedBook(arrangeContext, userId, bookId2);
+                await arrangeContext.SaveChangesAsync();
+            }
+
+            // act
+            IEnumerable<IOwnedBook> ownedBooks;
+            using (LooseLeafContext actContext = contextFactory.CreateContext())
+            {
+                IOwnedBookRepository ownedBookRepo = new OwnedBookRepository(actContext);
+
+                ownedBooks = await ownedBookRepo.GetOwnedBooksAsync(new OwnedBookSearchParams());
+            }
+
+            // assert
+            Assert.Equal(2, ownedBooks.Count());
+        }
     }
 }

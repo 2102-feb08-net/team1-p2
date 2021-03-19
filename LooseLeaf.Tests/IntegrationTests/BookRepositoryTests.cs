@@ -19,8 +19,6 @@ namespace LooseLeaf.Tests.IntegrationTests
         public async Task GetBookById_Returns_Book()
         {
             // arrange
-            const int genreCount = 1;
-
             var insertedBook = new DataAccess.Book
             {
                 Title = "Gone with the Wind",

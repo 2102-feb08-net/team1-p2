@@ -38,7 +38,7 @@ namespace LooseLeaf.DataAccess.Repositories
 
             var results = await books.ToListAsync();
 
-            return results.Select(x => ConvertToIBook(x));
+            return results.Select(x => x.ConvertToIBook());
         }
 
         public async Task<IBook> GetBook(int bookId)
@@ -53,10 +53,5 @@ namespace LooseLeaf.DataAccess.Repositories
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
 
         public async Task UpdateBook(int bookId) => throw new NotImplementedException();
-
-        private IBook ConvertToIBook(Book book)
-        {
-            return new Business.Models.Book(book.Title, book.Author, book.Isbn, book.Genres.Select(g => g.GenreName).ToList());
-        }
     }
 }

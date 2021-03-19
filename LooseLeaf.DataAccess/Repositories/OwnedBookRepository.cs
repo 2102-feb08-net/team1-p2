@@ -71,5 +71,25 @@ namespace LooseLeaf.DataAccess.Repositories
         }
 
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
+
+        public async Task<IEnumerable<IOwnedBook>> GetOwnedBooksAsync(IOwnedBookSearchParams searchParams)
+        {
+            IQueryable<OwnedBook> ownedBooksQuery = _context.OwnedBooks.Include(o => o.Book).Include(o => o.User).ThenInclude(u => u.Address);
+
+            if (searchParams.BookAvailability.HasValue)
+                ownedBooksQuery = ownedBooksQuery.Where(o => o.AvailabilityStatusId == (int)searchParams.BookAvailability);
+            if (searchParams.BookCondition.HasValue)
+                ownedBooksQuery = ownedBooksQuery.Where(o => o.ConditionId == (int)searchParams.BookCondition);
+            if (searchParams.UserId.HasValue)
+                ownedBooksQuery = ownedBooksQuery.Where(o => o.UserId == searchParams.UserId);
+
+            var ownedBooks = await ownedBooksQuery.ToListAsync();
+            return ownedBooks.Select(o => new Business.Models.OwnedBook(
+                o.Id,
+                o.Book.ConvertToIBook(),
+                o.User.ConvertToUser(),
+                (PhysicalCondition)o.ConditionId,
+                (Availability)o.AvailabilityStatusId));
+        }
     }
 }

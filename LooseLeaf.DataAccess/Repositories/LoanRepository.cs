@@ -46,6 +46,8 @@ namespace LooseLeaf.DataAccess.Repositories
             await _context.LoanedBooks.AddRangeAsync(loanedBooks);
         }
 
+        public Task GetLoanAsync(ILoanSearchParams searchParams) => throw new NotImplementedException();
+
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
     }
 }
