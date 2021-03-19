@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -12,6 +13,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LooseLeaf.DataAccess;
+using LooseLeaf.DataAccess.Repositories;
+using LooseLeaf.Business.IRepositories;
 
 namespace LooseLeaf.Web
 {
@@ -27,6 +31,13 @@ namespace LooseLeaf.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<LooseLeafContext>(BuildDbOptions);
+            services.AddScoped<IOwnedBookRepository, OwnedBookRepository>();
+            services.AddScoped<ILoanRepository, LoanRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<IWishlistRepository, WishlistRepository>();
+
             services.AddCors(options => options.AddDefaultPolicy(config => config
                .WithOrigins("http://localhost:4200")
                .AllowAnyMethod()
@@ -69,6 +80,12 @@ namespace LooseLeaf.Web
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private void BuildDbOptions(DbContextOptionsBuilder builder)
+        {
+            string connectionString = Configuration.GetConnectionString("LooseLeafDatabase");
+            builder.UseSqlServer(connectionString);
         }
     }
 }
