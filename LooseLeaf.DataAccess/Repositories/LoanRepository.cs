@@ -20,14 +20,10 @@ namespace LooseLeaf.DataAccess.Repositories
 
         public async Task AddLoanAsync(ILoan loan)
         {
-            // Combine to do only one SQL query
-            var users = await _context.Users.Where(u => u.Username == loan.Lender.UserName
-                                    || u.Username == loan.Borrower.UserName).ToListAsync();
-
             Loan dataLoan = new Loan()
             {
-                LenderId = users.Single(u => u.Username == loan.Lender.UserName).Id,
-                BorrowerId = users.Single(u => u.Username == loan.Borrower.UserName).Id,
+                LenderId = loan.Lender,
+                BorrowerId = loan.Borrower,
                 Message = loan.Message,
                 DropoffDate = loan.DropoffDate,
                 ReturnedDate = loan.ReturnDate,

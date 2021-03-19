@@ -11,8 +11,13 @@ namespace LooseLeaf.Business.Models
 
         public IAddress Address { get; }
 
-        public User(string userName, string email, IAddress address)
+        public int Id { get; }
+
+        public User(int userId, string userName, string email, IAddress address)
         {
+            if (userId <= 0)
+                throw new ArgumentException("The userId must be greater than 0", nameof(userId));
+
             if (userName is null)
                 throw new ArgumentNullException(nameof(userName));
 
@@ -27,6 +32,8 @@ namespace LooseLeaf.Business.Models
             Email = new MailAddress(email).Address;
 
             Address = address;
+
+            Id = userId;
         }
     }
 }

@@ -6,14 +6,8 @@ using System.Threading.Tasks;
 
 namespace LooseLeaf.Business.Models
 {
-    public interface IUser
+    public interface IIsbnData
     {
-        int Id { get; }
-
-        string UserName { get; }
-
-        string Email { get; }
-
-        IAddress Address { get; }
+        long IsbnValue { get; }
     }
 }

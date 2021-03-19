@@ -58,14 +58,20 @@ namespace LooseLeaf.Web.Controllers
         }
 
         [HttpPost("api/users/{userId}/book")]
-        public async Task<IActionResult> AddUserOwnedBook(DTOs.Book book)
+        public async Task<IActionResult> AddUserOwnedBook(int userId, DTOs.OwnedBookData data)
         {
-            await _ownedBookRepo.AddOwnedBookAsync(null);
+            if (!data.ConditionStatus.HasValue)
+                return BadRequest();
+            if (!data.AvailabilityStatus.HasValue)
+                return BadRequest();
+
+            IOwnedBook ownedBookObj = new OwnedBook(new IsbnData(data.Isbn), userId, data.ConditionStatus.Value, data.AvailabilityStatus.Value);
+            await _ownedBookRepo.AddOwnedBookAsync(ownedBookObj);
             return Ok();
         }
 
         [HttpPatch("api/users/{userId}/books/{bookId}")]
-        public async Task<IActionResult> UpdateBookDetails(int userId, InterfaceModels.OwnedBookData ownedBook)
+        public async Task<IActionResult> UpdateBookDetails(int userId, DTOs.OwnedBookData ownedBook)
         {
             await _ownedBookRepo.UpdateOwnedBookStatus(userId, ownedBook.AvailabilityStatus, ownedBook.ConditionStatus);
             return Ok();

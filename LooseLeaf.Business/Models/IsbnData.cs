@@ -6,14 +6,12 @@ using System.Threading.Tasks;
 
 namespace LooseLeaf.Business.Models
 {
-    public interface IUser
+    public record IsbnData : IIsbnData
     {
-        int Id { get; }
+        public long IsbnValue { get; }
 
-        string UserName { get; }
-
-        string Email { get; }
-
-        IAddress Address { get; }
+        public IsbnData(long isbn)
+        {
+        }
     }
 }

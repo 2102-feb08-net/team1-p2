@@ -8,8 +8,8 @@ namespace LooseLeaf.Business.Models
 {
     public interface ILoan
     {
-        IUser Lender { get; }
-        IUser Borrower { get; }
+        int Lender { get; }
+        int Borrower { get; }
 
         string Message { get; }
 

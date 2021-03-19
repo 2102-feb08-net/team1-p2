@@ -53,6 +53,7 @@ namespace LooseLeaf.DataAccess.Repositories
         {
             var userList = await _context.Users.Include(u => u.Address).Select(u =>
             new Business.Models.User(
+                    u.Id,
                     u.Username,
                     u.Email,
                     new Business.Models.Address(u.Address.Address1, u.Address.Address2, u.Address.City, u.Address.State, u.Address.Country, u.Address.Zipcode)
@@ -65,12 +66,12 @@ namespace LooseLeaf.DataAccess.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<IUser> GetUserAsync(int userid)
+        public async Task<IUser> GetUserAsync(int userId)
         {
-            var user = await _context.Users.Where(b => b.Id == userid).SingleAsync();
+            var user = await _context.Users.Where(b => b.Id == userId).SingleAsync();
             var useraddress = await _context.Addresses.Where(b => b.Id == user.AddressId).SingleAsync();
             Business.Models.Address address = new Business.Models.Address(useraddress.Address1, useraddress.Address2, useraddress.City, useraddress.State, useraddress.Country, useraddress.Zipcode);
-            return new Business.Models.User(user.Username, user.Email, address);
+            return new Business.Models.User(userId, user.Username, user.Email, address);
         }
 
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();

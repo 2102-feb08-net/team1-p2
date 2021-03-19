@@ -8,14 +8,14 @@ namespace LooseLeaf.Business.Models
 {
     public interface IOwnedBook
     {
-        IBook Book { get; }
-
-        IUser Owner { get; }
+        int OwnerId { get; }
 
         PhysicalCondition Condition { get; }
 
         Availability Availability { get; }
 
         int Id { get; }
+
+        IIsbnData Isbn { get; }
     }
 }

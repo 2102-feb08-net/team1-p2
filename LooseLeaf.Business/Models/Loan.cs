@@ -8,9 +8,9 @@ namespace LooseLeaf.Business.Models
 {
     public class Loan : ILoan
     {
-        public IUser Lender { get; }
+        public int Lender { get; }
 
-        public IUser Borrower { get; }
+        public int Borrower { get; }
 
         public string Message { get; }
 
@@ -26,12 +26,12 @@ namespace LooseLeaf.Business.Models
 
         public bool IsPublic { get; }
 
-        public Loan(IUser lender, IUser borrower, string message, DateTimeOffset pickUpDate, DateTimeOffset returnDate, IAddress address, List<IOwnedBook> loanedBooks)
+        public Loan(int lenderId, int borrowerId, string message, DateTimeOffset pickUpDate, DateTimeOffset returnDate, IAddress address, List<IOwnedBook> loanedBooks)
         {
-            if (lender is null)
-                throw new ArgumentNullException(nameof(lender));
-            if (borrower is null)
-                throw new ArgumentNullException(nameof(borrower));
+            if (lenderId <= 0)
+                throw new ArgumentException("The lenderId must be greater than 0.", nameof(lenderId));
+            if (borrowerId <= 0)
+                throw new ArgumentException("The borrowId must be greater than 0.", nameof(borrowerId));
             if (pickUpDate >= returnDate)
                 throw new ArgumentException("The pickup date and time must be before the return date and time.");
             if (address is null)
@@ -42,11 +42,11 @@ namespace LooseLeaf.Business.Models
             if (loanedBooks.Count == 0)
                 throw new ArgumentException("The number of loan books must be at least 1.");
 
-            if (loanedBooks.Find(b => b.Owner != lender) is not null)
+            if (loanedBooks.Find(b => b.OwnerId != lenderId) is not null)
                 throw new ArgumentException("Every book loaned, must be owned by the lender.");
 
-            Lender = lender;
-            Borrower = borrower;
+            Lender = lenderId;
+            Borrower = borrowerId;
             Message = message;
             DropoffDate = pickUpDate;
             ReturnDate = returnDate;

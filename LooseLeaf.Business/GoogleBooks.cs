@@ -26,7 +26,7 @@ namespace LooseLeaf.Business
             new MediaTypeWithQualityHeaderValue("application/json"));
 
             // List data response.
-            HttpResponseMessage response = await client.GetAsync(urlParameters);  // Blocking call! Program will wait here until a response is received or a timeout occurs.
+            HttpResponseMessage response = await client.GetAsync(urlParameters);
             if (response.IsSuccessStatusCode)
             {
                 // Parse the response body.

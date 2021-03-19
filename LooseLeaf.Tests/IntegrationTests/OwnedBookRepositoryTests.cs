@@ -19,6 +19,7 @@ namespace LooseLeaf.Tests.IntegrationTests
         public async Task OwnedBookRepository_AddOwnedBook()
         {
             // arrange
+            const int userId = 1;
             const string username = "user";
             const string title = "The Martian";
             const string author = "Beyonce";
@@ -32,8 +33,8 @@ namespace LooseLeaf.Tests.IntegrationTests
                 await arrangeContext.SaveChangesAsync();
             }
 
-            Mock<IUser> fakeUser = new Mock<IUser>();
-            fakeUser.Setup(u => u.UserName).Returns(username);
+            Mock<IIsbnData> mockIsbn = new Mock<IIsbnData>();
+            mockIsbn.Setup(x => x.IsbnValue).Returns(isbn);
 
             Mock<IBook> fakeBook = new Mock<IBook>();
             fakeBook.Setup(x => x.Title).Returns(title);
@@ -44,8 +45,8 @@ namespace LooseLeaf.Tests.IntegrationTests
             Mock<IOwnedBook> fakeOwnedBook = new Mock<IOwnedBook>();
             fakeOwnedBook.Setup(x => x.Availability).Returns(Availability.Available);
             fakeOwnedBook.Setup(x => x.Condition).Returns(PhysicalCondition.LikeNew);
-            fakeOwnedBook.Setup(x => x.Owner).Returns(fakeUser.Object);
-            fakeOwnedBook.Setup(x => x.Book).Returns(fakeBook.Object);
+            fakeOwnedBook.Setup(x => x.OwnerId).Returns(userId);
+            fakeOwnedBook.Setup(x => x.Isbn).Returns(mockIsbn.Object);
 
             // act
             using (LooseLeafContext actContext = contextFactory.CreateContext())

@@ -5,11 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using LooseLeaf.Business.Models;
 
-namespace LooseLeaf.Web.InterfaceModels
+namespace LooseLeaf.Web.DTOs
 {
     public class OwnedBookData : IValidatableObject
     {
-        public int BookId { get; }
+        public long Isbn { get; }
 
         public Availability? AvailabilityStatus { get; }
 

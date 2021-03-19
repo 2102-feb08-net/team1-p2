@@ -30,6 +30,10 @@ namespace LooseLeaf.Tests.IntegrationTests
             // arrange
             const string LENDER_USERNAME = "lender";
             const string BORROWER_USERNAME = "borrower";
+
+            const int LENDER_ID = 1;
+            const int BORROWER_ID = 2;
+
             ILoan loan;
             using var contextFactory = new TestLooseLeafContextFactory();
             using (LooseLeafContext arrangeContext = contextFactory.CreateContext())
@@ -41,15 +45,9 @@ namespace LooseLeaf.Tests.IntegrationTests
                 await arrangeContext.SaveChangesAsync();
             }
 
-            Mock<IUser> lender = new Mock<IUser>();
-            lender.Setup(l => l.UserName).Returns(LENDER_USERNAME);
-
-            Mock<IUser> borrower = new Mock<IUser>();
-            borrower.Setup(b => b.UserName).Returns(BORROWER_USERNAME);
-
             IAddress fakeAddress = new Mock<IAddress>().Object;
             var fakeBook = new Mock<IOwnedBook>();
-            fakeBook.Setup(b => b.Owner).Returns(lender.Object);
+            fakeBook.Setup(b => b.OwnerId).Returns(LENDER_ID);
             fakeBook.Setup(b => b.Id).Returns(1);
             fakeBook.Setup(b => b.Availability).Returns(Availability.Available);
 
@@ -58,7 +56,7 @@ namespace LooseLeaf.Tests.IntegrationTests
                 fakeBook.Object
             };
 
-            loan = new Business.Models.Loan(lender.Object, borrower.Object, "Hello", new DateTime(2000, 1, 2), new DateTime(2000, 1, 4), fakeAddress, ownedBooks);
+            loan = new Business.Models.Loan(LENDER_ID, BORROWER_ID, "Hello", new DateTime(2000, 1, 2), new DateTime(2000, 1, 4), fakeAddress, ownedBooks);
 
             // act
             using (LooseLeafContext context = contextFactory.CreateContext())

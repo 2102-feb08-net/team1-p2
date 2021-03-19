@@ -21,12 +21,12 @@ namespace LooseLeaf.DataAccess.Repositories
 
         public async Task AddOwnedBookAsync(IOwnedBook ownedBook)
         {
-            var user = await _context.Users.SingleAsync(u => u.Username == ownedBook.Owner.UserName);
-            var book = await _context.Books.SingleOrDefaultAsync(b => b.Isbn == ownedBook.Book.Isbn);
+            var user = await _context.Users.SingleAsync(u => u.Id == ownedBook.OwnerId);
+            var book = await _context.Books.SingleOrDefaultAsync(b => b.Isbn == ownedBook.Isbn.IsbnValue);
             if (book is null)
             {
                 GoogleBooks googleBooks = new GoogleBooks();
-                IBook bookObj = await googleBooks.GetBookFromIsbn(ownedBook.Book.Isbn);
+                IBook bookObj = await googleBooks.GetBookFromIsbn(ownedBook.Isbn.IsbnValue);
                 book = await AddBook(bookObj);
             }
 
@@ -86,8 +86,8 @@ namespace LooseLeaf.DataAccess.Repositories
             var ownedBooks = await ownedBooksQuery.ToListAsync();
             return ownedBooks.Select(o => new Business.Models.OwnedBook(
                 o.Id,
-                o.Book.ConvertToIBook(),
-                o.User.ConvertToUser(),
+                new IsbnData(o.Book.Isbn),
+                o.UserId,
                 (PhysicalCondition)o.ConditionId,
                 (Availability)o.AvailabilityStatusId));
         }
