@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using LooseLeaf.Business.IRepositories;
+using LooseLeaf.Business.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,16 +12,26 @@ namespace LooseLeaf.Web.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
+        private readonly IBookRepository _bookRepo;
+
+        public BooksController(IBookRepository loanRepo)
+        {
+            _bookRepo = loanRepo;
+        }
+
         [HttpGet("api/books")]
         public async Task<IActionResult> GetAllBooks(string genre, string author, string title)
         {
-            throw new NotImplementedException();
+            IBookSearchParams searchParams = new BookSearchParams() { Genre = genre, Author = author, Title = title };
+            var books = await _bookRepo.GetAllBooks(searchParams);
+            return Ok(books);
         }
 
         [HttpGet("api/books/{bookId}")]
         public async Task<IActionResult> GetBookById(int bookId)
         {
-            throw new NotImplementedException();
+            var book = await _bookRepo.GetBook(bookId);
+            return Ok(book);
         }
 
         [HttpPut("api/books/{bookId}")]

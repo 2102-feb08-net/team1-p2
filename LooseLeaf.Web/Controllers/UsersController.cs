@@ -1,4 +1,5 @@
 ﻿using LooseLeaf.Business.IRepositories;
+using LooseLeaf.Business.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -51,13 +52,16 @@ namespace LooseLeaf.Web.Controllers
         [HttpGet("api/users/{userId}/books")]
         public async Task<IActionResult> GetBooksByUser(int userId)
         {
-            throw new NotImplementedException();
+            IOwnedBookSearchParams searchParams = new OwnedBookSearchParams() { UserId = userId };
+            var ownedBooks = await _ownedBookRepo.GetOwnedBooksAsync(searchParams);
+            return Ok(ownedBooks);
         }
 
-        [HttpPost("api/users/{userId}/books")]
-        public async Task<IActionResult> AddUserOwnedBooks(List<DTOs.Book> books)
+        [HttpPost("api/users/{userId}/book")]
+        public async Task<IActionResult> AddUserOwnedBook(DTOs.Book book)
         {
-            throw new NotImplementedException();
+            await _ownedBookRepo.AddOwnedBookAsync(null);
+            return Ok();
         }
 
         [HttpPatch("api/users/{userId}/books/{bookId}")]
