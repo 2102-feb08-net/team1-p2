@@ -67,6 +67,7 @@ namespace LooseLeaf.Web.Controllers
 
             IOwnedBook ownedBookObj = new OwnedBook(new IsbnData(data.Isbn), userId, data.ConditionStatus.Value, data.AvailabilityStatus.Value);
             await _ownedBookRepo.AddOwnedBookAsync(ownedBookObj);
+            await _ownedBookRepo.SaveChangesAsync();
             return Ok();
         }
 
@@ -74,6 +75,7 @@ namespace LooseLeaf.Web.Controllers
         public async Task<IActionResult> UpdateBookDetails(int userId, DTOs.OwnedBookData ownedBook)
         {
             await _ownedBookRepo.UpdateOwnedBookStatus(userId, ownedBook.AvailabilityStatus, ownedBook.ConditionStatus);
+            await _ownedBookRepo.SaveChangesAsync();
             return Ok();
         }
 
@@ -88,6 +90,7 @@ namespace LooseLeaf.Web.Controllers
         public async Task<IActionResult> AddBookToUserWishlist(int userId, int bookId)
         {
             await _wishlistRepo.AddBookToUserWishlist(userId, bookId);
+            await _wishlistRepo.SaveChangesAsync();
             return Ok();
         }
 
@@ -95,6 +98,7 @@ namespace LooseLeaf.Web.Controllers
         public async Task<IActionResult> DeleteBookFromUserWishlist(int userId, int bookId)
         {
             await _wishlistRepo.RemoveBookFromUserWishlist(userId, bookId);
+            await _wishlistRepo.SaveChangesAsync();
             return Ok();
         }
 
