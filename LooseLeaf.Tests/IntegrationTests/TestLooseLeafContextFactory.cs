@@ -104,6 +104,11 @@ namespace LooseLeaf.Tests.IntegrationTests
             return newIsbn;
         }
 
+         public async Task CreateLoan(LooseLeafContext context, int _LenderId, int _BurrowerId)
+        {
+            await context.Loans.AddAsync(new DataAccess.Loan() { LenderId = _LenderId, BorrowerId = _BurrowerId, Message = "Test loan message",  LoanStatusId = 1, IsPublic = true, DropoffDate = DateTime.Now, ReturnedDate = DateTime.Now, AddressId = 1 });
+        }
+
         public async Task CreateGenre(LooseLeafContext context, int bookId, string genre = "Test")
         {
             await context.Genres.AddAsync(new DataAccess.Genre() { GenreName = genre, BookId = bookId });
