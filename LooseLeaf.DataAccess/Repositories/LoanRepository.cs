@@ -34,7 +34,6 @@ namespace LooseLeaf.DataAccess.Repositories
                 ReturnedDate = loan.ReturnDate,
                 LoanStatusId = (int)loan.Status,
                 AddressId = loan.ExchangeLocationAddressId,
-                IsPublic = loan.IsPublic
             };
 
             await _context.Loans.AddAsync(dataLoan);

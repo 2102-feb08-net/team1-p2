@@ -25,8 +25,6 @@ namespace LooseLeaf.Business.Models
 
         public LoanStatus Status { get; }
 
-        public bool IsPublic { get; }
-
         public Loan(int lenderId, int borrowerId, string message, DateTimeOffset pickUpDate, DateTimeOffset returnDate, int addressId, IEnumerable<int> loanedBooks, LoanStatus status)
         {
             if (lenderId <= 0)
@@ -57,7 +55,6 @@ namespace LooseLeaf.Business.Models
             ExchangeLocationAddressId = addressId;
             LoanedBookIds = new ReadOnlyCollection<int>(loanedBooks.ToList());
             Status = status;
-            IsPublic = true;
         }
     }
 }

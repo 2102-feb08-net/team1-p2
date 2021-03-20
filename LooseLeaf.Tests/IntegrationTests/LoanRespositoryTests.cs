@@ -91,7 +91,6 @@ namespace LooseLeaf.Tests.IntegrationTests
                     Message = LOAN_MESSAGE,
                     LoanStatusId = (int)Business.Models.LoanStatus.Approved,
                     AddressId = 1,
-                    IsPublic = true,
                     DropoffDate = new DateTime(2000, 10, 1),
                     ReturnedDate = new DateTime(2000, 10, 17),
                 };
