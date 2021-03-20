@@ -17,12 +17,12 @@ namespace LooseLeaf.Business.Models
 
         DateTimeOffset ReturnDate { get; }
 
-        IAddress ExchangeLocation { get; }
+        int ExchangeLocationAddressId { get; }
 
         LoanStatus Status { get; }
 
         bool IsPublic { get; }
 
-        List<int> LoanedBookIds { get; }
+        IReadOnlyCollection<int> LoanedBookIds { get; }
     }
 }

@@ -33,6 +33,7 @@ namespace LooseLeaf.DataAccess.Repositories
                 DropoffDate = loan.DropoffDate,
                 ReturnedDate = loan.ReturnDate,
                 LoanStatusId = (int)loan.Status,
+                AddressId = loan.ExchangeLocationAddressId,
                 IsPublic = loan.IsPublic
             };
 
@@ -47,7 +48,36 @@ namespace LooseLeaf.DataAccess.Repositories
             await _context.LoanedBooks.AddRangeAsync(loanedBooks);
         }
 
-        public Task GetLoanAsync(ILoanSearchParams searchParams) => throw new NotImplementedException();
+        public async Task<IEnumerable<ILoan>> GetLoansAsync(ILoanSearchParams searchParams)
+        {
+            IQueryable<Loan> loanQuery = _context.Loans.Include(l => l.LoanedBooks).ThenInclude(b => b.OwnedBook).Include(l => l.Address);
+
+            if (searchParams.LenderId.HasValue)
+                loanQuery = loanQuery.Where(l => l.LenderId == searchParams.LenderId);
+            if (searchParams.BorrowerId.HasValue)
+                loanQuery = loanQuery.Where(l => l.BorrowerId == searchParams.BorrowerId);
+            if (searchParams.OwnedBookId.HasValue)
+                loanQuery = loanQuery.Where(l => l.LoanedBooks.Where(b => b.OwnedBookid == searchParams.OwnedBookId).Any());
+            if (searchParams.BookId.HasValue)
+                loanQuery = loanQuery.Where(l => l.LoanedBooks.Where(b => b.OwnedBook.BookId == searchParams.BookId).Any());
+            if (searchParams.LoanStatus.HasValue)
+                loanQuery = loanQuery.Where(l => l.LoanStatusId == (int)searchParams.LoanStatus);
+
+            if (searchParams.Pagination is not null)
+                loanQuery = loanQuery.Skip(searchParams.Pagination.PageSize * searchParams.Pagination.PageIndex).Take(searchParams.Pagination.PageIndex);
+
+            var loans = await loanQuery.ToListAsync();
+
+            return loans.Select(l => new Business.Models.Loan(
+                l.LenderId,
+                l.BorrowerId,
+                l.Message,
+                l.DropoffDate,
+                l.ReturnedDate,
+                l.AddressId,
+                l.LoanedBooks.Select(b => b.OwnedBookid),
+                (Business.Models.LoanStatus)l.LoanStatusId));
+        }
 
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
     }

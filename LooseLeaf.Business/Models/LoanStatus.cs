@@ -11,5 +11,6 @@ namespace LooseLeaf.Business.Models
         Requested = 1,
         Approved = 2,
         Denied = 3,
+        Expired = 4, // The lender never accepted or denied the loan before it started
     }
 }

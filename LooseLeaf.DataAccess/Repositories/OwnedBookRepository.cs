@@ -89,6 +89,9 @@ namespace LooseLeaf.DataAccess.Repositories
             if (searchParams.UserId.HasValue)
                 ownedBooksQuery = ownedBooksQuery.Where(o => o.UserId == searchParams.UserId);
 
+            if (searchParams.Pagination is not null)
+                ownedBooksQuery = ownedBooksQuery.Skip(searchParams.Pagination.PageSize * searchParams.Pagination.PageIndex).Take(searchParams.Pagination.PageIndex);
+
             var ownedBooks = await ownedBooksQuery.ToListAsync();
             return ownedBooks.Select(o => new Business.Models.OwnedBook(
                 o.Id,

@@ -16,7 +16,7 @@ namespace LooseLeaf.Tests
         private string message = "I want to borrow these books.";
         private DateTimeOffset pickupTime = new DateTimeOffset(new DateTime(2000, 1, 2));
         private DateTimeOffset returnTime = new DateTimeOffset(new DateTime(2000, 1, 3));
-        private IAddress fakeAddress = new Mock<IAddress>().Object;
+        private int fakeAddress = 4;
         private List<int> books = new List<int>() { 1, 2, 10 };
         private const LoanStatus status = LoanStatus.Requested;
 
@@ -94,15 +94,15 @@ namespace LooseLeaf.Tests
         }
 
         [Fact]
-        public void Loan_NullAddress_Fail()
+        public void Loan_DefaultAddress_Fail()
         {
             // arrange
 
             // act
-            ILoan loan() => new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, null, books, status);
+            ILoan loan() => new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, default, books, status);
 
             // assert
-            Assert.Throws<ArgumentNullException>(loan);
+            Assert.Throws<ArgumentException>(loan);
         }
 
         [Theory]
@@ -189,7 +189,7 @@ namespace LooseLeaf.Tests
             ILoan loan = new Loan(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
 
             // assert
-            Assert.Equal(fakeAddress, loan.ExchangeLocation);
+            Assert.Equal(fakeAddress, loan.ExchangeLocationAddressId);
         }
 
         [Fact]

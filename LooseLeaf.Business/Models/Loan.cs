@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,15 +19,15 @@ namespace LooseLeaf.Business.Models
 
         public DateTimeOffset ReturnDate { get; }
 
-        public IAddress ExchangeLocation { get; }
+        public int ExchangeLocationAddressId { get; }
 
-        public List<int> LoanedBookIds { get; }
+        public IReadOnlyCollection<int> LoanedBookIds { get; }
 
         public LoanStatus Status { get; }
 
         public bool IsPublic { get; }
 
-        public Loan(int lenderId, int borrowerId, string message, DateTimeOffset pickUpDate, DateTimeOffset returnDate, IAddress address, List<int> loanedBooks, LoanStatus status)
+        public Loan(int lenderId, int borrowerId, string message, DateTimeOffset pickUpDate, DateTimeOffset returnDate, int addressId, IEnumerable<int> loanedBooks, LoanStatus status)
         {
             if (lenderId <= 0)
                 throw new ArgumentException("The lenderId must be greater than 0.", nameof(lenderId));
@@ -34,13 +35,16 @@ namespace LooseLeaf.Business.Models
                 throw new ArgumentException("The borrowId must be greater than 0.", nameof(borrowerId));
             if (pickUpDate >= returnDate)
                 throw new ArgumentException("The pickup date and time must be before the return date and time.");
-            if (address is null)
-                throw new ArgumentNullException(nameof(address));
+            if (addressId <= 0)
+                throw new ArgumentException("The addressId must be greater than 0.", nameof(addressId));
             if (loanedBooks is null)
                 throw new ArgumentNullException(nameof(loanedBooks));
 
-            if (loanedBooks.Count == 0)
+            if (loanedBooks.Count() == 0)
                 throw new ArgumentException("The number of loan books must be at least 1.");
+
+            if (loanedBooks.Distinct().Count() != loanedBooks.Count())
+                throw new ArgumentException("A loan cannot contain multiple of the same owned book.");
 
             if (!Enum.IsDefined(status))
                 throw new ArgumentException("The loan status must be a valid value.");
@@ -50,8 +54,8 @@ namespace LooseLeaf.Business.Models
             Message = message;
             DropoffDate = pickUpDate;
             ReturnDate = returnDate;
-            ExchangeLocation = address;
-            LoanedBookIds = loanedBooks;
+            ExchangeLocationAddressId = addressId;
+            LoanedBookIds = new ReadOnlyCollection<int>(loanedBooks.ToList());
             Status = status;
             IsPublic = true;
         }

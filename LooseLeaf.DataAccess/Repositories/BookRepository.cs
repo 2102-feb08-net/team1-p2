@@ -23,20 +23,23 @@ namespace LooseLeaf.DataAccess.Repositories
         {
             var newParams = searchParams.ToString().ToLower();
 
-            IQueryable<Book> books = _context.Books.Include(b => b.Genres);
+            IQueryable<Book> bookQuery = _context.Books.Include(b => b.Genres);
 
             if (!string.IsNullOrWhiteSpace(searchParams.Author))
-                books = books.Where(b => b.Author.ToLower().Contains(searchParams.Author.ToLower()));
+                bookQuery = bookQuery.Where(b => b.Author.ToLower().Contains(searchParams.Author.ToLower()));
 
             if (!string.IsNullOrWhiteSpace(searchParams.Title))
-                books = books.Where(b => b.Title.ToLower().Contains(searchParams.Title.ToLower()));
+                bookQuery = bookQuery.Where(b => b.Title.ToLower().Contains(searchParams.Title.ToLower()));
 
             if (!string.IsNullOrWhiteSpace(searchParams.Genre))
-                books = books.Where(b =>
+                bookQuery = bookQuery.Where(b =>
                     b.Genres.Any(g => g.GenreName.ToLower() == searchParams.Genre.ToLower())
                     );
 
-            var results = await books.ToListAsync();
+            if (searchParams.Pagination is not null)
+                bookQuery = bookQuery.Skip(searchParams.Pagination.PageSize * searchParams.Pagination.PageIndex).Take(searchParams.Pagination.PageIndex);
+
+            var results = await bookQuery.ToListAsync();
 
             return results.Select(x => x.ConvertToIBook());
         }

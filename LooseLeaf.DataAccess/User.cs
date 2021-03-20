@@ -11,6 +11,7 @@ namespace LooseLeaf.DataAccess
         {
             LoanBorrowers = new HashSet<Loan>();
             LoanLenders = new HashSet<Loan>();
+            LoanReviews = new HashSet<LoanReview>();
             OwnedBooks = new HashSet<OwnedBook>();
             Wishlists = new HashSet<Wishlist>();
         }
@@ -23,6 +24,7 @@ namespace LooseLeaf.DataAccess
         public virtual Address Address { get; set; }
         public virtual ICollection<Loan> LoanBorrowers { get; set; }
         public virtual ICollection<Loan> LoanLenders { get; set; }
+        public virtual ICollection<LoanReview> LoanReviews { get; set; }
         public virtual ICollection<OwnedBook> OwnedBooks { get; set; }
         public virtual ICollection<Wishlist> Wishlists { get; set; }
     }

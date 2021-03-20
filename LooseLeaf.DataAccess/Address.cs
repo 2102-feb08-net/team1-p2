@@ -9,6 +9,7 @@ namespace LooseLeaf.DataAccess
     {
         public Address()
         {
+            Loans = new HashSet<Loan>();
             Users = new HashSet<User>();
         }
 
@@ -20,6 +21,7 @@ namespace LooseLeaf.DataAccess
         public string Country { get; set; }
         public int Zipcode { get; set; }
 
+        public virtual ICollection<Loan> Loans { get; set; }
         public virtual ICollection<User> Users { get; set; }
     }
 }

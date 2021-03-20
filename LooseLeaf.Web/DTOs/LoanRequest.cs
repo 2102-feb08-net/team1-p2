@@ -24,7 +24,7 @@ namespace LooseLeaf.Web.DTOs
         public DateTimeOffset EndDate { get; }
 
         [Required]
-        public Address Address { get; }
+        public int AddressId { get; }
 
         [Required]
         public List<int> OwnedBookIds { get; }

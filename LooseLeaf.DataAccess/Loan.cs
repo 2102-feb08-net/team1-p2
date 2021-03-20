@@ -9,6 +9,7 @@ namespace LooseLeaf.DataAccess
     {
         public Loan()
         {
+            LoanReviews = new HashSet<LoanReview>();
             LoanedBooks = new HashSet<LoanedBook>();
         }
 
@@ -20,11 +21,13 @@ namespace LooseLeaf.DataAccess
         public bool IsPublic { get; set; }
         public DateTimeOffset DropoffDate { get; set; }
         public DateTimeOffset ReturnedDate { get; set; }
-        public bool IsRecommended { get; set; }
+        public int AddressId { get; set; }
 
+        public virtual Address Address { get; set; }
         public virtual User Borrower { get; set; }
         public virtual User Lender { get; set; }
         public virtual LoanStatus LoanStatus { get; set; }
+        public virtual ICollection<LoanReview> LoanReviews { get; set; }
         public virtual ICollection<LoanedBook> LoanedBooks { get; set; }
     }
 }

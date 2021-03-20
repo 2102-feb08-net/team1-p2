@@ -72,7 +72,7 @@ CREATE TABLE Loans(
 	isPublic BIT NOT NULL,
 	dropoffDate DATETIMEOFFSET NOT NULL, 
 	returnedDate DATETIMEOFFSET NOT NULL, 
-	isRecommended BIT NOT NULL,
+	addressId INT NOT NULL FOREIGN KEY REFERENCES Addresses(id),
 )
 
 CREATE TABLE Loaned_Books(
@@ -85,6 +85,12 @@ CREATE TABLE Wishlist(
 	id INT PRIMARY KEY IDENTITY NOT NULL,
 	userId INT NOT NULL FOREIGN KEY REFERENCES Users(id),
 	bookId INT NOT NULL FOREIGN KEY REFERENCES Books(id)
+)
+
+CREATE TABLE Loan_Review(
+	id INT PRIMARY KEY IDENTITY NOT NULL,
+	reviewerId INT NOT NULL FOREIGN KEY REFERENCES Users(id),
+	loanId INT NOT NULL FOREIGN KEY REFERENCES Loans(id),
 )
 
 INSERT INTO addresses (address1, address2, city, state, zipcode) VALUES
@@ -140,7 +146,8 @@ INSERT INTO Condition_Status (statusName) VALUES
 INSERT INTO Loan_Status (statusName) VALUES
 	('Requested'),
 	('Approved'),
-	('Denied');
+	('Denied'),
+	('Expired');
 
 INSERT INTO Users (addressid, username, email) VALUES
 	(1, 'cordagepayment', 'bumblebeehedgehog@ymail.com'),
