@@ -17,6 +17,7 @@ using LooseLeaf.DataAccess;
 using LooseLeaf.DataAccess.Repositories;
 using LooseLeaf.Business.IRepositories;
 using LooseLeaf.Business;
+using LooseLeaf.Business.Models;
 
 namespace LooseLeaf.Web
 {

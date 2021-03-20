@@ -20,9 +20,11 @@ namespace LooseLeaf.Web.Controllers
         }
 
         [HttpGet("api/loans")]
-        public async Task<IActionResult> GetAllLoans()
+        public async Task<IActionResult> GetAllLoans(int? lender, int? borrower, int? book, int? ownedBook, int? loanStatus)
         {
-            throw new NotImplementedException();
+            ILoanSearchParams searchParams = new LoanSearchParams { LenderId = lender, BorrowerId = borrower, BookId = book, OwnedBookId = ownedBook, LoanStatus = (LoanStatus?)loanStatus };
+            var loans = await _loanRepo.GetLoansAsync(searchParams);
+            return Ok(loans);
         }
 
         [HttpPost("api/loans")]
@@ -30,7 +32,8 @@ namespace LooseLeaf.Web.Controllers
         {
             ILoan loan = new Loan(req.LenderId, req.BorrowId, req.Message, req.StartDate, req.EndDate, req.AddressId, req.OwnedBookIds, LoanStatus.Requested);
             await _loanRepo.AddLoanAsync(loan);
-            throw new NotImplementedException();
+            await _loanRepo.SaveChangesAsync();
+            return Ok();
         }
 
         [HttpGet("api/loans/{loanId}")]

@@ -10,23 +10,23 @@ namespace LooseLeaf.Web.DTOs
     public class LoanRequest
     {
         [Required]
-        public int LenderId { get; }
+        public int LenderId { get; set; }
 
         [Required]
-        public int BorrowId { get; }
+        public int BorrowId { get; set; }
 
-        public string Message { get; }
-
-        [Required]
-        public DateTimeOffset StartDate { get; }
+        public string Message { get; set; }
 
         [Required]
-        public DateTimeOffset EndDate { get; }
+        public DateTime StartDate { get; set; }
 
         [Required]
-        public int AddressId { get; }
+        public DateTime EndDate { get; set; }
 
         [Required]
-        public List<int> OwnedBookIds { get; }
+        public int AddressId { get; set; }
+
+        [Required]
+        public List<int> OwnedBookIds { get; set; }
     }
 }
