@@ -83,7 +83,7 @@ namespace LooseLeaf.Tests.IntegrationTests
                 await CreateAddress(context);
                 await context.SaveChangesAsync();
             }
-            await context.Users.AddAsync(new DataAccess.User() { Username = username, Userpassword = "password", Email = $"{username}@website.com", AddressId = 1 });
+            await context.Users.AddAsync(new DataAccess.User() { Username = username, Email = $"{username}@website.com", AddressId = 1 });
         }
 
         /// <summary>

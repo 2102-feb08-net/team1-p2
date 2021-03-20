@@ -27,7 +27,7 @@ namespace LooseLeaf.Business.Models
             if (!Enum.IsDefined(condition))
                 throw new ArgumentException($"Value '{condition}' does not exist in PhysicalCondition");
             if (!Enum.IsDefined(availability))
-                throw new ArgumentException($"Value '{condition}' does not exist in Availability");
+                throw new ArgumentException($"Value '{availability}' does not exist in Availability");
 
             Isbn = isbn;
 

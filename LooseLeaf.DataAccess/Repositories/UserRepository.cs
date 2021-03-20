@@ -41,7 +41,6 @@ namespace LooseLeaf.DataAccess.Repositories
             User newUser = new User()
             {
                 Username = user.UserName,
-                Userpassword = "NO PASSWORD", //TODO: replaced with hashed password
                 Email = user.Email,
                 Address = newUserAddress
             };

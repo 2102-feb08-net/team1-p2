@@ -8,8 +8,9 @@ namespace LooseLeaf.Business.Models
 {
     public enum Availability
     {
-        Unknown,
-        Available,
-        CheckedOut,
+        Available = 1,
+        CheckedOut = 2,
+        InProcess = 3,
+        Unknown = 4
     }
 }

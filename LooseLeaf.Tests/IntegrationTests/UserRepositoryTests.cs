@@ -58,7 +58,6 @@ namespace LooseLeaf.Tests.IntegrationTests
             var insertedUser = new DataAccess.User
             {
                 Username = "damionsilver",
-                Userpassword = "password",
                 Email = "damion.silver@gmail.com",
                 AddressId = 1
             };
