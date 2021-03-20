@@ -9,7 +9,7 @@ namespace LooseLeaf.Business.IRepositories
 {
     public interface IOwnedBookRepository : IRepository
     {
-        Task AddOwnedBookAsync(IOwnedBook ownedBook);
+        Task AddOwnedBookAsync(IOwnedBook ownedBook, GoogleBooks googleBooks);
 
         Task UpdateOwnedBookStatus(int ownedBookId, Availability? availability, PhysicalCondition? condition);
 

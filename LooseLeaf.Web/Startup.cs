@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using LooseLeaf.DataAccess;
 using LooseLeaf.DataAccess.Repositories;
 using LooseLeaf.Business.IRepositories;
+using LooseLeaf.Business;
 
 namespace LooseLeaf.Web
 {
@@ -43,6 +44,9 @@ namespace LooseLeaf.Web
                .AllowAnyMethod()
                .AllowAnyHeader()
                .AllowCredentials()));
+
+            services.AddHttpClient<GoogleBooks>();
+            services.Configure<GoogleBooksOptions>(Configuration.GetSection(GoogleBooksOptions.ApiKeyConfiguration));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>

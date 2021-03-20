@@ -10,6 +10,8 @@ using LooseLeaf.Business.Models;
 using LooseLeaf.Business.IRepositories;
 using LooseLeaf.DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
+using LooseLeaf.Business;
+using System.Net.Http;
 
 namespace LooseLeaf.Tests.IntegrationTests
 {
@@ -47,13 +49,14 @@ namespace LooseLeaf.Tests.IntegrationTests
             fakeOwnedBook.Setup(x => x.Condition).Returns(PhysicalCondition.LikeNew);
             fakeOwnedBook.Setup(x => x.OwnerId).Returns(userId);
             fakeOwnedBook.Setup(x => x.Isbn).Returns(mockIsbn.Object);
+            GoogleBooks googleBooks = new GoogleBooks(new HttpClient(), null);
 
             // act
             using (LooseLeafContext actContext = contextFactory.CreateContext())
             {
                 IOwnedBookRepository ownedBookRepo = new OwnedBookRepository(actContext);
 
-                await ownedBookRepo.AddOwnedBookAsync(fakeOwnedBook.Object);
+                await ownedBookRepo.AddOwnedBookAsync(fakeOwnedBook.Object, googleBooks);
                 await actContext.SaveChangesAsync();
             }
 

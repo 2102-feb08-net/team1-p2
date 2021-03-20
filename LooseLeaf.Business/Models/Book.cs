@@ -9,9 +9,6 @@ namespace LooseLeaf.Business.Models
 {
     public class Book : IBook
     {
-        private const int ISBN_LENGTH_10 = 10;
-        private const int ISBN_LENGTH_13 = 13;
-
         public int Id { get; }
         public string Title { get; }
 
@@ -36,7 +33,7 @@ namespace LooseLeaf.Business.Models
                 throw new ArgumentException(message: "Book Author cannot be blank.");
 
             int isbnLength = isbn.ToString().Length;
-            if (isbn < 0 || (isbnLength != ISBN_LENGTH_10 && isbnLength != ISBN_LENGTH_13))
+            if (isbn < 0 || (isbnLength != IsbnData.ISBN_LENGTH_10 && isbnLength != IsbnData.ISBN_LENGTH_13))
                 throw new ArgumentException("An ISBN number must be 10 or 13 digits long and be non negative.", nameof(isbn));
 
             if (genres is null)

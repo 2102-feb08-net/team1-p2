@@ -19,14 +19,20 @@ namespace LooseLeaf.DataAccess.Repositories
             _context = context;
         }
 
-        public async Task AddOwnedBookAsync(IOwnedBook ownedBook)
+        public async Task AddOwnedBookAsync(IOwnedBook ownedBook, GoogleBooks googleBooks)
         {
+            if (googleBooks is null)
+                throw new ArgumentNullException(nameof(googleBooks));
+
             var user = await _context.Users.SingleAsync(u => u.Id == ownedBook.OwnerId);
             var book = await _context.Books.SingleOrDefaultAsync(b => b.Isbn == ownedBook.Isbn.IsbnValue);
             if (book is null)
             {
-                GoogleBooks googleBooks = new GoogleBooks();
                 IBook bookObj = await googleBooks.GetBookFromIsbn(ownedBook.Isbn.IsbnValue);
+
+                if (bookObj is null)
+                    throw new NullReferenceException("Unable to retrieve book from Google Books.");
+
                 book = await AddBook(bookObj);
             }
 

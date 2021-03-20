@@ -9,11 +9,12 @@ namespace LooseLeaf.Web.DTOs
 {
     public class OwnedBookData : IValidatableObject
     {
-        public long Isbn { get; }
+        [Required]
+        public string Isbn { get; set; }
 
-        public Availability? AvailabilityStatus { get; }
+        public Availability? AvailabilityStatus { get; set; }
 
-        public PhysicalCondition? ConditionStatus { get; }
+        public PhysicalCondition? ConditionStatus { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext context)
         {

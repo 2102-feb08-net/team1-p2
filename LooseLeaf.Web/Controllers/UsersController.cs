@@ -1,7 +1,9 @@
-﻿using LooseLeaf.Business.IRepositories;
+﻿using LooseLeaf.Business;
+using LooseLeaf.Business.IRepositories;
 using LooseLeaf.Business.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +18,14 @@ namespace LooseLeaf.Web.Controllers
         private readonly IWishlistRepository _wishlistRepo;
         private readonly IOwnedBookRepository _ownedBookRepo;
 
-        public UsersController(IUserRepository usersRepo, IWishlistRepository wishlistRepo, IOwnedBookRepository ownedBookRepo)
+        private readonly GoogleBooks _googleBooks;
+
+        public UsersController(IUserRepository usersRepo, IWishlistRepository wishlistRepo, IOwnedBookRepository ownedBookRepo, GoogleBooks googleBooks)
         {
             _usersRepo = usersRepo;
             _wishlistRepo = wishlistRepo;
             _ownedBookRepo = ownedBookRepo;
+            _googleBooks = googleBooks;
         }
 
         [HttpGet("api/users")]
@@ -59,8 +64,11 @@ namespace LooseLeaf.Web.Controllers
             if (!data.AvailabilityStatus.HasValue)
                 return BadRequest();
 
-            IOwnedBook ownedBookObj = new OwnedBook(new IsbnData(data.Isbn), userId, data.ConditionStatus.Value, data.AvailabilityStatus.Value);
-            await _ownedBookRepo.AddOwnedBookAsync(ownedBookObj);
+            if (!long.TryParse(data.Isbn, out long isbnNumber))
+                return BadRequest();
+
+            IOwnedBook ownedBookObj = new OwnedBook(new IsbnData(isbnNumber), userId, data.ConditionStatus.Value, data.AvailabilityStatus.Value);
+            await _ownedBookRepo.AddOwnedBookAsync(ownedBookObj, _googleBooks);
             await _ownedBookRepo.SaveChangesAsync();
             return Ok();
         }
