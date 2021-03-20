@@ -106,7 +106,13 @@ namespace LooseLeaf.Tests.IntegrationTests
 
          public async Task CreateLoan(LooseLeafContext context)
         {
-            await context.Loans.AddAsync(new DataAccess.Loan() { LenderId = 1, BorrowerId = 2, Message = "Test loan message",  LoanStatusId = 1, IsPublic = true, DropoffDate = new DateTime(2021,3,20), ReturnedDate = new DateTime(2021,3,23), AddressId = 1 });
+            var loan = new DataAccess.Loan() { LenderId = 1, BorrowerId = 2, Message = "Test loan message", 
+             LoanStatusId = 1, IsPublic = true, DropoffDate = new DateTime(2021,3,20), ReturnedDate = new DateTime(2021,3,23), 
+             AddressId = 1
+            };
+            var loanbooks = new List<LoanedBook>{new LoanedBook(){Loan = loan, OwnedBookid = 1}, new LoanedBook(){Loan = loan, OwnedBookid = 2}, new LoanedBook(){Loan = loan, OwnedBookid = 3}};
+            await context.Loans.AddAsync(loan);
+            await context.LoanedBooks.AddRangeAsync(loanbooks);     
         }
 
         public async Task CreateGenre(LooseLeafContext context, int bookId, string genre = "Test")
