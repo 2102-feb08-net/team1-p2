@@ -17,14 +17,16 @@ namespace LooseLeaf.Web.Controllers
         private readonly IUserRepository _usersRepo;
         private readonly IWishlistRepository _wishlistRepo;
         private readonly IOwnedBookRepository _ownedBookRepo;
+        private readonly ILoanRepository _loanRepo;
 
         private readonly GoogleBooks _googleBooks;
 
-        public UsersController(IUserRepository usersRepo, IWishlistRepository wishlistRepo, IOwnedBookRepository ownedBookRepo, GoogleBooks googleBooks)
+        public UsersController(IUserRepository usersRepo, IWishlistRepository wishlistRepo, IOwnedBookRepository ownedBookRepo, ILoanRepository loanRepo, GoogleBooks googleBooks)
         {
             _usersRepo = usersRepo;
             _wishlistRepo = wishlistRepo;
             _ownedBookRepo = ownedBookRepo;
+            _loanRepo = loanRepo;
             _googleBooks = googleBooks;
         }
 
@@ -107,13 +109,17 @@ namespace LooseLeaf.Web.Controllers
         [HttpGet("api/users/{userId}/loans")]
         public async Task<IActionResult> GetUserLoanHistory(int userId)
         {
-            throw new NotImplementedException();
+            ILoanSearchParams searchParams = new LoanSearchParams { BorrowerId = userId, LoanStatus = LoanStatus.Approved };
+            var loans = await _loanRepo.GetLoansAsync(searchParams);
+            return Ok(loans);
         }
 
         [HttpGet("api/users/{userId}/requests")]
         public async Task<IActionResult> GetUserRequests(int userId)
         {
-            throw new NotImplementedException();
+            ILoanSearchParams searchParams = new LoanSearchParams { LenderId = userId, LoanStatus = LoanStatus.Requested };
+            var loans = await _loanRepo.GetLoansAsync(searchParams);
+            return Ok(loans);
         }
 
         [HttpGet("api/users/{userId}/recommendations")]
