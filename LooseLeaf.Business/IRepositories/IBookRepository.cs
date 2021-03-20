@@ -12,7 +12,5 @@ namespace LooseLeaf.Business.IRepositories
         Task<IEnumerable<IBook>> GetAllBooks(IBookSearchParams searchParams);
 
         Task<IBook> GetBook(int bookId);
-
-        Task UpdateBook(int bookId);
     }
 }

@@ -54,7 +54,5 @@ namespace LooseLeaf.DataAccess.Repositories
         }
 
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
-
-        public async Task UpdateBook(int bookId) => throw new NotImplementedException();
     }
 }

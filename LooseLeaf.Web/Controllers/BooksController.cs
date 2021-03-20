@@ -33,11 +33,5 @@ namespace LooseLeaf.Web.Controllers
             var book = await _bookRepo.GetBook(bookId);
             return Ok(book);
         }
-
-        [HttpPut("api/books/{bookId}")]
-        public async Task<IActionResult> UpdateBook(int bookId, DTOs.Book book)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
