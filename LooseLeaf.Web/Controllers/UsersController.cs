@@ -36,12 +36,6 @@ namespace LooseLeaf.Web.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpPut("api/users")]
-        public async Task<IActionResult> LogUserIn(string username, string password)
-        {
-            throw new NotImplementedException();
-        }
-
         [HttpGet("api/users/{userId}")]
         public async Task<IActionResult> GetUserById(int userId)
         {
