@@ -13,11 +13,11 @@ namespace LooseLeaf.Tests
     {
         private const int fakeLender = 1;
         private const int fakeBorrower = 2;
-        private string message = "I want to borrow these books.";
-        private DateTimeOffset pickupTime = new DateTimeOffset(new DateTime(2000, 1, 2));
-        private DateTimeOffset returnTime = new DateTimeOffset(new DateTime(2000, 1, 3));
-        private int fakeAddress = 4;
-        private List<int> books = new List<int>() { 1, 2, 10 };
+        private const string message = "I want to borrow these books.";
+        private readonly DateTimeOffset pickupTime = new DateTimeOffset(new DateTime(2000, 1, 2));
+        private readonly DateTimeOffset returnTime = new DateTimeOffset(new DateTime(2000, 1, 3));
+        private const int fakeAddress = 4;
+        private readonly List<int> books = new List<int>() { 1, 2, 10 };
         private const LoanStatus status = LoanStatus.Requested;
 
         [Fact]

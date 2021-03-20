@@ -38,7 +38,7 @@ namespace LooseLeaf.Business.Models
             if (loanedBooks is null)
                 throw new ArgumentNullException(nameof(loanedBooks));
 
-            if (loanedBooks.Count() == 0)
+            if (!loanedBooks.Any())
                 throw new ArgumentException("The number of loan books must be at least 1.");
 
             if (loanedBooks.Distinct().Count() != loanedBooks.Count())

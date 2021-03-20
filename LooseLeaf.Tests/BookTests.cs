@@ -10,7 +10,7 @@ namespace LooseLeaf.Tests
 {
     public class BookTests
     {
-        private List<string> genres = new List<string>() { "Novel", "Test" };
+        private readonly List<string> genres = new List<string>() { "Novel", "Test" };
 
         [Fact]
         public void Book_Constructor_Pass()
@@ -70,7 +70,7 @@ namespace LooseLeaf.Tests
             IBook book = new Book(title, author, isbn, genres);
 
             // assert
-            Assert.Equal(genres.Count(), book.Genres.Count());
+            Assert.Equal(genres.Count, book.Genres.Count());
         }
 
         [Theory]

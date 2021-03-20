@@ -61,13 +61,11 @@ namespace LooseLeaf.Tests.IntegrationTests
             }
 
             // assert
-            using (LooseLeafContext assertContext = contextFactory.CreateContext())
-            {
-                var ownedBook = await assertContext.OwnedBooks.Include(x => x.User).Include(x => x.Book).SingleAsync();
+            using LooseLeafContext assertContext = contextFactory.CreateContext();
+            var ownedBook = await assertContext.OwnedBooks.Include(x => x.User).Include(x => x.Book).SingleAsync();
 
-                Assert.Equal(isbn, ownedBook.Book.Isbn);
-                Assert.Equal(username, ownedBook.User.Username);
-            }
+            Assert.Equal(isbn, ownedBook.Book.Isbn);
+            Assert.Equal(username, ownedBook.User.Username);
         }
 
         [Fact]
@@ -97,15 +95,13 @@ namespace LooseLeaf.Tests.IntegrationTests
             }
 
             // assert
-            using (LooseLeafContext assertContext = contextFactory.CreateContext())
-            {
-                var ownedBook = await assertContext.OwnedBooks.Include(x => x.User).Include(x => x.Book).SingleAsync();
+            using LooseLeafContext assertContext = contextFactory.CreateContext();
+            var ownedBook = await assertContext.OwnedBooks.Include(x => x.User).Include(x => x.Book).SingleAsync();
 
-                Assert.Equal(userId, ownedBook.UserId);
-                Assert.Equal(bookId, ownedBook.BookId);
-                Assert.Equal((int)condition, ownedBook.ConditionId);
-                Assert.Equal((int)availability, ownedBook.AvailabilityStatusId);
-            }
+            Assert.Equal(userId, ownedBook.UserId);
+            Assert.Equal(bookId, ownedBook.BookId);
+            Assert.Equal((int)condition, ownedBook.ConditionId);
+            Assert.Equal((int)availability, ownedBook.AvailabilityStatusId);
         }
 
         [Fact]

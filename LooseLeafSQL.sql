@@ -1,3 +1,4 @@
+DROP TABLE Loan_Review;
 DROP TABLE Wishlist;
 DROP TABLE Loaned_Books;
 DROP TABLE Loans;
