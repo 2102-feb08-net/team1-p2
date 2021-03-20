@@ -43,8 +43,7 @@ namespace LooseLeaf.Web
             services.AddCors(options => options.AddDefaultPolicy(config => config
                .WithOrigins("http://localhost:4200")
                .AllowAnyMethod()
-               .AllowAnyHeader()
-               .AllowCredentials()));
+               .AllowAnyHeader()));
 
             services.AddHttpClient<GoogleBooks>();
             services.Configure<GoogleBooksOptions>(Configuration.GetSection(GoogleBooksOptions.ApiKeyConfiguration));
