@@ -33,8 +33,8 @@ namespace LooseLeaf.Business.Models
                 throw new ArgumentException(message: "Book Author cannot be blank.");
 
             int isbnLength = isbn.ToString().Length;
-            if (isbn < 0 || (isbnLength != IsbnData.ISBN_LENGTH_10 && isbnLength != IsbnData.ISBN_LENGTH_13))
-                throw new ArgumentException("An ISBN number must be 10 or 13 digits long and be non negative.", nameof(isbn));
+            if (isbn < 0 || (isbnLength != IsbnData.ISBN_LENGTH_13))
+                throw new ArgumentException("An ISBN number must be 13 digits long and be non negative.", nameof(isbn));
 
             if (genres is null)
                 throw new ArgumentNullException(nameof(genres));

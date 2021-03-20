@@ -11,11 +11,9 @@ namespace LooseLeaf.Tests
     public class IsbnTests
     {
         private const long isbn13 = 9780804139038;
-        private const long isbn10 = 0804139038;
 
         [Theory]
         [InlineData(isbn13)]
-        [InlineData(isbn10)]
         public void IsbnData_Construct_Pass(long isbn)
         {
             // arrange
