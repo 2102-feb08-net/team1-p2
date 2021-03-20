@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LooseLeaf.Business.Models
 {
-    public interface IOwnedBookSearchParams
+    public interface IOwnedBookSearchParams : ISearchParams
     {
         public int? UserId { get; set; }
 

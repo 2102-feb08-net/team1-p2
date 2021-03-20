@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace LooseLeaf.Business.Models
 {
-    public interface IBookSearchParams : ISearchParams
+    public interface IPagination
     {
-        string Genre { get; set; }
+        int PageSize { get; set; }
 
-        string Author { get; set; }
-
-        string Title { get; set; }
+        int PageIndex { get; set; }
     }
 }

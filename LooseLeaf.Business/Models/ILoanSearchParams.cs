@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace LooseLeaf.Business.Models
 {
-    public interface ILoanSearchParams
+    public interface ILoanSearchParams : ISearchParams
     {
-        int CustomerId { get; set; }
-        int BookId { get; set; }
-
-        LoanStatus LoanStatus { get; set; }
-
-        Availability BookAvailability { get; set; }
+        int? LenderId { get; set; }
+        int? BorrowerId { get; set; }
+        int? OwnedBookId { get; set; }
+        int? BookId { get; set; }
+        LoanStatus? LoanStatus { get; set; }
     }
 }

@@ -12,5 +12,6 @@ namespace LooseLeaf.Business.Models
         public Availability? BookAvailability { get; set; }
         public PhysicalCondition? BookCondition { get; set; }
         public IBookSearchParams BookSearchParams { get; set; }
+        public IPagination Pagination { get; set; }
     }
 }
