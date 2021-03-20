@@ -41,7 +41,7 @@ namespace LooseLeaf.Web
             services.AddScoped<IWishlistRepository, WishlistRepository>();
 
             services.AddCors(options => options.AddDefaultPolicy(config => config
-               .WithOrigins("http://localhost:4200")
+               .WithOrigins("*")
                .AllowAnyMethod()
                .AllowAnyHeader()
                .AllowCredentials()));
