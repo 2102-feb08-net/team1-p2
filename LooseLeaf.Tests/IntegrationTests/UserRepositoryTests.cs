@@ -94,51 +94,43 @@ namespace LooseLeaf.Tests.IntegrationTests
                 
                 //creates test address 1 for lender
                 await contextFactory.CreateAddress(arrangeContext);
-                arrangeContext.SaveChanges();
+                
                 //creates test book 1
                 await contextFactory.CreateBook(arrangeContext);
-                arrangeContext.SaveChanges();
+                
                 //creates test book 2
                 await contextFactory.CreateBook(arrangeContext);
-                arrangeContext.SaveChanges();
+                
                 //creates test book 3
                 await contextFactory.CreateBook(arrangeContext);
-                arrangeContext.SaveChanges();
+                
                 //creates test book 4
                 await contextFactory.CreateBook(arrangeContext);
-                arrangeContext.SaveChanges();
+                
                 //creates test book 5
                 await contextFactory.CreateBook(arrangeContext);
-                arrangeContext.SaveChanges();
-
-
-
-                await contextFactory.CreateGenre(arrangeContext, 1);
-                arrangeContext.SaveChanges();
-                await contextFactory.CreateGenre(arrangeContext, 2);
-                arrangeContext.SaveChanges();
-                await contextFactory.CreateGenre(arrangeContext, 3);
-                arrangeContext.SaveChanges();
-                await contextFactory.CreateGenre(arrangeContext, 4);
-                arrangeContext.SaveChanges();
-                await contextFactory.CreateGenre(arrangeContext, 5);
-                arrangeContext.SaveChanges();
                 
+
+
+
+        
+                
+
                    //creates owned book 1
                 await contextFactory.CreateOwnedBook(arrangeContext, 1, 1);
-                arrangeContext.SaveChanges();
+                
                    //creates owned book 2
                 await contextFactory.CreateOwnedBook(arrangeContext, 1, 2);
-                arrangeContext.SaveChanges();
+                
                    //creates owned book 3
                 await contextFactory.CreateOwnedBook(arrangeContext, 1, 3);
-                arrangeContext.SaveChanges();
+                
                    //creates owned book 4
                 await contextFactory.CreateOwnedBook(arrangeContext, 1, 4);
-                arrangeContext.SaveChanges();
+                
                    //creates owned book 5
                 await contextFactory.CreateOwnedBook(arrangeContext, 1, 5);
-                arrangeContext.SaveChanges();
+                
                     //adds  inserts lender variable able as a user in the sqllite database references address 1
                 await contextFactory.CreateUser(arrangeContext, "damionsilver");
                 arrangeContext.SaveChanges();//adds  inserts burrower variable able as a user in the sqllite database references address 1
@@ -165,7 +157,7 @@ namespace LooseLeaf.Tests.IntegrationTests
 
 
             // assert
-              Assert.Empty(userrecommendedbooks.First().Genres);
+              Assert.Contains("Test",userrecommendedbooks.First().Genres);
                 
 
         }

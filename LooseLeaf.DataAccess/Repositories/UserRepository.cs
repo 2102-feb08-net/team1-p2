@@ -77,7 +77,7 @@ namespace LooseLeaf.DataAccess.Repositories
 
              //checks to see if the list is empty. if it is empty, grab the first five books in the database and suggest them.
             
-            return _context.Books.Take(5).Select(b => b.ConvertToIBook()).ToList();
+            return _context.Books.Include(b => b.Genres).Take(5).Select(b => b.ConvertToIBook()).ToList();
             
         
            
