@@ -89,21 +89,6 @@ namespace LooseLeaf.Tests
         }
 
         [Fact]
-        public void User_NullAddress_Fail()
-        {
-            // arrange
-            const string userName = "firstUser";
-            const string email = "somebody@website.com";
-            IAddress fakeAddress = null;
-
-            // act
-            IUser buildUser() => new User(userId, userName, email);
-
-            // assert
-            Assert.Throws<ArgumentNullException>(buildUser);
-        }
-
-        [Fact]
         public void User_GetUserName()
         {
             // arrange

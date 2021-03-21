@@ -59,6 +59,7 @@ namespace LooseLeaf.Tests.IntegrationTests
             {
                 Username = "damionsilver",
                 Email = "damion.silver@gmail.com",
+                AuthId = "123Id"
             };
 
             using var contextFactory = new TestLooseLeafContextFactory();

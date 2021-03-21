@@ -31,6 +31,7 @@ namespace LooseLeaf.DataAccess.Repositories
                 AuthId = user.AuthId,
                 Email = user.Email,
             };
+
             await _context.Users.AddAsync(newUser);
             await _context.SaveChangesAsync();
 

@@ -80,7 +80,7 @@ namespace LooseLeaf.Tests.IntegrationTests
                 await CreateAddress(context);
                 await context.SaveChangesAsync();
             }
-            await context.Users.AddAsync(new DataAccess.User() { Username = username, Email = $"{username}@website.com" });
+            await context.Users.AddAsync(new DataAccess.User() { Username = username, Email = $"{username}@website.com", AuthId = $"{username}Id" });
         }
 
         /// <summary>
