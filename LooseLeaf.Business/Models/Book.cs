@@ -18,7 +18,9 @@ namespace LooseLeaf.Business.Models
 
         public IEnumerable<string> Genres { get; }
 
-        public Book(string title, string author, long isbn, ICollection<string> genres)
+        public string Thumbnail { get; }
+
+        public Book(string title, string author, long isbn, ICollection<string> genres, string thumbnailUrl = null)
         {
             if (title is null)
                 throw new ArgumentNullException(nameof(title));
@@ -43,9 +45,10 @@ namespace LooseLeaf.Business.Models
             Author = author;
             Isbn = isbn;
             Genres = new ReadOnlyCollection<string>(genres.ToList());
+            Thumbnail = thumbnailUrl;
         }
 
-        public Book(int id, string title, string author, long isbn, ICollection<string> genres) : this(title, author, isbn, genres)
+        public Book(int id, string title, string author, long isbn, ICollection<string> genres, string thumbnailUrl = null) : this(title, author, isbn, genres, thumbnailUrl)
         {
             if (id < 1)
                 throw new ArgumentException(message: "Book ID cannot be less than 1.");

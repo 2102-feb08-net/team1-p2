@@ -1,6 +1,7 @@
 ﻿using LooseLeaf.Business;
 using LooseLeaf.Business.IRepositories;
 using LooseLeaf.Business.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -59,6 +60,7 @@ namespace LooseLeaf.Web.Controllers
         }
 
         [HttpPost("api/users/{userId}/book")]
+        [Authorize]
         public async Task<IActionResult> AddUserOwnedBook(int userId, DTOs.OwnedBookData data)
         {
             if (!data.ConditionStatus.HasValue)
@@ -107,14 +109,17 @@ namespace LooseLeaf.Web.Controllers
         }
 
         [HttpGet("api/users/{userId}/loans")]
+        [Authorize]
         public async Task<IActionResult> GetUserLoanHistory(int userId)
         {
+            var claims = User.Claims.Count();
             ILoanSearchParams searchParams = new LoanSearchParams { BorrowerId = userId, LoanStatus = LoanStatus.Approved };
             var loans = await _loanRepo.GetLoansAsync(searchParams);
             return Ok(loans);
         }
 
         [HttpGet("api/users/{userId}/requests")]
+        [Authorize]
         public async Task<IActionResult> GetUserRequests(int userId)
         {
             ILoanSearchParams searchParams = new LoanSearchParams { LenderId = userId, LoanStatus = LoanStatus.Requested };
@@ -123,6 +128,7 @@ namespace LooseLeaf.Web.Controllers
         }
 
         [HttpGet("api/users/{userId}/recommendations")]
+        [Authorize]
         public async Task<IActionResult> GetUserRecommendations(int userId)
         {
             throw new NotImplementedException();
