@@ -1,5 +1,6 @@
 ﻿using LooseLeaf.Business.IRepositories;
 using LooseLeaf.Business.Models;
+using LooseLeaf.Business.Models.Results;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,6 @@ namespace LooseLeaf.DataAccess.Repositories
                 ReturnedDate = loan.ReturnDate,
                 LoanStatusId = (int)loan.Status,
                 AddressId = loan.ExchangeLocationAddressId,
-                IsPublic = loan.IsPublic
             };
 
             await _context.Loans.AddAsync(dataLoan);
@@ -48,9 +48,22 @@ namespace LooseLeaf.DataAccess.Repositories
             await _context.LoanedBooks.AddRangeAsync(loanedBooks);
         }
 
-        public async Task<IEnumerable<ILoan>> GetLoansAsync(ILoanSearchParams searchParams)
+        public async Task<IEnumerable<ILoanResult>> GetLoansAsync(ILoanSearchParams searchParams)
         {
-            IQueryable<Loan> loanQuery = _context.Loans.Include(l => l.LoanedBooks).ThenInclude(b => b.OwnedBook).Include(l => l.Address);
+            IQueryable<Loan> loanQuery = _context.Loans
+                .Include(l => l.Lender)
+                .Include(l => l.Borrower)
+                .Include(l => l.LoanedBooks)
+                    .ThenInclude(b => b.OwnedBook)
+                        .ThenInclude(b => b.AvailabilityStatus)
+                .Include(l => l.LoanedBooks)
+                    .ThenInclude(b => b.OwnedBook)
+                        .ThenInclude(b => b.Condition)
+                .Include(l => l.LoanedBooks)
+                    .ThenInclude(b => b.OwnedBook)
+                        .ThenInclude(b => b.Book)
+                .Include(l => l.Address)
+                .Include(l => l.LoanStatus);
 
             if (searchParams.LenderId.HasValue)
                 loanQuery = loanQuery.Where(l => l.LenderId == searchParams.LenderId);
@@ -68,15 +81,16 @@ namespace LooseLeaf.DataAccess.Repositories
 
             var loans = await loanQuery.ToListAsync();
 
-            return loans.Select(l => new Business.Models.Loan(
-                l.LenderId,
-                l.BorrowerId,
+            return loans.Select(l => new Business.Models.LoanResult(
+                l.Id,
+                new UserResult(l.Lender.Id, l.Lender.Username),
+                new UserResult(l.Borrower.Id, l.Borrower.Username),
                 l.Message,
                 l.DropoffDate,
                 l.ReturnedDate,
-                l.AddressId,
-                l.LoanedBooks.Select(b => b.OwnedBookid),
-                (Business.Models.LoanStatus)l.LoanStatusId));
+                l.Address.ConvertToIAddress(),
+                l.LoanedBooks.Select(b => new OwnedBookResult(b.OwnedBook.Id, b.OwnedBook.Book.ConvertToIBook(), b.OwnedBook.UserId, b.OwnedBook.Condition.StatusName, b.OwnedBook.AvailabilityStatus.StatusName)),
+                l.LoanStatus.StatusName));
         }
 
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();

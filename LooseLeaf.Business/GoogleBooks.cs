@@ -16,7 +16,7 @@ namespace LooseLeaf.Business
     {
         private readonly HttpClient _client;
 
-        private string baseUrlParameters = "?";
+        private readonly string baseUrlParameters = "?";
 
         public GoogleBooks(HttpClient client, IOptions<GoogleBooksOptions> options)
         {

@@ -18,7 +18,6 @@ namespace LooseLeaf.DataAccess
         public int BorrowerId { get; set; }
         public string Message { get; set; }
         public int LoanStatusId { get; set; }
-        public bool IsPublic { get; set; }
         public DateTimeOffset DropoffDate { get; set; }
         public DateTimeOffset ReturnedDate { get; set; }
         public int AddressId { get; set; }

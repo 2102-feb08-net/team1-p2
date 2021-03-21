@@ -23,7 +23,7 @@ namespace LooseLeaf.Web.Controllers
         public async Task<IActionResult> GetAllLoans(int? lender, int? borrower, int? book, int? ownedBook, int? loanStatus)
         {
             ILoanSearchParams searchParams = new LoanSearchParams { LenderId = lender, BorrowerId = borrower, BookId = book, OwnedBookId = ownedBook, LoanStatus = (LoanStatus?)loanStatus };
-            var loans = await _loanRepo.GetLoansAsync(searchParams);
+            IEnumerable<ILoanResult> loans = await _loanRepo.GetLoansAsync(searchParams);
             return Ok(loans);
         }
 

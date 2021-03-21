@@ -88,15 +88,13 @@ namespace LooseLeaf.Tests.IntegrationTests
 
             // assert
             // Create a new context to ensure that data was saved to database.
-            using (LooseLeafContext assertContext = contextFactory.CreateContext())
-            {
-                var wishlist = await assertContext.Wishlists.Include(w => w.User).Include(w => w.Book).SingleAsync();
+            using LooseLeafContext assertContext = contextFactory.CreateContext();
+            var wishlist = await assertContext.Wishlists.Include(w => w.User).Include(w => w.Book).SingleAsync();
 
-                // assert that the book and user are the same as one added to the wishlist.
-                Assert.Equal(username, wishlist.User.Username);
-                Assert.Equal(bookName, wishlist.Book.Title);
-                Assert.Equal(authorName, wishlist.Book.Author);
-            }
+            // assert that the book and user are the same as one added to the wishlist.
+            Assert.Equal(username, wishlist.User.Username);
+            Assert.Equal(bookName, wishlist.Book.Title);
+            Assert.Equal(authorName, wishlist.Book.Author);
         }
 
         [Fact]
@@ -130,11 +128,9 @@ namespace LooseLeaf.Tests.IntegrationTests
             }
 
             // assert
-            using (LooseLeafContext assertContext = contextFactory.CreateContext())
-            {
-                Assert.Equal(0, assertContext.Wishlists.Count());
-                Assert.Equal(1, originalWishlistCount);
-            }
+            using LooseLeafContext assertContext = contextFactory.CreateContext();
+            Assert.Equal(0, assertContext.Wishlists.Count());
+            Assert.Equal(1, originalWishlistCount);
         }
     }
 }

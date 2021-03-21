@@ -1,3 +1,4 @@
+DROP TABLE Loan_Review;
 DROP TABLE Wishlist;
 DROP TABLE Loaned_Books;
 DROP TABLE Loans;
@@ -69,7 +70,6 @@ CREATE TABLE Loans(
 	borrowerId INT NOT NULL FOREIGN KEY REFERENCES Users(id),
 	message  NTEXT NOT NULL,
 	loanStatusId INT NOT NULL FOREIGN KEY REFERENCES Loan_Status(id),
-	isPublic BIT NOT NULL,
 	dropoffDate DATETIMEOFFSET NOT NULL, 
 	returnedDate DATETIMEOFFSET NOT NULL, 
 	addressId INT NOT NULL FOREIGN KEY REFERENCES Addresses(id),

@@ -82,11 +82,9 @@ namespace LooseLeaf.Tests.IntegrationTests
             };
 
             // assert
-            using (LooseLeafContext assertContext = contextFactory.CreateContext())
-            {
-                var book = await assertContext.Books.ToListAsync();
-                Assert.Equal(2, book.Count);
-            }
+            using LooseLeafContext assertContext = contextFactory.CreateContext();
+            var book = await assertContext.Books.ToListAsync();
+            Assert.Equal(2, book.Count);
         }
     }
 }

@@ -43,8 +43,7 @@ namespace LooseLeaf.Web
             services.AddCors(options => options.AddDefaultPolicy(config => config
                .WithOrigins("http://localhost:4200")
                .AllowAnyMethod()
-               .AllowAnyHeader()
-               .AllowCredentials()));
+               .AllowAnyHeader()));
 
             services.AddHttpClient<GoogleBooks>();
             services.Configure<GoogleBooksOptions>(Configuration.GetSection(GoogleBooksOptions.ApiKeyConfiguration));
@@ -65,7 +64,7 @@ namespace LooseLeaf.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            //if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();

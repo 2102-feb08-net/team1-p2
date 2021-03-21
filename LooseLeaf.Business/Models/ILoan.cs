@@ -21,8 +21,6 @@ namespace LooseLeaf.Business.Models
 
         LoanStatus Status { get; }
 
-        bool IsPublic { get; }
-
         IReadOnlyCollection<int> LoanedBookIds { get; }
     }
 }

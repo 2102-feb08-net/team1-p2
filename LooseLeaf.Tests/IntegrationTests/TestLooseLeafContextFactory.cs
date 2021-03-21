@@ -15,10 +15,7 @@ namespace LooseLeaf.Tests.IntegrationTests
         private DbConnection _conn;
         private bool _disposedValue;
 
-        private DbContextOptions<LooseLeafContext> CreateOptions()
-        {
-            return new DbContextOptionsBuilder<LooseLeafContext>().UseSqlite(_conn).Options;
-        }
+        private DbContextOptions<LooseLeafContext> CreateOptions() => new DbContextOptionsBuilder<LooseLeafContext>().UseSqlite(_conn).Options;
 
         public LooseLeafContext CreateContext()
         {
@@ -78,7 +75,7 @@ namespace LooseLeaf.Tests.IntegrationTests
 
         public async Task CreateUser(LooseLeafContext context, string username = "username")
         {
-            if (context.Addresses.Count() == 0)
+            if (!context.Addresses.Any())
             {
                 await CreateAddress(context);
                 await context.SaveChangesAsync();
@@ -93,7 +90,7 @@ namespace LooseLeaf.Tests.IntegrationTests
         /// <param name="bookName">The name of the book</param>
         /// <param name="authorName">The name of the author</param>
         /// <returns>Returns the ISBN of the book.</returns>
-        public async Task<long> CreateBook(LooseLeafContext context, string bookName = "Book", string authorName = "Author", int genreId = 1)
+        public async Task<long> CreateBook(LooseLeafContext context, string bookName = "Book", string authorName = "Author")
         {
             int id = context.Books.Count() + 1;
             long newIsbn = 9784567890123 + id;
@@ -104,15 +101,15 @@ namespace LooseLeaf.Tests.IntegrationTests
             return newIsbn;
         }
 
-         public async Task CreateLoan(LooseLeafContext context, int _LenderId, int _BorrowerId)
+        public async Task CreateLoan(LooseLeafContext context)
         {
             var loan = new DataAccess.Loan() { LenderId = _LenderId, BorrowerId = _BorrowerId, Message = "Test loan message", 
              LoanStatusId = 1, IsPublic = true, DropoffDate = new DateTime(2021,3,20), ReturnedDate = new DateTime(2021,3,23), 
              AddressId = 1
             };
-            var loanbooks = new List<LoanedBook>{new LoanedBook(){Loan = loan, OwnedBookid = 1}, new LoanedBook(){Loan = loan, OwnedBookid = 2}, new LoanedBook(){Loan = loan, OwnedBookid = 3}};
+            var loanbooks = new List<LoanedBook> { new LoanedBook() { Loan = loan, OwnedBookid = 1 }, new LoanedBook() { Loan = loan, OwnedBookid = 2 }, new LoanedBook() { Loan = loan, OwnedBookid = 3 } };
             await context.Loans.AddAsync(loan);
-            await context.LoanedBooks.AddRangeAsync(loanbooks);     
+            await context.LoanedBooks.AddRangeAsync(loanbooks);
         }
 
         public async Task CreateGenre(LooseLeafContext context, int bookId, string genre = "Test")
@@ -127,13 +124,13 @@ namespace LooseLeaf.Tests.IntegrationTests
 
         public async Task<OwnedBook> CreateOwnedBook(LooseLeafContext context, int userId, int bookId)
         {
-            if (context.Books.Count() == 0)
+            if (!context.Books.Any())
             {
                 await CreateBook(context);
                 await context.SaveChangesAsync();
             }
 
-            if (context.Users.Count() == 0)
+            if (!context.Users.Any())
             {
                 await CreateUser(context);
                 await context.SaveChangesAsync();

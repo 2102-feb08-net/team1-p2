@@ -91,7 +91,6 @@ namespace LooseLeaf.Tests.IntegrationTests
                     Message = LOAN_MESSAGE,
                     LoanStatusId = (int)Business.Models.LoanStatus.Approved,
                     AddressId = 1,
-                    IsPublic = true,
                     DropoffDate = new DateTime(2000, 10, 1),
                     ReturnedDate = new DateTime(2000, 10, 17),
                 };
@@ -107,7 +106,7 @@ namespace LooseLeaf.Tests.IntegrationTests
             }
 
             // act
-            IEnumerable<ILoan> loans;
+            IEnumerable<ILoanResult> loans;
             using (LooseLeafContext actContext = contextFactory.CreateContext())
             {
                 LoanRepository loanRepository = new LoanRepository(actContext);
@@ -118,11 +117,11 @@ namespace LooseLeaf.Tests.IntegrationTests
             // assert
             var firstLoan = loans.First();
             Assert.Single(loans);
-            Assert.Equal(LENDER_ID, firstLoan.Lender);
-            Assert.Equal(BORROWER_ID, firstLoan.Borrower);
+            Assert.Equal(LENDER_ID, firstLoan.Lender.Id);
+            Assert.Equal(BORROWER_ID, firstLoan.Borrower.Id);
             Assert.Equal(LOAN_MESSAGE, firstLoan.Message);
-            Assert.Equal(FIRST_OWNED_BOOK_ID, firstLoan.LoanedBookIds.First());
-            Assert.Equal(SECOND_OWNED_BOOK_ID, firstLoan.LoanedBookIds.Last());
+            Assert.Equal(FIRST_OWNED_BOOK_ID, firstLoan.LoanedBooks.First().Id);
+            Assert.Equal(SECOND_OWNED_BOOK_ID, firstLoan.LoanedBooks.Last().Id);
         }
 
         // get loan by id

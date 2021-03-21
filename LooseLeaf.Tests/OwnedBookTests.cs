@@ -7,9 +7,9 @@ namespace LooseLeaf.Tests
 {
     public class OwnedBookTests
     {
-        private int id = 1;
-        private const int ownerId = 1;
-        private IIsbnData isbn = new Mock<IIsbnData>().Object;
+        private readonly int id = 1;
+        private readonly int ownerId = 1;
+        private readonly IIsbnData isbn = new Mock<IIsbnData>().Object;
 
         [Fact]
         public void OwnedBook_Construct_Pass()
