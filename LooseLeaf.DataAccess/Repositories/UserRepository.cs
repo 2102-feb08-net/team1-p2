@@ -60,9 +60,29 @@ namespace LooseLeaf.DataAccess.Repositories
             return userList;
         }
 
+
         public async Task<IEnumerable<IBook>> GetRecommendedBooksAsync(int userid)
         {
-            throw new NotImplementedException();
+           
+          //  var loans = _context.Loans.Where(b => b.BorrowerId == userid);
+            //List<IBook> recommendedBooks = new List<IBook>();
+            //List<LoanedBook> loanedbooks = new List<LoanedBook>();
+
+           // List<Genre> genresdataacaesslist = new List<Genre>();
+           // List<string> genres = new List<string>();
+
+
+
+
+
+             //checks to see if the list is empty. if it is empty, grab the first five books in the database and suggest them.
+            
+            return _context.Books.Include(b => b.Genres).Take(5).Select(b => b.ConvertToIBook()).ToList();
+            
+        
+           
+           
+           
         }
 
         public async Task<IUser> GetUserAsync(int userId)

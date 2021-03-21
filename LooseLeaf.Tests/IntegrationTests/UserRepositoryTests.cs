@@ -84,7 +84,85 @@ namespace LooseLeaf.Tests.IntegrationTests
 
 
 
-       //
+        [Fact]
+        public async Task UserRepository_GetUserRecommendations()
+        {
+       
+            using var contextFactory = new TestLooseLeafContextFactory();
+            using (LooseLeafContext arrangeContext = contextFactory.CreateContext())
+            {
+                
+                //creates test address 1 for lender
+                await contextFactory.CreateAddress(arrangeContext);
+                
+                //creates test book 1
+                await contextFactory.CreateBook(arrangeContext);
+                
+                //creates test book 2
+                await contextFactory.CreateBook(arrangeContext);
+                
+                //creates test book 3
+                await contextFactory.CreateBook(arrangeContext);
+                
+                //creates test book 4
+                await contextFactory.CreateBook(arrangeContext);
+                
+                //creates test book 5
+                await contextFactory.CreateBook(arrangeContext);
+                
+
+
+
+        
+                
+
+                   //creates owned book 1
+                await contextFactory.CreateOwnedBook(arrangeContext, 1, 1);
+                
+                   //creates owned book 2
+                await contextFactory.CreateOwnedBook(arrangeContext, 1, 2);
+                
+                   //creates owned book 3
+                await contextFactory.CreateOwnedBook(arrangeContext, 1, 3);
+                
+                   //creates owned book 4
+                await contextFactory.CreateOwnedBook(arrangeContext, 1, 4);
+                
+                   //creates owned book 5
+                await contextFactory.CreateOwnedBook(arrangeContext, 1, 5);
+                
+                    //adds  inserts lender variable able as a user in the sqllite database references address 1
+                await contextFactory.CreateUser(arrangeContext, "damionsilver");
+                arrangeContext.SaveChanges();//adds  inserts burrower variable able as a user in the sqllite database references address 1
+                await contextFactory.CreateUser(arrangeContext, "dajiabridgers");
+                
+                DataAccess.Book count = arrangeContext.Books.First();
+                arrangeContext.SaveChanges();
+
+                await contextFactory.CreateLoan(arrangeContext,  1,  2);
+                arrangeContext.SaveChanges();
+            }
+
+            //creates new instance of sqllite database and name it context.
+            using var context = contextFactory.CreateContext();
+            //creates a userrepository instance and insert context inside of it.
+            var repo = new UserRepository(context);
+
+            // act
+            List<IBook> userrecommendedbooks =  new List<IBook> (await repo.GetRecommendedBooksAsync(2)); 
+            
+
+
+
+
+
+            // assert
+              Assert.Contains("Test",userrecommendedbooks.First().Genres);
+                
+
+        }
+
+
 
 
 
