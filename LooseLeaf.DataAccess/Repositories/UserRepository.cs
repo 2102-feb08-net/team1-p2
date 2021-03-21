@@ -18,52 +18,38 @@ namespace LooseLeaf.DataAccess.Repositories
             _context = context;
         }
 
-        public async Task AddUserAsync(IUser user)
+        public async Task<int> AddUserAsync(INewUser user)
         {
-            var userAddress = user.Address;
+            var existingUser = await _context.Users.SingleOrDefaultAsync(u => u.AuthId == user.AuthId);
 
-            Address newUserAddress = await _context.Addresses.Where(a =>
-                a.Address1 == userAddress.Address1 &&
-                a.Address2 == userAddress.Address2 &&
-                a.City == userAddress.City &&
-                a.State == userAddress.State &&
-                a.Zipcode == userAddress.ZipCode
-            ).FirstOrDefaultAsync()
-            ?? new Address()
-            {
-                Address1 = userAddress.Address1,
-                Address2 = userAddress.Address2,
-                City = userAddress.City,
-                State = userAddress.State,
-                Zipcode = userAddress.ZipCode
-            };
+            if (existingUser is not null)
+                return existingUser.Id;
 
             User newUser = new User()
             {
-                Username = user.UserName,
+                Username = user.Username,
+                AuthId = user.AuthId,
                 Email = user.Email,
-                Address = newUserAddress
             };
             await _context.Users.AddAsync(newUser);
             await _context.SaveChangesAsync();
+
+            return newUser.Id;
         }
 
         public async Task<IEnumerable<IUser>> GetAllUsersAsync()
         {
-            var userList = await _context.Users.Include(u => u.Address).Select(u =>
+            var userList = await _context.Users.Select(u =>
             new Business.Models.User(
                     u.Id,
                     u.Username,
-                    u.Email,
-                    new Business.Models.Address(u.Address.Address1, u.Address.Address2, u.Address.City, u.Address.State, u.Address.Country, u.Address.Zipcode)
+                    u.Email
                 )).ToListAsync();
             return userList;
         }
 
-
         public async Task<IEnumerable<IBook>> GetRecommendedBooksAsync(int userid)
         {
-           
             var loans = _context.Loans.Where(b => b.BorrowerId == userid)
             .Include(b => b.LoanedBooks).ThenInclude(b => b.OwnedBook)
             .ThenInclude(b => b.Book).ThenInclude(b => b.Genres);
@@ -71,14 +57,13 @@ namespace LooseLeaf.DataAccess.Repositories
             var ownedbooks = loanbooks.Select(b => b.OwnedBook).ToList();
             var booklist = ownedbooks.Select(b => b.Book).ToList();
             var _genre = booklist.Select(b => b.Genres).ToList().SelectMany(b => b);
-            
-            
-            
-            if(loans.Count().Equals(0)){
+
+            if (loans.Count().Equals(0))
+            {
                 return _context.Books.Include(b => b.Genres).Take(5).Select(b => b.ConvertToIBook()).ToList();
             }
-            else{      
-        
+            else
+            {
                 var grouped = _genre.GroupBy(item => item);
                 var sorted = grouped.OrderByDescending(group => group.Count()).First();
                 var items = grouped.SelectMany(g => g);
@@ -87,24 +72,13 @@ namespace LooseLeaf.DataAccess.Repositories
                 return _context.Books.Include(b => b.Genres).Where(g => g.Genres.Contains(genre)).Take(5).Select(b => b.ConvertToIBook()).ToList();
             }
 
-
-
-             //checks to see if the list is empty. if it is empty, grab the first five books in the database and suggest them.
-            
-            
-            
-        
-           
-           
-           
+            //checks to see if the list is empty. if it is empty, grab the first five books in the database and suggest them.
         }
 
         public async Task<IUser> GetUserAsync(int userId)
         {
             var user = await _context.Users.Where(b => b.Id == userId).SingleAsync();
-            var useraddress = await _context.Addresses.Where(b => b.Id == user.AddressId).SingleAsync();
-            Business.Models.Address address = new Business.Models.Address(useraddress.Address1, useraddress.Address2, useraddress.City, useraddress.State, useraddress.Country, useraddress.Zipcode);
-            return new Business.Models.User(userId, user.Username, user.Email, address);
+            return new Business.Models.User(userId, user.Username, user.Email);
         }
 
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();

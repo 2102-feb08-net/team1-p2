@@ -23,7 +23,7 @@ CREATE TABLE Addresses(
 
 CREATE TABLE Users(
 	id INT NOT NULL PRIMARY KEY IDENTITY,
-	addressId INT NOT NULL FOREIGN KEY REFERENCES Addresses(id),
+	authId NVARCHAR(1000) NOT NULL,
 	username NVARCHAR(255) NOT NULL UNIQUE,
 	email NVARCHAR(255) NOT NULL UNIQUE,
 )
@@ -94,6 +94,25 @@ CREATE TABLE Loan_Review(
 	loanId INT NOT NULL FOREIGN KEY REFERENCES Loans(id),
 )
 
+INSERT INTO Availability_Status (statusName) VALUES
+	('Available'),
+	('Checked Out'),
+	('In Process'),
+	('Unknown');
+
+INSERT INTO Condition_Status (statusName) VALUES
+	('Like New'),
+	('Very Good'),
+	('Good'),
+	('Fair'),
+	('Poor');
+
+INSERT INTO Loan_Status (statusName) VALUES
+	('Requested'),
+	('Approved'),
+	('Denied'),
+	('Expired');
+
 INSERT INTO addresses (address1, address2, city, state, zipcode) VALUES
 	('98 Pyongyang Boulevard', null, 'Arlington', 'Texas',	42141),
 	('913 Coacalco de Berriozbal Loop', null, 'Arlington', 'Texas',	42141),
@@ -131,24 +150,7 @@ INSERT INTO addresses (address1, address2, city, state, zipcode) VALUES
 	('1309 Weifang Street', null, 'Dallas', 'Texas', 11067),
 	('1944 Bamenda Way', null, 'Dallas', 'Texas', 11067);
 
-INSERT INTO Availability_Status (statusName) VALUES
-	('Available'),
-	('Checked Out'),
-	('In Process'),
-	('Unknown');
 
-INSERT INTO Condition_Status (statusName) VALUES
-	('Like New'),
-	('Very Good'),
-	('Good'),
-	('Fair'),
-	('Poor');
-
-INSERT INTO Loan_Status (statusName) VALUES
-	('Requested'),
-	('Approved'),
-	('Denied'),
-	('Expired');
 
 INSERT INTO Users (addressid, username, email) VALUES
 	(1, 'cordagepayment', 'bumblebeehedgehog@ymail.com'),

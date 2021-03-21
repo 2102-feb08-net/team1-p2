@@ -17,11 +17,10 @@ namespace LooseLeaf.DataAccess
         }
 
         public int Id { get; set; }
-        public int AddressId { get; set; }
+        public string AuthId { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
 
-        public virtual Address Address { get; set; }
         public virtual ICollection<Loan> LoanBorrowers { get; set; }
         public virtual ICollection<Loan> LoanLenders { get; set; }
         public virtual ICollection<LoanReview> LoanReviews { get; set; }

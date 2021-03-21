@@ -9,7 +9,11 @@ namespace LooseLeaf.Web.DTOs
     public class User
     {
         [Required]
-        [Range(1, int.MaxValue)]
-        public int Id { get; }
+        public string AuthId { get; set; }
+
+        public string Username { get; set; }
+
+        [Required]
+        public string Email { get; set; }
     }
 }

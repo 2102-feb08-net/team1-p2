@@ -16,7 +16,7 @@ namespace LooseLeaf.Business.IRepositories
         Task<IEnumerable<IUser>> GetAllUsersAsync();
 
         // add a new user
-        Task AddUserAsync(IUser user);
+        Task<int> AddUserAsync(INewUser user);
 
         //list of recommended books for the user
 

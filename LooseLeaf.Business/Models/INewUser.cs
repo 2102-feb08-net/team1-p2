@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace LooseLeaf.Business.Models
 {
-    public interface IUser
+    public interface INewUser
     {
-        int Id { get; }
+        string AuthId { get; }
 
-        string UserName { get; }
+        string Username { get; }
 
-        string Email { get; }
+        public string Email { get; }
     }
 }

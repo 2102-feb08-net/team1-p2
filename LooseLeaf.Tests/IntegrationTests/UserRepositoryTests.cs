@@ -37,9 +37,9 @@ namespace LooseLeaf.Tests.IntegrationTests
             using (LooseLeafContext context = contextFactory.CreateContext())
             {
                 UserRepository userRepository = new UserRepository(context);
-                var fakeUser = new Mock<IUser>();
-                fakeUser.Setup(u => u.Address).Returns(fakeAddress.Object);
-                fakeUser.Setup(u => u.UserName).Returns("username");
+                var fakeUser = new Mock<INewUser>();
+                fakeUser.Setup(u => u.AuthId).Returns("123Id");
+                fakeUser.Setup(u => u.Username).Returns("username");
                 fakeUser.Setup(u => u.Email).Returns("username@website.com");
 
                 // act
@@ -59,7 +59,6 @@ namespace LooseLeaf.Tests.IntegrationTests
             {
                 Username = "damionsilver",
                 Email = "damion.silver@gmail.com",
-                AddressId = 1
             };
 
             using var contextFactory = new TestLooseLeafContextFactory();
@@ -82,64 +81,54 @@ namespace LooseLeaf.Tests.IntegrationTests
             Assert.Equal(insertedUser.Email, user.Email);
         }
 
-
-
         [Fact]
         public async Task UserRepository_GetUserRecommendations()
         {
-       
             using var contextFactory = new TestLooseLeafContextFactory();
             using (LooseLeafContext arrangeContext = contextFactory.CreateContext())
             {
-                
                 //creates test address 1 for lender
                 await contextFactory.CreateAddress(arrangeContext);
-                
+
                 //creates test book 1
                 await contextFactory.CreateBook(arrangeContext);
-                
+
                 //creates test book 2
                 await contextFactory.CreateBook(arrangeContext);
-                
+
                 //creates test book 3
                 await contextFactory.CreateBook(arrangeContext);
-                
+
                 //creates test book 4
                 await contextFactory.CreateBook(arrangeContext);
-                
+
                 //creates test book 5
                 await contextFactory.CreateBook(arrangeContext);
-                
 
-
-
-        
-                
-
-                   //creates owned book 1
+                //creates owned book 1
                 await contextFactory.CreateOwnedBook(arrangeContext, 1, 1);
-                
-                   //creates owned book 2
+
+                //creates owned book 2
                 await contextFactory.CreateOwnedBook(arrangeContext, 1, 2);
-                
-                   //creates owned book 3
+
+                //creates owned book 3
                 await contextFactory.CreateOwnedBook(arrangeContext, 1, 3);
-                
-                   //creates owned book 4
+
+                //creates owned book 4
                 await contextFactory.CreateOwnedBook(arrangeContext, 1, 4);
-                
-                   //creates owned book 5
+
+                //creates owned book 5
                 await contextFactory.CreateOwnedBook(arrangeContext, 1, 5);
-                
-                    //adds  inserts lender variable able as a user in the sqllite database references address 1
+
+                //adds  inserts lender variable able as a user in the sqllite database references address 1
                 await contextFactory.CreateUser(arrangeContext, "damionsilver");
                 arrangeContext.SaveChanges();//adds  inserts burrower variable able as a user in the sqllite database references address 1
                 await contextFactory.CreateUser(arrangeContext, "dajiabridgers");
-                
+
                 DataAccess.Book count = arrangeContext.Books.First();
                 arrangeContext.SaveChanges();
 
-                await contextFactory.CreateLoan(arrangeContext,  1,  2);
+                await contextFactory.CreateLoan(arrangeContext, 1, 2);
                 arrangeContext.SaveChanges();
             }
 
@@ -149,23 +138,11 @@ namespace LooseLeaf.Tests.IntegrationTests
             var repo = new UserRepository(context);
 
             // act
-            List<IBook> userrecommendedbooks =  new List<IBook> (await repo.GetRecommendedBooksAsync(2)); 
-            
-
-
-
-
+            List<IBook> userrecommendedbooks = new List<IBook>(await repo.GetRecommendedBooksAsync(2));
 
             // assert
-              Assert.Contains("Test",userrecommendedbooks.First().Genres);
-                
-
+            Assert.Contains("Test", userrecommendedbooks.First().Genres);
         }
-
-
-
-
-
 
         [Theory]
         [InlineData(0)]

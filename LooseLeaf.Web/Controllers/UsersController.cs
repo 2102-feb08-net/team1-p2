@@ -41,7 +41,9 @@ namespace LooseLeaf.Web.Controllers
         [HttpPost("api/users")]
         public async Task<IActionResult> AddNewUser(DTOs.User user)
         {
-            throw new NotImplementedException();
+            INewUser newUser = new NewUser(user.AuthId, user.Username, user.Email);
+            int id = await _usersRepo.AddUserAsync(newUser);
+            return Ok(id);
         }
 
         [HttpGet("api/users/{userId}")]
@@ -63,6 +65,10 @@ namespace LooseLeaf.Web.Controllers
         [Authorize]
         public async Task<IActionResult> AddUserOwnedBook(int userId, DTOs.OwnedBookData data)
         {
+            var id = User.FindFirst("user_id");
+            if (!int.TryParse(id.Value, out int idValue) || idValue != userId)
+                return Unauthorized();
+
             if (!data.ConditionStatus.HasValue)
                 return BadRequest();
             if (!data.AvailabilityStatus.HasValue)

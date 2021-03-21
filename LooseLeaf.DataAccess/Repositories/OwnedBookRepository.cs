@@ -82,7 +82,6 @@ namespace LooseLeaf.DataAccess.Repositories
             IQueryable<OwnedBook> ownedBooksQuery = _context.OwnedBooks
                 .Include(o => o.Book)
                 .Include(o => o.User)
-                .ThenInclude(u => u.Address)
                 .Include(o => o.Condition)
                 .Include(o => o.AvailabilityStatus);
 

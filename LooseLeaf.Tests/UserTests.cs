@@ -22,7 +22,7 @@ namespace LooseLeaf.Tests
             IAddress fakeAddress = new Mock<IAddress>().Object;
 
             // act
-            IUser user = new User(userId, userName, email, fakeAddress);
+            IUser user = new User(userId, userName, email);
 
             // assert
             Assert.NotNull(user);
@@ -37,7 +37,7 @@ namespace LooseLeaf.Tests
             IAddress fakeAddress = new Mock<IAddress>().Object;
 
             // act
-            IUser buildUser() => new User(userId, userName, email, fakeAddress);
+            IUser buildUser() => new User(userId, userName, email);
 
             // assert
             Assert.Throws<ArgumentNullException>(buildUser);
@@ -52,7 +52,7 @@ namespace LooseLeaf.Tests
             IAddress fakeAddress = new Mock<IAddress>().Object;
 
             // act
-            IUser buildUser() => new User(default, userName, email, fakeAddress);
+            IUser buildUser() => new User(default, userName, email);
 
             // assert
             Assert.Throws<ArgumentException>(buildUser);
@@ -67,7 +67,7 @@ namespace LooseLeaf.Tests
             IAddress fakeAddress = new Mock<IAddress>().Object;
 
             // act
-            IUser buildUser() => new User(userId, userName, email, fakeAddress);
+            IUser buildUser() => new User(userId, userName, email);
 
             // assert
             Assert.Throws<ArgumentNullException>(buildUser);
@@ -82,7 +82,7 @@ namespace LooseLeaf.Tests
             IAddress fakeAddress = new Mock<IAddress>().Object;
 
             // act
-            IUser buildUser() => new User(userId, userName, email, fakeAddress);
+            IUser buildUser() => new User(userId, userName, email);
 
             // assert
             Assert.Throws<FormatException>(buildUser);
@@ -97,7 +97,7 @@ namespace LooseLeaf.Tests
             IAddress fakeAddress = null;
 
             // act
-            IUser buildUser() => new User(userId, userName, email, fakeAddress);
+            IUser buildUser() => new User(userId, userName, email);
 
             // assert
             Assert.Throws<ArgumentNullException>(buildUser);
@@ -112,7 +112,7 @@ namespace LooseLeaf.Tests
             IAddress fakeAddress = new Mock<IAddress>().Object;
 
             // act
-            IUser user = new User(userId, userName, email, fakeAddress);
+            IUser user = new User(userId, userName, email);
 
             // assert
             Assert.Equal(userName, user.UserName);
@@ -127,25 +127,10 @@ namespace LooseLeaf.Tests
             IAddress fakeAddress = new Mock<IAddress>().Object;
 
             // act
-            IUser user = new User(userId, userName, email, fakeAddress);
+            IUser user = new User(userId, userName, email);
 
             // assert
             Assert.Equal(email, user.Email);
-        }
-
-        [Fact]
-        public void User_GetAddress()
-        {
-            // arrange
-            const string userName = "firstUser";
-            const string email = "somebody@website.com";
-            IAddress fakeAddress = new Mock<IAddress>().Object;
-
-            // act
-            IUser user = new User(userId, userName, email, fakeAddress);
-
-            // assert
-            Assert.Equal(fakeAddress, user.Address);
         }
 
         [Fact]
@@ -157,7 +142,7 @@ namespace LooseLeaf.Tests
             IAddress fakeAddress = new Mock<IAddress>().Object;
 
             // act
-            IUser user = new User(userId, userName, email, fakeAddress);
+            IUser user = new User(userId, userName, email);
 
             // assert
             Assert.Equal(userId, user.Id);
