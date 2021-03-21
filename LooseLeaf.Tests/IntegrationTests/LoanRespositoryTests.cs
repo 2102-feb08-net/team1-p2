@@ -117,8 +117,8 @@ namespace LooseLeaf.Tests.IntegrationTests
             // assert
             var firstLoan = loans.First();
             Assert.Single(loans);
-            Assert.Equal(LENDER_ID, firstLoan.Lender);
-            Assert.Equal(BORROWER_ID, firstLoan.Borrower);
+            Assert.Equal(LENDER_ID, firstLoan.Lender.Id);
+            Assert.Equal(BORROWER_ID, firstLoan.Borrower.Id);
             Assert.Equal(LOAN_MESSAGE, firstLoan.Message);
             Assert.Equal(FIRST_OWNED_BOOK_ID, firstLoan.LoanedBooks.First().Id);
             Assert.Equal(SECOND_OWNED_BOOK_ID, firstLoan.LoanedBooks.Last().Id);

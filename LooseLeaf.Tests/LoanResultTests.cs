@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 using Xunit;
 using LooseLeaf.Business.Models;
 using Moq;
+using LooseLeaf.Business.Models.Results;
 
 namespace LooseLeaf.Tests
 {
     public class LoanResultTests
     {
-        private const int fakeLender = 1;
-        private const int fakeBorrower = 2;
+        private const int id = 1;
+        private IUserResult fakeLender = new Mock<IUserResult>().Object;
+        private IUserResult fakeBorrower = new Mock<IUserResult>().Object;
         private const string message = "I want to borrow these books.";
         private readonly DateTimeOffset pickupTime = new DateTimeOffset(new DateTime(2000, 1, 2));
         private readonly DateTimeOffset returnTime = new DateTimeOffset(new DateTime(2000, 1, 3));
@@ -26,7 +28,7 @@ namespace LooseLeaf.Tests
             // arrange
 
             // act
-            ILoanResult loan = new LoanResult(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
+            ILoanResult loan = new LoanResult(id, fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
 
             // assert
             Assert.NotNull(loan);
@@ -39,7 +41,7 @@ namespace LooseLeaf.Tests
             List<IOwnedBookResult> books = new List<IOwnedBookResult>();
 
             // act
-            ILoanResult loan() => new LoanResult(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
+            ILoanResult loan() => new LoanResult(id, fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
 
             // assert
             Assert.Throws<ArgumentException>(loan);
@@ -51,7 +53,7 @@ namespace LooseLeaf.Tests
             // arrange
 
             // act
-            ILoanResult loan() => new LoanResult(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, null, status);
+            ILoanResult loan() => new LoanResult(id, fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, null, status);
 
             // assert
             Assert.Throws<ArgumentNullException>(loan);
@@ -63,10 +65,10 @@ namespace LooseLeaf.Tests
             // arrange
 
             // act
-            ILoanResult loan() => new LoanResult(default, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
+            ILoanResult loan() => new LoanResult(id, default, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
 
             // assert
-            Assert.Throws<ArgumentException>(loan);
+            Assert.Throws<ArgumentNullException>(loan);
         }
 
         [Fact]
@@ -75,10 +77,10 @@ namespace LooseLeaf.Tests
             // arrange
 
             // act
-            ILoanResult loan() => new LoanResult(fakeLender, default, message, pickupTime, returnTime, fakeAddress, books, status);
+            ILoanResult loan() => new LoanResult(id, fakeLender, default, message, pickupTime, returnTime, fakeAddress, books, status);
 
             // assert
-            Assert.Throws<ArgumentException>(loan);
+            Assert.Throws<ArgumentNullException>(loan);
         }
 
         [Fact]
@@ -87,7 +89,7 @@ namespace LooseLeaf.Tests
             // arrange
 
             // act
-            ILoanResult loan() => new LoanResult(fakeLender, fakeBorrower, message, returnTime, pickupTime, fakeAddress, books, status);
+            ILoanResult loan() => new LoanResult(id, fakeLender, fakeBorrower, message, returnTime, pickupTime, fakeAddress, books, status);
 
             // assert
             Assert.Throws<ArgumentException>(loan);
@@ -99,7 +101,7 @@ namespace LooseLeaf.Tests
             // arrange
 
             // act
-            ILoanResult loan() => new LoanResult(fakeLender, fakeBorrower, message, pickupTime, returnTime, default, books, status);
+            ILoanResult loan() => new LoanResult(id, fakeLender, fakeBorrower, message, pickupTime, returnTime, default, books, status);
 
             // assert
             Assert.Throws<ArgumentNullException>(loan);
@@ -111,7 +113,7 @@ namespace LooseLeaf.Tests
             // arrange
 
             // act
-            ILoanResult loan = new LoanResult(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
+            ILoanResult loan = new LoanResult(id, fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
 
             // assert
             Assert.Equal(fakeLender, loan.Lender);
@@ -123,7 +125,7 @@ namespace LooseLeaf.Tests
             // arrange
 
             // act
-            ILoanResult loan = new LoanResult(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
+            ILoanResult loan = new LoanResult(id, fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
 
             // assert
             Assert.Equal(fakeBorrower, loan.Borrower);
@@ -135,7 +137,7 @@ namespace LooseLeaf.Tests
             // arrange
 
             // act
-            ILoanResult loan = new LoanResult(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
+            ILoanResult loan = new LoanResult(id, fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
 
             // assert
             Assert.Equal(message, loan.Message);
@@ -147,7 +149,7 @@ namespace LooseLeaf.Tests
             // arrange
 
             // act
-            ILoanResult loan = new LoanResult(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
+            ILoanResult loan = new LoanResult(id, fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
 
             // assert
             Assert.Equal(pickupTime, loan.StartDate);
@@ -159,7 +161,7 @@ namespace LooseLeaf.Tests
             // arrange
 
             // act
-            ILoanResult loan = new LoanResult(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
+            ILoanResult loan = new LoanResult(id, fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
 
             // assert
             Assert.Equal(returnTime, loan.EndDate);
@@ -171,7 +173,7 @@ namespace LooseLeaf.Tests
             // arrange
 
             // act
-            ILoanResult loan = new LoanResult(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
+            ILoanResult loan = new LoanResult(id, fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
 
             // assert
             Assert.Equal(fakeAddress, loan.ExchangeLocationAddress);
@@ -183,7 +185,7 @@ namespace LooseLeaf.Tests
             // arrange
 
             // act
-            ILoanResult loan = new LoanResult(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
+            ILoanResult loan = new LoanResult(id, fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
 
             // assert
             Assert.Equal(books, loan.LoanedBooks);
@@ -195,10 +197,22 @@ namespace LooseLeaf.Tests
             // arrange
 
             // act
-            ILoanResult loan = new LoanResult(fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
+            ILoanResult loan = new LoanResult(id, fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
 
             // assert
             Assert.Equal(status, loan.Status);
+        }
+
+        [Fact]
+        public void Loan_GetId()
+        {
+            // arrange
+
+            // act
+            ILoanResult loan = new LoanResult(id, fakeLender, fakeBorrower, message, pickupTime, returnTime, fakeAddress, books, status);
+
+            // assert
+            Assert.Equal(id, loan.Id);
         }
     }
 }

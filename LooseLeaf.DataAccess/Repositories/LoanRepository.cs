@@ -1,5 +1,6 @@
 ﻿using LooseLeaf.Business.IRepositories;
 using LooseLeaf.Business.Models;
+using LooseLeaf.Business.Models.Results;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -81,8 +82,9 @@ namespace LooseLeaf.DataAccess.Repositories
             var loans = await loanQuery.ToListAsync();
 
             return loans.Select(l => new Business.Models.LoanResult(
-                l.LenderId,
-                l.BorrowerId,
+                l.Id,
+                new UserResult(l.Lender.Id, l.Lender.Username),
+                new UserResult(l.Borrower.Id, l.Borrower.Username),
                 l.Message,
                 l.DropoffDate,
                 l.ReturnedDate,

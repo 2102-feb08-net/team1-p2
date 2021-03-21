@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LooseLeaf.Business.Models.Results;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,9 @@ namespace LooseLeaf.Business.Models
 {
     public interface ILoanResult
     {
-        int Lender { get; }
-        int Borrower { get; }
+        int Id { get; }
+        IUserResult Lender { get; }
+        IUserResult Borrower { get; }
 
         string Message { get; }
 
