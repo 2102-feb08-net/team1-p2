@@ -10,9 +10,9 @@ namespace LooseLeaf.Business.Models
     {
         int OwnerId { get; }
 
-        PhysicalCondition Condition { get; }
+        string Condition { get; }
 
-        Availability Availability { get; }
+        string Availability { get; }
 
         int Id { get; }
 

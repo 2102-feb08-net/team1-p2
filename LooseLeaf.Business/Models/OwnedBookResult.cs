@@ -10,23 +10,28 @@ namespace LooseLeaf.Business.Models
     {
         public int OwnerId { get; }
 
-        public PhysicalCondition Condition { get; }
+        public string Condition { get; }
 
-        public Availability Availability { get; }
+        public string Availability { get; }
 
         public int Id { get; }
 
         public IBook Book { get; }
 
-        private OwnedBookResult(IBook book, int ownerId, PhysicalCondition condition, Availability availability)
+        public OwnedBookResult(int id, IBook book, int ownerId, string condition, string availability)
         {
+            if (id <= 0)
+                throw new ArgumentException("ID must be greater than or equal to one.");
+
+            Id = id;
+
             if (book is null)
                 throw new ArgumentNullException(nameof(book));
             if (ownerId <= 0)
                 throw new ArgumentException("The ownerId must be greater than 0.", nameof(ownerId));
-            if (!Enum.IsDefined(condition))
+            if (string.IsNullOrWhiteSpace(condition))
                 throw new ArgumentException($"Value '{condition}' does not exist in PhysicalCondition");
-            if (!Enum.IsDefined(availability))
+            if (string.IsNullOrWhiteSpace(availability))
                 throw new ArgumentException($"Value '{availability}' does not exist in Availability");
 
             Book = book;
@@ -36,14 +41,6 @@ namespace LooseLeaf.Business.Models
             Condition = condition;
 
             Availability = availability;
-        }
-
-        public OwnedBookResult(int id, IBook book, int ownerId, PhysicalCondition condition, Availability availability) : this(book, ownerId, condition, availability)
-        {
-            if (id <= 0)
-                throw new ArgumentException("ID must be greater than or equal to one.");
-
-            Id = id;
         }
     }
 }

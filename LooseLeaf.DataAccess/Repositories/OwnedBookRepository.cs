@@ -78,7 +78,12 @@ namespace LooseLeaf.DataAccess.Repositories
 
         public async Task<IEnumerable<IOwnedBookResult>> GetOwnedBooksAsync(IOwnedBookSearchParams searchParams)
         {
-            IQueryable<OwnedBook> ownedBooksQuery = _context.OwnedBooks.Include(o => o.Book).Include(o => o.User).ThenInclude(u => u.Address);
+            IQueryable<OwnedBook> ownedBooksQuery = _context.OwnedBooks
+                .Include(o => o.Book)
+                .Include(o => o.User)
+                .ThenInclude(u => u.Address)
+                .Include(o => o.Condition)
+                .Include(o => o.AvailabilityStatus);
 
             if (searchParams.BookAvailability.HasValue)
                 ownedBooksQuery = ownedBooksQuery.Where(o => o.AvailabilityStatusId == (int)searchParams.BookAvailability);
@@ -95,8 +100,8 @@ namespace LooseLeaf.DataAccess.Repositories
                 o.Id,
                 o.Book.ConvertToIBook(),
                 o.UserId,
-                (PhysicalCondition)o.ConditionId,
-                (Availability)o.AvailabilityStatusId));
+                o.Condition.StatusName,
+                o.AvailabilityStatus.StatusName));
         }
 
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
