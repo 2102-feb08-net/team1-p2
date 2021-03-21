@@ -68,16 +68,8 @@ namespace LooseLeaf.DataAccess.Repositories
             .Include(b => b.LoanedBooks).ThenInclude(b => b.OwnedBook)
             .ThenInclude(b => b.Book).ThenInclude(b => b.Genres);
             var loanbooks = loans.Select(b => b.LoanedBooks).ToList().SelectMany(g => g);
-            List<OwnedBook> ownedbooks = new List<OwnedBook>();
-            foreach (var item in loanbooks)
-            {
-                ownedbooks.Add(item.OwnedBook);
-            }
-            List<Book> booklist = new List<Book>();
-             foreach (var item in ownedbooks)
-            {
-                booklist.Add(item.Book);
-            }
+            var ownedbooks = loanbooks.Select(b => b.OwnedBook).ToList();
+            var booklist = ownedbooks.Select(b => b.Book).ToList();
             var _genre = booklist.Select(b => b.Genres).ToList().SelectMany(b => b);
             
             
