@@ -18,6 +18,9 @@ using LooseLeaf.DataAccess.Repositories;
 using LooseLeaf.Business.IRepositories;
 using LooseLeaf.Business;
 using LooseLeaf.Business.Models;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LooseLeaf.Web
 {
@@ -48,11 +51,28 @@ namespace LooseLeaf.Web
             services.AddHttpClient<GoogleBooks>();
             services.Configure<GoogleBooksOptions>(Configuration.GetSection(GoogleBooksOptions.ApiKeyConfiguration));
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            string domain = $"https://{Configuration["Auth0:Domain"]}/";
+            services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    options.Authority = "https://dev-85327145.okta.com/oauth2/default";
+                    options.Authority = domain;
+                    options.Audience = Configuration["Auth0:Audience"];
+                    // If the access token does not have a `sub` claim, `User.Identity.Name` will be `null`. Map it to a different claim by setting the NameClaimType below.
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        NameClaimType = ClaimTypes.NameIdentifier,
+                        RoleClaimType = ClaimTypes.Role,
+                    };
                 });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("read:wishlist", policy => policy.Requirements.Add(new HasScopeRequirement("read:wishlist", domain)));
+                options.AddPolicy("read:loans", policy => policy.Requirements.Add(new HasScopeRequirement("read:loans", domain)));
+            });
+
+            services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

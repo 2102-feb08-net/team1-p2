@@ -1,5 +1,6 @@
 ﻿using LooseLeaf.Business.IRepositories;
 using LooseLeaf.Business.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -20,6 +21,7 @@ namespace LooseLeaf.Web.Controllers
         }
 
         [HttpGet("api/loans")]
+        [Authorize("read:loans")]
         public async Task<IActionResult> GetAllLoans(int? lender, int? borrower, int? book, int? ownedBook, int? loanStatus)
         {
             ILoanSearchParams searchParams = new LoanSearchParams { LenderId = lender, BorrowerId = borrower, BookId = book, OwnedBookId = ownedBook, LoanStatus = (LoanStatus?)loanStatus };
