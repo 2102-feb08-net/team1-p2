@@ -16,9 +16,9 @@ namespace LooseLeaf.Business.Models
 
         public int Id { get; }
 
-        public IBook Book { get; }
+        public Book Book { get; }
 
-        private OwnedBookResult(IBook book, int ownerId, PhysicalCondition condition, Availability availability)
+        private OwnedBookResult(Book book, int ownerId, PhysicalCondition condition, Availability availability)
         {
             if (book is null)
                 throw new ArgumentNullException(nameof(book));
@@ -38,7 +38,7 @@ namespace LooseLeaf.Business.Models
             Availability = availability;
         }
 
-        public OwnedBookResult(int id, IBook book, int ownerId, PhysicalCondition condition, Availability availability) : this(book, ownerId, condition, availability)
+        public OwnedBookResult(int id, Book book, int ownerId, PhysicalCondition condition, Availability availability) : this(book, ownerId, condition, availability)
         {
             if (id <= 0)
                 throw new ArgumentException("ID must be greater than or equal to one.");
