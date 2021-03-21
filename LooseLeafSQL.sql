@@ -276,7 +276,7 @@ INSERT INTO books (title, author, isbn, thumbnail) VALUES
 ('Pirate Latitudes','Michael Crichton',9781443400442,'http://books.google.com/books/content?id=U9bOjZlTWhEC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api'),
 ('Harry Potter and the Goblet of Fire','J.K. Rowling',9781408834992,'http://books.google.com/books/content?id=1Vs9AwAAQBAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api'),
 ('Harry Potter and the Chamber of Secrets','J.K. Rowling',9781781100509,'http://books.google.com/books/content?id=5iTebBW-w7QC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api'),
-('Harry Potter and the Order of the Phoenix','J.K. Rowling',9781781100530,'http://books.google.com/books/content?id=zpvysRGsBlwC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api'),
+('Harry Potter and the Order of the Phoenix','J.K. Rowling',9781781100530,'http://books.google.com/books/content?id=zpvysRGsBlwC&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api');
 
 
 INSERT INTO owned_books (userId, bookId, conditionId, availabilityStatusId) VALUES
