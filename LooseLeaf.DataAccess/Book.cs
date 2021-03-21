@@ -18,6 +18,7 @@ namespace LooseLeaf.DataAccess
         public string Title { get; set; }
         public string Author { get; set; }
         public long Isbn { get; set; }
+        public string Thumbnail { get; set; }
 
         public virtual ICollection<Genre> Genres { get; set; }
         public virtual ICollection<OwnedBook> OwnedBooks { get; set; }

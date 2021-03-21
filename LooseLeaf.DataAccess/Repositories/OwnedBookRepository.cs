@@ -31,7 +31,7 @@ namespace LooseLeaf.DataAccess.Repositories
                 IBook bookObj = await googleBooks.GetBookFromIsbn(ownedBook.Isbn.IsbnValue);
 
                 if (bookObj is null)
-                    throw new NullReferenceException("Unable to retrieve book from Google Books.");
+                    throw new AggregateException("Unable to retrieve book from Google Books.");
 
                 book = await AddBook(bookObj);
             }
@@ -63,6 +63,7 @@ namespace LooseLeaf.DataAccess.Repositories
                 Title = book.Title,
                 Author = book.Author,
                 Isbn = book.Isbn,
+                Thumbnail = book.Thumbnail
             };
 
             var genres = book.Genres.Select(g => new Genre()

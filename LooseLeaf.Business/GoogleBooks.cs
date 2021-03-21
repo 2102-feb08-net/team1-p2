@@ -51,7 +51,7 @@ namespace LooseLeaf.Business
 
                 VolumeInfo info = volumeInfoJson.ToObject<VolumeInfo>();
 
-                return new Book(info.Title, info.Authors[0], isbn, info.Categories);
+                return new Book(info.Title, info.Authors[0], isbn, info.Categories, info.ImageLinks.Thumbnail);
             }
             else
                 throw new HttpRequestException("Cannot connect to Google Books");
@@ -63,6 +63,13 @@ namespace LooseLeaf.Business
             public string[] Authors { get; set; }
 
             public string[] Categories { get; set; }
+
+            public ImageLinks ImageLinks { get; set; }
+        }
+
+        private class ImageLinks
+        {
+            public string Thumbnail { get; set; }
         }
     }
 

@@ -32,7 +32,8 @@ CREATE TABLE Books(
 	id INT NOT NULL PRIMARY KEY IDENTITY,
 	title NVARCHAR(255) NOT NULL, 
 	author NVARCHAR(255) NOT NULL,
-	isbn BigINT NOT NULL CHECK (len(isbn) = 13 or len(isbn) = 10),
+	isbn BigINT NOT NULL CHECK (len(isbn) = 13),
+	thumbnail NVARCHAR(1000) NULL,
 ) 
 
 CREATE TABLE Genre(
