@@ -104,9 +104,9 @@ namespace LooseLeaf.Tests.IntegrationTests
             return newIsbn;
         }
 
-         public async Task CreateLoan(LooseLeafContext context)
+         public async Task CreateLoan(LooseLeafContext context, int _LenderId, int _BorrowerId)
         {
-            var loan = new DataAccess.Loan() { LenderId = 1, BorrowerId = 2, Message = "Test loan message", 
+            var loan = new DataAccess.Loan() { LenderId = _LenderId, BorrowerId = _BorrowerId, Message = "Test loan message", 
              LoanStatusId = 1, IsPublic = true, DropoffDate = new DateTime(2021,3,20), ReturnedDate = new DateTime(2021,3,23), 
              AddressId = 1
             };
