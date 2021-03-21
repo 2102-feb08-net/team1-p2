@@ -21,7 +21,7 @@ namespace LooseLeaf.Web.Controllers
         }
 
         [HttpGet("api/loans")]
-        [Authorize("read:loans")]
+        [Authorize]
         public async Task<IActionResult> GetAllLoans(int? lender, int? borrower, int? book, int? ownedBook, int? loanStatus)
         {
             ILoanSearchParams searchParams = new LoanSearchParams { LenderId = lender, BorrowerId = borrower, BookId = book, OwnedBookId = ownedBook, LoanStatus = (LoanStatus?)loanStatus };
