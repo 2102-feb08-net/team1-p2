@@ -64,20 +64,42 @@ namespace LooseLeaf.DataAccess.Repositories
         public async Task<IEnumerable<IBook>> GetRecommendedBooksAsync(int userid)
         {
            
-          //  var loans = _context.Loans.Where(b => b.BorrowerId == userid);
-            //List<IBook> recommendedBooks = new List<IBook>();
-            //List<LoanedBook> loanedbooks = new List<LoanedBook>();
-
-           // List<Genre> genresdataacaesslist = new List<Genre>();
-           // List<string> genres = new List<string>();
-
-
+            var loans = _context.Loans.Where(b => b.BorrowerId == userid)
+            .Include(b => b.LoanedBooks).ThenInclude(b => b.OwnedBook)
+            .ThenInclude(b => b.Book).ThenInclude(b => b.Genres);
+            var loanbooks = loans.Select(b => b.LoanedBooks).ToList().SelectMany(g => g);
+            List<OwnedBook> ownedbooks = new List<OwnedBook>();
+            foreach (var item in loanbooks)
+            {
+                ownedbooks.Add(item.OwnedBook);
+            }
+            List<Book> booklist = new List<Book>();
+             foreach (var item in ownedbooks)
+            {
+                booklist.Add(item.Book);
+            }
+            var _genre = booklist.Select(b => b.Genres).ToList().SelectMany(b => b);
+            
+            
+            
+            if(loans.Count().Equals(0)){
+                return _context.Books.Include(b => b.Genres).Take(5).Select(b => b.ConvertToIBook()).ToList();
+            }
+            else{      
+        
+                var grouped = _genre.GroupBy(item => item);
+                var sorted = grouped.OrderByDescending(group => group.Count()).First();
+                var items = grouped.SelectMany(g => g);
+                string name = items.First().GenreName;
+                var genre = _context.Genres.Where(g => g.GenreName.Equals(name)).FirstOrDefault();
+                return _context.Books.Include(b => b.Genres).Where(g => g.Genres.Contains(genre)).Take(5).Select(b => b.ConvertToIBook()).ToList();
+            }
 
 
 
              //checks to see if the list is empty. if it is empty, grab the first five books in the database and suggest them.
             
-            return _context.Books.Include(b => b.Genres).Take(5).Select(b => b.ConvertToIBook()).ToList();
+            
             
         
            
