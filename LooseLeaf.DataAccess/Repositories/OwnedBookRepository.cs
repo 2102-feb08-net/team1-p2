@@ -76,9 +76,7 @@ namespace LooseLeaf.DataAccess.Repositories
             return newBook;
         }
 
-        public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
-
-        public async Task<IEnumerable<IOwnedBook>> GetOwnedBooksAsync(IOwnedBookSearchParams searchParams)
+        public async Task<IEnumerable<IOwnedBookResult>> GetOwnedBooksAsync(IOwnedBookSearchParams searchParams)
         {
             IQueryable<OwnedBook> ownedBooksQuery = _context.OwnedBooks.Include(o => o.Book).Include(o => o.User).ThenInclude(u => u.Address);
 
@@ -93,12 +91,14 @@ namespace LooseLeaf.DataAccess.Repositories
                 ownedBooksQuery = ownedBooksQuery.Skip(searchParams.Pagination.PageSize * searchParams.Pagination.PageIndex).Take(searchParams.Pagination.PageIndex);
 
             var ownedBooks = await ownedBooksQuery.ToListAsync();
-            return ownedBooks.Select(o => new Business.Models.OwnedBook(
+            return ownedBooks.Select(o => new Business.Models.OwnedBookResult(
                 o.Id,
-                new IsbnData(o.Book.Isbn),
+                o.Book.ConvertToIBook(),
                 o.UserId,
                 (PhysicalCondition)o.ConditionId,
                 (Availability)o.AvailabilityStatusId));
         }
+
+        public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
     }
 }

@@ -123,7 +123,7 @@ namespace LooseLeaf.Tests.IntegrationTests
             }
 
             // act
-            IEnumerable<IOwnedBook> ownedBooks;
+            IEnumerable<IOwnedBookResult> ownedBooks;
             using (LooseLeafContext actContext = contextFactory.CreateContext())
             {
                 IOwnedBookRepository ownedBookRepo = new OwnedBookRepository(actContext);

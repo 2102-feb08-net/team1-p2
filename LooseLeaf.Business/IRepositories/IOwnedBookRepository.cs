@@ -13,6 +13,6 @@ namespace LooseLeaf.Business.IRepositories
 
         Task UpdateOwnedBookStatus(int ownedBookId, Availability? availability, PhysicalCondition? condition);
 
-        Task<IEnumerable<IOwnedBook>> GetOwnedBooksAsync(IOwnedBookSearchParams searchParams);
+        Task<IEnumerable<IOwnedBookResult>> GetOwnedBooksAsync(IOwnedBookSearchParams searchParams);
     }
 }
