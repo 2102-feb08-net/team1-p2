@@ -16,6 +16,6 @@ namespace LooseLeaf.Business.Models
 
         int Id { get; }
 
-        Book Book { get; }
+        IBook Book { get; }
     }
 }
