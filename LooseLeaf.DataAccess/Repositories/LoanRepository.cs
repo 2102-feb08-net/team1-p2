@@ -58,6 +58,9 @@ namespace LooseLeaf.DataAccess.Repositories
                 .Include(l => l.LoanedBooks)
                     .ThenInclude(b => b.OwnedBook)
                         .ThenInclude(b => b.Condition)
+                .Include(l => l.LoanedBooks)
+                    .ThenInclude(b => b.OwnedBook)
+                        .ThenInclude(b => b.Book)
                 .Include(l => l.Address)
                 .Include(l => l.LoanStatus);
 
