@@ -16,7 +16,7 @@ namespace LooseLeaf.Web.DTOs
 
         public PhysicalCondition? ConditionStatus { get; set; }
 
-        public IEnumerable<ValidationResult> Validate(ValidationContext context)
+        public IEnumerable<ValidationResult> Validate(ValidationContext ValidationContext)
         {
             if (!AvailabilityStatus.HasValue && !ConditionStatus.HasValue)
                 yield return new ValidationResult("Both AvailabilityStatus and ConditionStatus cannot be null");

@@ -21,7 +21,6 @@ namespace LooseLeaf.DataAccess.Repositories
 
         public async Task<IEnumerable<IBook>> GetAllBooks(IBookSearchParams searchParams)
         {
-            var newParams = searchParams.ToString().ToLower();
 
             IQueryable<Book> bookQuery = _context.Books.Include(b => b.Genres);
 

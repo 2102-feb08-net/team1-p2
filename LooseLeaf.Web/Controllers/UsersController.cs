@@ -118,7 +118,6 @@ namespace LooseLeaf.Web.Controllers
         [Authorize]
         public async Task<IActionResult> GetUserLoanHistory(int userId)
         {
-            var claims = User.Claims.Count();
             ILoanSearchParams searchParams = new LoanSearchParams { BorrowerId = userId, LoanStatus = LoanStatus.Approved };
             var loans = await _loanRepo.GetLoansAsync(searchParams);
             return Ok(loans);

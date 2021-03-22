@@ -57,16 +57,15 @@ namespace LooseLeaf.DataAccess.Repositories
             var loanbooks = loans.Select(b => b.LoanedBooks).ToList().SelectMany(g => g);
             var ownedbooks = loanbooks.Select(b => b.OwnedBook).ToList();
             var booklist = ownedbooks.Select(b => b.Book).ToList();
-            var _genre = booklist.Select(b => b.Genres).ToList().SelectMany(b => b);
+            var _genre = booklist.Select(b => b.Genres).AsEnumerable().SelectMany(b => b);
 
-            if (loans.Count().Equals(0))
+            if (loans.Any().Equals(0))
             {
                 return _context.Books.Include(b => b.Genres).Take(5).Select(b => b.ConvertToIBook()).ToList();
             }
             else
             {
                 var grouped = _genre.GroupBy(item => item);
-                var sorted = grouped.OrderByDescending(group => group.Count()).First();
                 var items = grouped.SelectMany(g => g);
                 string name = items.First().GenreName;
                 var genre = _context.Genres.Where(g => g.GenreName.Equals(name)).FirstOrDefault();
@@ -76,7 +75,7 @@ namespace LooseLeaf.DataAccess.Repositories
             //checks to see if the list is empty. if it is empty, grab the first five books in the database and suggest them.
         }
 
-        public async Task<IUser> GetUserAsync(int userId)
+        public async Task<IUser> GetUserAsync(int userid)
         {
             var user = await _context.Users.Where(b => b.Id == userId).SingleAsync();
             return new Business.Models.User(userId, user.Username, user.Email);
