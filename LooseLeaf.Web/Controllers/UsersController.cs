@@ -137,7 +137,8 @@ namespace LooseLeaf.Web.Controllers
         [Authorize]
         public async Task<IActionResult> GetUserRecommendations(int userId)
         {
-            throw new NotImplementedException();
+            var recommendedBooks = await _usersRepo.GetRecommendedBooksAsync(userId);
+            return Ok(recommendedBooks);
         }
     }
 }
