@@ -84,18 +84,19 @@ namespace LooseLeaf.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            //Turned off temporarily.
+            //if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "LooseLeaf.Web v1"));
             }
-            else
-            {
-                {
-                    app.UseExceptionHandler("/home/error");
-                }
-            }
+            //else
+            //{
+            //    {
+            //        app.UseExceptionHandler("/home/error");
+            //    }
+            //}
 
             app.UseHttpsRedirection();
 
