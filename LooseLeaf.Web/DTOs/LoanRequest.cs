@@ -13,7 +13,7 @@ namespace LooseLeaf.Web.DTOs
         public int LenderId { get; set; }
 
         [Required]
-        public int BorrowId { get; set; }
+        public int BorrowerId { get; set; }
 
         public string Message { get; set; }
 
