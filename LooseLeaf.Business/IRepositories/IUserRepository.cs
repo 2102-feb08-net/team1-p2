@@ -10,7 +10,7 @@ namespace LooseLeaf.Business.IRepositories
     public interface IUserRepository : IRepository
     {
         // get user by id
-        Task<IUser> GetUserAsync(int userid);
+        Task<IUser> GetUserAsync(int userId);
 
         // get list of all users
         Task<IEnumerable<IUser>> GetAllUsersAsync();
@@ -20,6 +20,6 @@ namespace LooseLeaf.Business.IRepositories
 
         //list of recommended books for the user
 
-        Task<IEnumerable<IBook>> GetRecommendedBooksAsync(int userid);
+        Task<IEnumerable<IBook>> GetRecommendedBooksAsync(int userId);
     }
 }

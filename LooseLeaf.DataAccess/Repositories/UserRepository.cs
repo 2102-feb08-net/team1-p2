@@ -49,19 +49,19 @@ namespace LooseLeaf.DataAccess.Repositories
             return userList;
         }
 
-        public async Task<IEnumerable<IBook>> GetRecommendedBooksAsync(int userid)
+        public async Task<IEnumerable<IBook>> GetRecommendedBooksAsync(int userId)
         {
-            var loans = _context.Loans.Where(b => b.BorrowerId == userid)
+            var loans = _context.Loans.Where(b => b.BorrowerId == userId)
             .Include(b => b.LoanedBooks).ThenInclude(b => b.OwnedBook)
             .ThenInclude(b => b.Book).ThenInclude(b => b.Genres);
-            var loanbooks = loans.Select(b => b.LoanedBooks).ToList().SelectMany(g => g);
-            var ownedbooks = loanbooks.Select(b => b.OwnedBook).ToList();
+            var loanbooks = loans.Select(b => b.LoanedBooks).SelectMany(g => g);
+            var ownedbooks = loanbooks.Select(b => b.OwnedBook);
             var booklist = ownedbooks.Select(b => b.Book).ToList();
-            var _genre = booklist.Select(b => b.Genres).AsEnumerable().SelectMany(b => b);
+            var _genre = booklist.Select(b => b.Genres).SelectMany(b => b);
 
             if (loans.Any().Equals(0))
             {
-                return _context.Books.Include(b => b.Genres).Take(5).Select(b => b.ConvertToIBook()).ToList();
+                return await _context.Books.Include(b => b.Genres).Take(5).Select(b => b.ConvertToIBook()).ToListAsync();
             }
             else
             {
@@ -69,13 +69,13 @@ namespace LooseLeaf.DataAccess.Repositories
                 var items = grouped.SelectMany(g => g);
                 string name = items.First().GenreName;
                 var genre = _context.Genres.Where(g => g.GenreName.Equals(name)).FirstOrDefault();
-                return _context.Books.Include(b => b.Genres).Where(g => g.Genres.Contains(genre)).Take(5).Select(b => b.ConvertToIBook()).ToList();
+                return await _context.Books.Include(b => b.Genres).Where(g => g.Genres.Contains(genre)).Take(5).Select(b => b.ConvertToIBook()).ToListAsync();
             }
 
             //checks to see if the list is empty. if it is empty, grab the first five books in the database and suggest them.
         }
 
-        public async Task<IUser> GetUserAsync(int userid)
+        public async Task<IUser> GetUserAsync(int userId)
         {
             var user = await _context.Users.Where(b => b.Id == userId).SingleAsync();
             return new Business.Models.User(userId, user.Username, user.Email);

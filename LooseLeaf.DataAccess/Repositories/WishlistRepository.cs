@@ -40,7 +40,6 @@ namespace LooseLeaf.DataAccess.Repositories
 
         public async Task RemoveBookFromUserWishlist(int userId, int bookId)
         {
-            var userData = await _context.Users.Where(u => u.Id == userId).SingleAsync();
             var bookData = await _context.Books.Include(b => b.Wishlists).Where(b => b.Id == bookId).SingleAsync();
             _context.Wishlists.RemoveRange(bookData.Wishlists);
         }
