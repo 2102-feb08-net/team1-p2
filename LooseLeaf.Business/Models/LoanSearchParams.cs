@@ -11,6 +11,9 @@ namespace LooseLeaf.Business.Models
         public LoanStatus? LoanStatus { get; set; }
         public int? LenderId { get; set; }
         public int? BorrowerId { get; set; }
+
+        public int? AnyUserId { get; set; }
+
         public int? OwnedBookId { get; set; }
         public int? BookId { get; set; }
         public IPagination Pagination { get; set; }
