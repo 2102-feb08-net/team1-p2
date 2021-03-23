@@ -95,14 +95,13 @@ namespace LooseLeaf.DataAccess.Repositories
                 .Include(l => l.Address)
                 .Include(l => l.LoanStatus);
 
-            if (searchParams.LenderId.HasValue || searchParams.AnyUserId.HasValue)
-                loanQuery = loanQuery.Where(l =>
-                    (searchParams.LenderId.HasValue && l.LenderId == searchParams.LenderId) ||
-                    (searchParams.AnyUserId.HasValue && l.LenderId == searchParams.AnyUserId));
-            if (searchParams.BorrowerId.HasValue || searchParams.AnyUserId.HasValue)
-                loanQuery = loanQuery.Where(l =>
-                    (searchParams.BorrowerId.HasValue && l.BorrowerId == searchParams.BorrowerId) ||
-                    (searchParams.AnyUserId.HasValue && l.BorrowerId == searchParams.AnyUserId));
+            if (searchParams.LenderId.HasValue)
+                loanQuery = loanQuery.Where(l => l.LenderId == searchParams.LenderId);
+            if (searchParams.BorrowerId.HasValue)
+                loanQuery = loanQuery.Where(l => l.BorrowerId == searchParams.BorrowerId);
+            if (searchParams.AnyUserId.HasValue)
+                loanQuery = loanQuery.Where(l => searchParams.AnyUserId == l.Borrower.Id || searchParams.AnyUserId == l.Lender.Id);
+
             if (searchParams.OwnedBookId.HasValue)
                 loanQuery = loanQuery.Where(l => l.LoanedBooks.Any(b => b.OwnedBookid == searchParams.OwnedBookId));
             if (searchParams.BookId.HasValue)
