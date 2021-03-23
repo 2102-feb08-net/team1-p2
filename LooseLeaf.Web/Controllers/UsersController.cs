@@ -132,7 +132,7 @@ namespace LooseLeaf.Web.Controllers
         }
 
         [HttpGet("api/users/{userId}/recommendations")]
-        [Authorize]
+        
         public async Task<IActionResult> GetUserRecommendations(int userId)
         {
             var recommendedBooks = await _usersRepo.GetRecommendedBooksAsync(userId);
