@@ -75,8 +75,8 @@ namespace LooseLeaf.DataAccess.Repositories
                 var genre = _context.Genres.Where(g => g.GenreName.Equals(name)).FirstOrDefault();
                 
 
-                //return _context.Books.Include(b => b.Genres).Where(g => g.Genres.Contains(genre)).Select(b => b.ConvertToIBook()).ToList();
-                return _context.Books.Include(b => b.Genres).Select(b => b.ConvertToIBook()).ToList();
+                return _context.Books.Include(b => b.Genres).Where(g => g.Genres.Contains(genre)).Select(b => b.ConvertToIBook()).ToList();
+
                 
             }
 
