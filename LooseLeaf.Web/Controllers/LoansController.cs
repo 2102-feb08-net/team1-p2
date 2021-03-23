@@ -41,13 +41,21 @@ namespace LooseLeaf.Web.Controllers
         [HttpGet("api/loans/{loanId}")]
         public async Task<IActionResult> GetLoanById(int loanId)
         {
-            throw new NotImplementedException();
+            var loan = await _loanRepo.GetLoanById(loanId);
+            return Ok(loan);
         }
 
-        [HttpPatch("api/loans/{loanId}")]
-        public async Task<IActionResult> UpdateLoanRequestStatus(int loanId, DTOs.LoanRequest req)
+        [HttpPut("api/loans/{loanId}")]
+        public async Task<IActionResult> UpdateLoanRequestStatus(int loanId, int statusId)
         {
-            throw new NotImplementedException();
+            LoanStatus status = (LoanStatus)statusId;
+            if (!Enum.IsDefined(status))
+                return BadRequest();
+
+            await _loanRepo.UpdateLoanStatusAsync(loanId, status);
+            await _loanRepo.SaveChangesAsync();
+
+            return Ok();
         }
     }
 }

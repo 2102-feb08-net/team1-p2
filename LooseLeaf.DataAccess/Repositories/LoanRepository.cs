@@ -48,6 +48,36 @@ namespace LooseLeaf.DataAccess.Repositories
             await _context.LoanedBooks.AddRangeAsync(loanedBooks);
         }
 
+        public async Task<ILoanResult> GetLoanById(int loanId)
+        {
+            var loan = await _context.Loans
+                .Include(l => l.Lender)
+                .Include(l => l.Borrower)
+                .Include(l => l.LoanedBooks)
+                    .ThenInclude(b => b.OwnedBook)
+                        .ThenInclude(b => b.AvailabilityStatus)
+                .Include(l => l.LoanedBooks)
+                    .ThenInclude(b => b.OwnedBook)
+                        .ThenInclude(b => b.Condition)
+                .Include(l => l.LoanedBooks)
+                    .ThenInclude(b => b.OwnedBook)
+                        .ThenInclude(b => b.Book)
+                .Include(l => l.Address)
+                .Include(l => l.LoanStatus)
+                .SingleAsync(loan => loan.Id == loanId);
+
+            return new Business.Models.LoanResult(
+                loan.Id,
+                new UserResult(loan.Lender.Id, loan.Lender.Username),
+                new UserResult(loan.Borrower.Id, loan.Borrower.Username),
+                loan.Message,
+                loan.DropoffDate,
+                loan.ReturnedDate,
+                loan.Address.ConvertToIAddress(),
+                loan.LoanedBooks.Select(b => new OwnedBookResult(b.OwnedBook.Id, b.OwnedBook.Book.ConvertToIBook(), b.OwnedBook.UserId, b.OwnedBook.Condition.StatusName, b.OwnedBook.AvailabilityStatus.StatusName)),
+                loan.LoanStatus.StatusName);
+        }
+
         public async Task<IEnumerable<ILoanResult>> GetLoansAsync(ILoanSearchParams searchParams)
         {
             IQueryable<Loan> loanQuery = _context.Loans
@@ -94,5 +124,11 @@ namespace LooseLeaf.DataAccess.Repositories
         }
 
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
+
+        public async Task UpdateLoanStatusAsync(int loanId, Business.Models.LoanStatus newStatus)
+        {
+            var loan = await _context.Loans.SingleAsync(loan => loan.Id == loanId);
+            loan.LoanStatusId = (int)newStatus;
+        }
     }
 }

@@ -12,5 +12,9 @@ namespace LooseLeaf.Business.IRepositories
         Task AddLoanAsync(ILoan loan);
 
         Task<IEnumerable<ILoanResult>> GetLoansAsync(ILoanSearchParams searchParams);
+
+        Task UpdateLoanStatusAsync(int loanId, LoanStatus newStatus);
+
+        Task<ILoanResult> GetLoanById(int loanId);
     }
 }
