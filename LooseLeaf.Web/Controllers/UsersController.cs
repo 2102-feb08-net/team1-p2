@@ -115,7 +115,6 @@ namespace LooseLeaf.Web.Controllers
         }
 
         [HttpGet("api/users/{userId}/loans")]
-        [Authorize]
         public async Task<IActionResult> GetUserLoanHistory(int userId)
         {
             ILoanSearchParams searchParams = new LoanSearchParams { AnyUserId = userId };
