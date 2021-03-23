@@ -61,15 +61,10 @@ namespace LooseLeaf.DataAccess.Repositories
 
             if (loans.Any().Equals(0))
             {
-                if (_context.Books.Include(b => b.Genres).Select(b => b.ConvertToIBook()).ToList().Count() < 5)
-                {
+                
                     return _context.Books.Include(b => b.Genres).Select(b => b.ConvertToIBook()).ToList();
-                }
-                else{
-
-                     return _context.Books.Include(b => b.Genres).Take(5).Select(b => b.ConvertToIBook()).ToList();
-
-                }
+                
+              
 
             }
             else
@@ -78,15 +73,11 @@ namespace LooseLeaf.DataAccess.Repositories
                 var items = grouped.SelectMany(g => g);
                 string name = items.First().GenreName;
                 var genre = _context.Genres.Where(g => g.GenreName.Equals(name)).FirstOrDefault();
-                 if (_context.Books.Include(b => b.Genres).Select(b => b.ConvertToIBook()).ToList().Count() < 5)
-                {
+                
+
                 return _context.Books.Include(b => b.Genres).Where(g => g.Genres.Contains(genre)).Select(b => b.ConvertToIBook()).ToList();
-                }
-                else{
 
-                return _context.Books.Include(b => b.Genres).Where(g => g.Genres.Contains(genre)).Take(5).Select(b => b.ConvertToIBook()).ToList();
-
-                }
+                
             }
 
             //checks to see if the list is empty. if it is empty, grab the first five books in the database and suggest them.
