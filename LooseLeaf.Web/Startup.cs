@@ -82,6 +82,16 @@ namespace LooseLeaf.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.Use(async (HttpContext context, Func<Task> next) =>
+            {
+                await next.Invoke();
+
+                if (context.Response.StatusCode == 404)
+                {
+                    context.Request.Path = new PathString("/index.html");
+                    await next.Invoke();
+                }
+            });
             //Turned off temporarily.
             if (env.IsDevelopment())
             {
