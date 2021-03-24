@@ -56,20 +56,21 @@ namespace LooseLeaf.DataAccess.Repositories
             .ThenInclude(b => b.Book).ThenInclude(b => b.Genres);
             var loanbooks = loans.Select(b => b.LoanedBooks).SelectMany(g => g);
             var ownedbooks = loanbooks.Select(b => b.OwnedBook);
-            var booklist = ownedbooks.Select(b => b.Book).ToList();
+            var booklist = await ownedbooks.Select(b => b.Book).ToListAsync();
             var _genre = booklist.Select(b => b.Genres).SelectMany(b => b);
 
-            if (loans.Any().Equals(0))
+            if (!loans.Any())
             {
-                return await _context.Books.Include(b => b.Genres).Take(5).Select(b => b.ConvertToIBook()).ToListAsync();
+                return await _context.Books.Include(b => b.Genres).Select(b => b.ConvertToIBook()).Take(5).ToListAsync();
             }
             else
             {
                 var grouped = _genre.GroupBy(item => item);
                 var items = grouped.SelectMany(g => g);
                 string name = items.First().GenreName;
-                var genre = _context.Genres.Where(g => g.GenreName.Equals(name)).FirstOrDefault();
-                return await _context.Books.Include(b => b.Genres).Where(g => g.Genres.Contains(genre)).Take(5).Select(b => b.ConvertToIBook()).ToListAsync();
+                var genre = await _context.Genres.Where(g => g.GenreName.Equals(name)).FirstOrDefaultAsync();
+
+                return _context.Books.Include(b => b.Genres).Where(g => g.Genres.Contains(genre)).Select(b => b.ConvertToIBook()).Take(5).ToList();
             }
 
             //checks to see if the list is empty. if it is empty, grab the first five books in the database and suggest them.

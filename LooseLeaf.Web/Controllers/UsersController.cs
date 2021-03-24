@@ -111,10 +111,9 @@ namespace LooseLeaf.Web.Controllers
         }
 
         [HttpGet("api/users/{userId}/loans")]
-        [Authorize]
         public async Task<IActionResult> GetUserLoanHistory(int userId)
         {
-            ILoanSearchParams searchParams = new LoanSearchParams { BorrowerId = userId, LoanStatus = LoanStatus.Approved };
+            ILoanSearchParams searchParams = new LoanSearchParams { AnyUserId = userId };
             var loans = await _loanRepo.GetLoansAsync(searchParams);
             return Ok(loans);
         }
@@ -129,7 +128,7 @@ namespace LooseLeaf.Web.Controllers
         }
 
         [HttpGet("api/users/{userId}/recommendations")]
-        [Authorize]
+        
         public async Task<IActionResult> GetUserRecommendations(int userId)
         {
             var recommendedBooks = await _usersRepo.GetRecommendedBooksAsync(userId);

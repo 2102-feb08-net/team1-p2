@@ -99,6 +99,9 @@ namespace LooseLeaf.DataAccess.Repositories
                 loanQuery = loanQuery.Where(l => l.LenderId == searchParams.LenderId);
             if (searchParams.BorrowerId.HasValue)
                 loanQuery = loanQuery.Where(l => l.BorrowerId == searchParams.BorrowerId);
+            if (searchParams.AnyUserId.HasValue)
+                loanQuery = loanQuery.Where(l => searchParams.AnyUserId == l.Borrower.Id || searchParams.AnyUserId == l.Lender.Id);
+
             if (searchParams.OwnedBookId.HasValue)
                 loanQuery = loanQuery.Where(l => l.LoanedBooks.Any(b => b.OwnedBookid == searchParams.OwnedBookId));
             if (searchParams.BookId.HasValue)

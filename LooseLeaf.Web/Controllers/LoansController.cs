@@ -30,6 +30,7 @@ namespace LooseLeaf.Web.Controllers
         }
 
         [HttpPost("api/loans")]
+        [Authorize]
         public async Task<IActionResult> SubmitLoanRequest(DTOs.LoanRequest req)
         {
             ILoan loan = new Loan(req.LenderId, req.BorrowerId, req.Message, req.StartDate, req.EndDate, req.AddressId, req.OwnedBookIds, LoanStatus.Requested);
@@ -39,6 +40,7 @@ namespace LooseLeaf.Web.Controllers
         }
 
         [HttpGet("api/loans/{loanId}")]
+        [Authorize]
         public async Task<IActionResult> GetLoanById(int loanId)
         {
             var loan = await _loanRepo.GetLoanById(loanId);
@@ -46,6 +48,7 @@ namespace LooseLeaf.Web.Controllers
         }
 
         [HttpPut("api/loans/{loanId}")]
+        [Authorize]
         public async Task<IActionResult> UpdateLoanRequestStatus(int loanId, int statusId)
         {
             LoanStatus status = (LoanStatus)statusId;
