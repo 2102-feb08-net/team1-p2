@@ -21,6 +21,8 @@ using LooseLeaf.Business.Models;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.AspNetCore.Http;
 
 namespace LooseLeaf.Web
 {
@@ -62,15 +64,11 @@ namespace LooseLeaf.Web
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         NameClaimType = ClaimTypes.NameIdentifier,
-                        RoleClaimType = ClaimTypes.Role,
+                        RoleClaimType = ClaimTypes.Email,
                     };
                 });
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("read:wishlist", policy => policy.Requirements.Add(new HasScopeRequirement("read:wishlist", domain)));
-                options.AddPolicy("read:loans", policy => policy.Requirements.Add(new HasScopeRequirement("read:loans", domain)));
-            });
+            services.AddAuthorization();
 
             services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
 

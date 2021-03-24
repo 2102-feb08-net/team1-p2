@@ -45,6 +45,8 @@ namespace LooseLeaf.DataAccess.Repositories
                 Loan = dataLoan,
             }).ToList();
 
+            ownedBooks.ForEach(b => b.AvailabilityStatusId = ((int)Business.Models.AvailabilityStatus.InProcess));
+
             await _context.LoanedBooks.AddRangeAsync(loanedBooks);
         }
 
@@ -130,7 +132,19 @@ namespace LooseLeaf.DataAccess.Repositories
 
         public async Task UpdateLoanStatusAsync(int loanId, Business.Models.LoanStatus newStatus)
         {
-            var loan = await _context.Loans.SingleAsync(loan => loan.Id == loanId);
+            var loan = await _context.Loans.Include(l => l.LoanedBooks).SingleAsync(loan => loan.Id == loanId);
+            var bookIds = loan.LoanedBooks.Select(b => b.Id);
+            var ownedBooks = await _context.OwnedBooks.Where(b => bookIds.Contains(b.Id)).ToListAsync();
+
+            if (newStatus == Business.Models.LoanStatus.Approved)
+            {
+                ownedBooks.ForEach(b => b.AvailabilityStatusId = ((int)Business.Models.AvailabilityStatus.CheckedOut));
+            }
+            else
+            {
+                ownedBooks.ForEach(b => b.AvailabilityStatusId = ((int)Business.Models.AvailabilityStatus.Available));
+            }
+
             loan.LoanStatusId = (int)newStatus;
         }
     }

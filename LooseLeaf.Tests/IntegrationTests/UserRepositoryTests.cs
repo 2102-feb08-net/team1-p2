@@ -40,7 +40,7 @@ namespace LooseLeaf.Tests.IntegrationTests
                 var fakeUser = new Mock<INewUser>();
                 fakeUser.Setup(u => u.AuthId).Returns("123Id");
                 fakeUser.Setup(u => u.Username).Returns("username");
-                fakeUser.Setup(u => u.Email).Returns("username@website.com");
+                fakeUser.Setup(u => u.Email).Returns("user@website.com");
 
                 // act
                 await userRepository.AddUserAsync(fakeUser.Object);

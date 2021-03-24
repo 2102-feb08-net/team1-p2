@@ -12,6 +12,6 @@ namespace LooseLeaf.Business.Models
 
         string Username { get; }
 
-        public string Email { get; }
+        string Email { get; }
     }
 }
