@@ -65,10 +65,6 @@ namespace LooseLeaf.Web.Controllers
         [Authorize]
         public async Task<IActionResult> AddUserOwnedBook(int userId, DTOs.OwnedBookData data)
         {
-            var id = User.FindFirst("user_id");
-            if (!int.TryParse(id.Value, out int idValue) || idValue != userId)
-                return Unauthorized();
-
             if (!data.ConditionStatus.HasValue)
                 return BadRequest();
             if (!data.AvailabilityStatus.HasValue)
