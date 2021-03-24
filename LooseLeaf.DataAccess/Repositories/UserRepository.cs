@@ -82,6 +82,12 @@ namespace LooseLeaf.DataAccess.Repositories
             return new Business.Models.User(userId, user.Username, user.Email);
         }
 
+        public async Task<bool> DoesIdHaveAuthIdAddressAsync(int userId, string authId)
+        {
+            var user = await _context.Users.SingleAsync(user => user.Id == userId);
+            return user.AuthId == authId;
+        }
+
         public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
     }
 }

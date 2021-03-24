@@ -21,5 +21,7 @@ namespace LooseLeaf.Business.IRepositories
         //list of recommended books for the user
 
         Task<IEnumerable<IBook>> GetRecommendedBooksAsync(int userId);
+
+        Task<bool> DoesIdHaveAuthIdAddressAsync(int userId, string authId);
     }
 }

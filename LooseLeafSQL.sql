@@ -23,8 +23,8 @@ CREATE TABLE Addresses(
 
 CREATE TABLE Users(
 	id INT NOT NULL PRIMARY KEY IDENTITY,
-	authId NVARCHAR(1000) NOT NULL,
-	username NVARCHAR(255) NOT NULL UNIQUE,
+	authId NVARCHAR(1000) NOT NULL UNIQUE,
+	username NVARCHAR(255) NOT NULL,
 	email NVARCHAR(255) NOT NULL UNIQUE,
 )
 
@@ -153,41 +153,10 @@ INSERT INTO addresses (address1, address2, city, state, zipcode) VALUES
 
 
 INSERT INTO Users (authId, username, email) VALUES
-	(1, 'cordagepayment', 'bumblebeehedgehog@ymail.com'),
-	(2, 'trekswarm', 'bazookaelephant@ymail.com'),
-	(3, 'granolacopy','turduckencardinal@ymail.com'),
-	(4, 'editionheady', 'doodlehorse@ymail.com'),
-	(5, 'cantstandher', 'egadpeacock@ymail.com'),
-	(6, 'pradabasket', 'bamboocolobus@ymail.com'),
-	(7, 'molesomebody', 'bowyangbloodhound@ymail.com'),
-	(8, 'expandwill', 'malarkeylark@ymail.com'),
-	(9, 'boocarefully', 'burgooswallow@ymail.com'),
-	(10, 'orchestradiving','sagyak@ymail.com'),
-	(11, 'humcathead', 'awkwardpartridge@ymail.com'),
-	(12, 'middleahem', 'turnipferret@ymail.com'),
-	(13, 'gameuvula', 'baconparrot@ymail.com'),
-	(14, 'gentlemanunlike', 'snorkelguillemot@ymail.com'),
-	(15, 'uneasesituation', 'occiputant@ymail.com'),
-	(16, 'cakerowboat', 'schnitzelcolt@ymail.com'),
-	(17, 'ericssonbreeches', 'hoipolloicoyote@ymail.com'),
-	(18, 'originhomesick', 'hootenanypanda@ymail.com'),
-	(19, 'emailclosed', 'bodaciousdonkey@ymail.com'),
-	(20, 'deskgeorgian', 'snoolseahorse@ymail.com'),
-	(21, 'gaitersbew', 'troglodytemandrill@ymail.com'),
-	(22, 'briocheconstruct', 'hogwashtapir@ymail.com'),
-	(23, 'awarephotograph', 'snoutsmelt@ymail.com'),
-	(24, 'mainlyemotion', 'kumquatruffs@ymail.com'),
-	(25, 'coststriker', 'cahootsgibbon@ymail.com'),
-	(26, 'funeralprimarily', 'rummagehawk@ymail.com'),
-	(27, 'madequatorial', 'conniptionseal@ymail.com'),
-	(28, 'towpetrified', 'maverickbison@ymail.com'),
-	(29, 'accountantmustering', 'follicledoves@ymail.com'),
-	(30, 'zebraconscious', 'turdiformwaterfowl@ymail.com'),
-	(31, 'producemisguided', 'codswallopibexe@ymail.com'),
-	(32, 'buckpurple', 'squeegeewalrus@ymail.com'),
-	(33, 'bedroomwhirlwind', 'bubblesbaboon@ymail.com'),
-	(34, 'mcdonaldsbrag', 'cougarboa@ymail.com'),
-	(35, 'resentfulgymnastics', 'fripperyjackrabbit@ymail.com');
+	('google-oauth2|100283624593962851783', 'cordagepayment', 'damion.silver18@gmail.com'),
+	('google-oauth2|111098450821980045194', 'trekswarm', 'brysonewell@gmail.com'),
+	('google-oauth2|110262058361545939921', 'granolacopy','jwerner547@gmail.com'),
+	('auth0|6057ca1e8a24d70070efbc81', 'editionheady', '1thing.ashleyb@gmail.com');
 
 INSERT INTO books (title, author, isbn, thumbnail) VALUES
 	('The Fellowship of the Ring','J.R.R. Tolkien',9780547952017,'https://books.google.com/books/content?id=aWZzLPhY4o0C&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api'),
