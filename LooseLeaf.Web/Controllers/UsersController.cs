@@ -72,10 +72,6 @@ namespace LooseLeaf.Web.Controllers
             if (!await HasAuthorizationForUserId(userId))
                 return Forbid();
 
-            var id = User.FindFirst("user_id");
-            if (!int.TryParse(id.Value, out int idValue) || idValue != userId)
-                return Unauthorized();
-
             if (!data.ConditionStatus.HasValue)
                 return BadRequest();
             if (!data.AvailabilityStatus.HasValue)
