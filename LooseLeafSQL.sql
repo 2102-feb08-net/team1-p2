@@ -153,10 +153,10 @@ INSERT INTO addresses (address1, address2, city, state, zipcode) VALUES
 
 
 INSERT INTO Users (authId, username, email) VALUES
-	('google-oauth2|100283624593962851783', 'cordagepayment', 'damion.silver18@gmail.com'),
-	('google-oauth2|111098450821980045194', 'trekswarm', 'brysonewell@gmail.com'),
-	('google-oauth2|110262058361545939921', 'granolacopy','jwerner547@gmail.com'),
-	('auth0|6057ca1e8a24d70070efbc81', 'editionheady', '1thing.ashleyb@gmail.com');
+	('google-oauth2|100283624593962851783', 'damionsilver', 'damion.silver18@gmail.com'),
+	('google-oauth2|111098450821980045194', 'brysonewell', 'brysonewell@gmail.com'),
+	('google-oauth2|110262058361545939921', 'johnwerner','jwerner547@gmail.com'),
+	('auth0|6057ca1e8a24d70070efbc81', 'ashleybrown', '1thing.ashleyb@gmail.com');
 
 INSERT INTO books (title, author, isbn, thumbnail) VALUES
 	('The Fellowship of the Ring','J.R.R. Tolkien',9780547952017,'https://books.google.com/books/content?id=aWZzLPhY4o0C&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api'),
