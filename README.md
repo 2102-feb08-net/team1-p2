@@ -2,24 +2,32 @@
 
 ## Project Description
 
-Here goes your awesome project description!
+Loose Leaf Community is a .NET web application where users can borrow and loan books to others in their community. Users can check-in and check-out books, add books to their bookshelf to loan out, and add books to their wishlist that they would like to borrow. Loose Leaf Community utilizes the Google Books API to find information about a book by its ISBN.
 
 ## Technologies Used
 
-* Tech 1 - version 1.0
-* Tech 2 - version 2.0
-* Tech 3 - version 3.0
+* C#
+* ADO.NET Entity Framework
+* HTML
+* JavaScript
+* CSS
+* Angular
+* TypeScript
+* Microsoft Azure
+* SQL Server
 
 ## Features
 
 List of features ready and TODOs for future development
-* Awesome feature 1
-* Awesome feature 2
-* Awesome feature 3
+* Request books to borrow from other users
+* Loan books out to other users
+* Search for a book by title, author, or genre
+* Make a wishlist of books to borrow in the future
+* See books recommended for you based on your borrowing history
 
 To-do list:
-* Wow improvement to be done 1
-* Wow improvement to be done 2
+* Add addresses for book pickup and drop-off
+* Clean up genres so that they match the given book
 
 ## Getting Started
    
@@ -38,7 +46,7 @@ To-do list:
 
 ## Contributors
 
-> Here list the people who have contributed to this project. (ignore this section, if its a solo project)
+> Bryson Ewell, John Werner, Damion Silver, Ashley Brown
 
 ## License
 
