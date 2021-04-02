@@ -4,10 +4,6 @@
 
 Loose Leaf Community is a .NET web application where users can borrow and loan books to others in their community. Users can check-in and check-out books, add books to their bookshelf to loan out, and add books to their wishlist that they would like to borrow. Loose Leaf Community utilizes the Google Books API to find information about a book by its ISBN.
 
-## User Inteferace Repository
-
-https://github.com/2102-feb08-net/team1-p2-client
-
 ## Technologies Used
 
 * C#
@@ -41,8 +37,20 @@ To-do list:
 > Be sure to include BOTH Windows and Unix command  
 > Be sure to mention if the commands only work on a specific platform (eg. AWS, GCP)
 
-- All the `code` required to get started
-- Images of what it should look like
+> The program must use SQL server, other SQL variations may not work.
+
+- Run the command `git clone https://github.com/2102-feb08-net/team1-p2-server` to clone the repository.
+- Create a new SQL database in Azure
+- In database settings, set the firewall settings to "Allow Azure services and resources to access this server"
+- Create a new AppService in Azure
+- In the App Service settings under Configuration, create a new connection string with Name being "LooseLeafDatabase" and the Value being the connection string to the database created earlier.
+- Open `LooseLeafSQL.sql` in SQL Server 2019
+- Run the script on the new database that was just made
+- Open the Solution file in Visual Studio
+- Finally, right-click on the Web project in Visual Studio and then select Publish to begin publishing the project.
+- Follow the steps show to then publish the application to your Azure App Service.
+- This then completes the set-up for the back-end. Now follow the set-up [here](https://github.com/2102-feb08-net/team1-p2-client) for setting up the front-end.
+- Finally, open your web browser to http://localhost:4200/ to run the application.
 
 ## Usage
 
