@@ -4,6 +4,10 @@
 
 Loose Leaf Community is a .NET web application where users can borrow and loan books to others in their community. Users can check-in and check-out books, add books to their bookshelf to loan out, and add books to their wishlist that they would like to borrow. Loose Leaf Community utilizes the Google Books API to find information about a book by its ISBN.
 
+## User Inteferace Repository
+
+https://github.com/2102-feb08-net/team1-p2-client
+
 ## Technologies Used
 
 * C#
