@@ -30,12 +30,6 @@ To-do list:
 * Clean up genres so that they match the given book
 
 ## Getting Started
-   
-(include git clone command)
-(include all environment setup steps)
-
-> Be sure to include BOTH Windows and Unix command  
-> Be sure to mention if the commands only work on a specific platform (eg. AWS, GCP)
 
 > The program must use SQL server, other SQL variations may not work.
 
