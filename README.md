@@ -48,7 +48,24 @@ To-do list:
 
 ## Usage
 
-> Here, you instruct other people on how to use your project after they’ve installed it. This would also be a good place to include screenshots of your project in action.
+To use the program, first run the application by running `ng serve --open` to go to http://localhost:4200/.
+You are then brought to a login page. You must then login or create an account.
+Once authorized, you are brought to the main page. Here you will see recommended books, your loan history, and current wishlist.
+You can also add books you by typing in an ISBN13 for the book you wish in the respective field.
+
+You can search for books in the database, you can go to the "Find Books" tab and then search books based on title, author, or genre.
+
+Now to request a book loan, go to the "Search Lenders" tab. This will bring you to a page that looks like this:
+![Search Lenders](looseLeafDemo.png)
+
+Here you can then type in the name of a user you wish to search for in the search bar at the top. Afterwards, a collection of books will appear on the screen. You can then add the "Available" books to your cart by pressing the green button or add them to your wishlist by clicking on the heart icon.
+
+Once you have selected all of the books you want to request, you can then process the order by pressing the Request button at the top of the list. Finally, fill in your information and then submit the request.
+
+You can then go to the "My Loans/Requests" to see any active or pending loans. If someone request a book from you, their order would be shown to you, which you can then accept or deny.
+
+Finally, you can go to the "My Wishlist" page to see the books on your wishlist.
+
 
 ## Contributors
 
